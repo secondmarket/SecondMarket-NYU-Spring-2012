@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:component-scan base-package="com.secondmarket.controller" />
+	<bean class="com.secondmarket.validator.CustomerValidator" />
+
+	<bean name="/SecondMarket/welcome.htm" class="com.secondmarket.controller.HelloWorldController" />
+
+
+
+	<bean id="productManager" class="com.secondmarket.model.SimpleProductManager">
+		<property name="products">
+			<list>
+				<ref bean="product1" />
+				<ref bean="product2" />
+				<ref bean="product3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="product1" class="com.secondmarket.model.Product">
+		<property name="description" value="Lamp" />
+		<property name="price" value="5.75" />
+	</bean>
+
+	<bean id="product2" class="com.secondmarket.model.Product">
+		<property name="description" value="Table" />
+		<property name="price" value="75.25" />
+	</bean>
+
+	<bean id="product3" class="com.secondmarket.model.Product">
+		<property name="description" value="Chair" />
+		<property name="price" value="22.79" />
+	</bean>
+
+
+	<bean name="/SecondMarket/hello.htm" class="com.secondmarket.controller.InventoryController">
+		<property name="productManager" ref="productManager" />
+	</bean>
+
+
+
+
+	<bean name="/SecondMarket/priceincrease.htm"
+		class="com.secondmarket.controller.PriceIncreaseFormController">
+		<property name="sessionForm" value="true" />
+		<property name="commandName" value="priceIncrease" />
+		<property name="commandClass" value="com.secondmarket.model.PriceIncrease" />
+		<property name="validator">
+			<bean class="com.secondmarket.validator.PriceIncreaseValidator" />
+		</property>
+		<property name="formView" value="priceincrease" />
+		<property name="successView" value="hello.htm" />
+		<property name="productManager" ref="productManager" />
+	</bean>
+
+
+
+	<!-- <bean name="/SecondMarket/customer.htm" class="com.secondmarket.controller.CustomerController">
+		<property name="formView" value="CustomerForm" />
+		<property name="successView" value="CustomerSuccess" />
+
+		Map a validator
+		<property name="validator">
+			<bean class="com.secondmarket.validator.CustomerValidator" />
+		</property>
+	</bean> -->
+
+
+
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="Customer" />
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/SecondMarket/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+</beans>
