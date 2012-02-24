@@ -22,6 +22,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.secondmarket.model.Customer;
 import com.secondmarket.validator.CustomerValidator;
 
+
+
+//I want to try.
 @Controller
 @RequestMapping("/SecondMarket/customer.htm")
 public class CustomerController {
