@@ -47,7 +47,43 @@
           <scope>test</scope>
       </dependency>
 
+<!-- Spring framework --> 
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring</artifactId>
+		<version>2.5.6</version>
+	</dependency>
+ 
+        <!-- Spring MVC framework --> 
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>2.5.6</version>
+	</dependency>
+ 
+	<!-- JSTL --> 
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.1.2</version>
+	</dependency>
+ 
+	<dependency>
+		<groupId>taglibs</groupId>
+		<artifactId>standard</artifactId>
+		<version>1.1.2</version>
+	</dependency>
+ 
+	<!-- for compile only, your container should have this -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
+		<scope>provided</scope>
+	</dependency>
+
   </dependencies>
+  
   <build>
     <plugins>
 			<plugin>
