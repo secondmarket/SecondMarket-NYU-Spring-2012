@@ -1,7 +1,6 @@
-package com.secondmarket.importer;
+package com.secondmarket.importerImpl;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -9,16 +8,24 @@ import java.util.Map;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
-public class CrunchBaseImporter {
+import com.secondmarket.dao.OrganizationDao;
+import com.secondmarket.importer.DataImporter;
 
-	public static void main(String[] args) throws Exception {
-		String url = "http://api.crunchbase.com/v/1/company/facebook.js";
+public class CrunchBaseImporter implements DataImporter {
+
+	private OrganizationDao orgDao;
+
+	public void setOrganizationDao(OrganizationDao orgDao) {
+		this.orgDao = orgDao;
+	}
+
+	public void importOrganizationDataByName(String organizationName)
+			throws Exception {
+		String url = "http://api.crunchbase.com/v/1/company/"
+				+ organizationName + ".js";
 		URL resource = new URL(url);
 		ObjectMapper mapper = new ObjectMapper();
 
-		/*mapper.getDeserializationConfig().setDateFormat(
-				new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy"));*/
-		
 		mapper.getDeserializationConfig().withDateFormat(
 				new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy"));
 
@@ -30,6 +37,9 @@ public class CrunchBaseImporter {
 			Map<String, Object> map = (Map<String, Object>) mapper.readValue(
 					input, Map.class);
 			System.out.println(map);
+
+			orgDao.saveOrganization();
+
 		} finally {
 			if (input != null)
 				input.close();
