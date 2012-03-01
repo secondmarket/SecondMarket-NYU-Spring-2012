@@ -2,14 +2,16 @@ package com.secondmarket.importerImpl;
 
 import junit.framework.TestCase;
 
-import com.secondmarket.dao.CompanyDAO;
-import com.secondmarket.daoimpl.CompanyDAOImpl;
+import com.secondmarket.dao.OrganizationDao;
+import com.secondmarket.daoimpl.OrganizationDaoImpl;
 
 public class CrunchBaseImporterTest extends TestCase {
 
 	public void testCallCrunchBaseImporter() throws Exception {
+		OrganizationDao orgDao = new OrganizationDaoImpl();
 		CrunchBaseImporter importer = new CrunchBaseImporter();
-		importer.storeDataByCompanyName("facebook");
+		importer.setOrganizationDao(orgDao);
+		importer.importOrganizationDataByName("facebook");
 		assertNotNull("Testing");
 		
 	}
