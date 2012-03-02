@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonParser;
@@ -15,19 +16,21 @@ import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.importer.Importer;
 import com.secondmarket.model.Company;
 
-public class CrunchBaseImporter implements Importer {
+public final class CrunchBaseImporter implements Importer {
 
 	private CompanyDAO orgDao;
 
-	public void storeDataByCompanyName(String companyName) {
-		String url = "http://api.crunchbase.com/v/1/company/" + companyName
-				+ ".js";
+	public CrunchBaseImporter() {
+		orgDao = new CompanyDAOImpl();
+	}
 
-		// String url =
-		// "http://api.crunchbase.com/v/1/person/mark-zuckerberg.js";
-
-		// String url = "http://api.crunchbase.com/v/1/company/Pinterest.js";
-
+	/**
+	 * Calls the CrunchBase API and returns the data in a map
+	 * 
+	 * @param url
+	 * @return Map<String, Object> map
+	 */
+	private Map<String, Object> getDataMapFromCrunchBase(String url) {
 		URL resource = null;
 		try {
 			resource = new URL(url);
@@ -35,21 +38,16 @@ public class CrunchBaseImporter implements Importer {
 			e.printStackTrace();
 		}
 		ObjectMapper mapper = new ObjectMapper();
-
 		mapper.getDeserializationConfig().withDateFormat(
 				new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy"));
-
 		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
 
 		InputStream input = null;
+		Map<String, Object> map = null;
 		try {
 			try {
 				input = resource.openStream();
-				Map<String, Object> map = (Map<String, Object>) mapper
-						.readValue(input, Map.class);
-
-				orgDao = new CompanyDAOImpl();
-				orgDao.saveCompany(map);
+				map = (Map<String, Object>) mapper.readValue(input, Map.class);
 			} finally {
 				if (input != null) {
 					input.close();
@@ -58,10 +56,82 @@ public class CrunchBaseImporter implements Importer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return map;
 	}
 
-	public Company retrieveCompanyData() {
-		Company company = orgDao.findCompanies();
+	private List<Object> getDataListFromCrunchBase(String url) {
+		URL resource = null;
+		try {
+			resource = new URL(url);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.getDeserializationConfig().withDateFormat(
+				new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy"));
+		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+
+		InputStream input = null;
+		List<Object> list = null;
+		try {
+			try {
+				input = resource.openStream();
+				list = mapper.readValue(input, List.class);
+			} finally {
+				if (input != null) {
+					input.close();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	/**
+	 * Stores the company data in database
+	 */
+	public void storeOneCompany(String companyName) {
+		String url = "http://api.crunchbase.com/v/1/company/" + companyName
+				+ ".js";
+		Map<String, Object> map = getDataMapFromCrunchBase(url);
+		orgDao.saveCompany(map);
+	}
+
+	public Company retrieveOneCompany() {
+		Company company = orgDao.findCompany();
 		return company;
 	}
+
+	public void storeAllCompaniess() {
+		String url = "http://api.crunchbase.com/v/1/companies.js";
+		List<Object> allCompaniesList = getDataListFromCrunchBase(url);
+		// Get the first one-hundred companies in a list
+		List<Object> list = allCompaniesList.subList(0, 10);
+
+		Map<String, Object> tempMap = null;
+		Map<String, Object> map = null;
+		String companyUrl = null;
+
+		for (int i = 0; i < list.size(); i++) {
+			tempMap = (Map<String, Object>) list.get(i);
+			if (tempMap.containsKey("permalink")) {
+				companyUrl = "http://api.crunchbase.com/v/1/company/"
+						+ tempMap.get("permalink") + ".js";
+				map = getDataMapFromCrunchBase(companyUrl);
+				orgDao.saveCompany(map);
+			} else {
+				System.out.println("No permalink found!");
+			}
+		}
+
+		System.out.println("There are " + allCompaniesList.size()
+				+ " companies!!!!!");
+	}
+
+	public List<Company> retrieveAllCompanies() {
+		List<Company> list = orgDao.findAllCompanies();
+		return list;
+	}
+	
 }

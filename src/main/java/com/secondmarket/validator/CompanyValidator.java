@@ -18,10 +18,10 @@ public class CompanyValidator implements Validator {
 				"required.companyName",
 				"Company name is required for importing data");
 
-//		Company company = (Company) target;
-//		if (!"facebook".equals(company.getCompanyName()) || !"foursquare".equals(company.getCompanyName())) {
-//			errors.rejectValue("companyName", "notmatch.companyName");
-//		}
+		// Company company = (Company) target;
+		// if (!"facebook".equals(company.getCompanyName())) {
+		// errors.rejectValue("companyName", "notmatch.companyName");
+		// }
 
 	}
 }

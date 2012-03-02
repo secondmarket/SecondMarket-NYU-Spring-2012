@@ -6,14 +6,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Map;
-
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -58,13 +57,6 @@ public class TestCompanyDAOImpl extends TestCase {
 			}
 			System.out.println(result.toString());
 			Assert.assertTrue(result.toString().length() != 0);
-
-			/*collection.createIndex(new BasicDBObject("index", 1));
-			List<DBObject> list = collection.getIndexInfo();
-			for (DBObject o : list) {
-				System.out.println(o);
-			}*/
-
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -83,8 +75,6 @@ public class TestCompanyDAOImpl extends TestCase {
 			}
 
 			Assert.assertTrue(result.toString().length() != 0);
-			
-//			mongo.dropDatabase("learn");
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -130,5 +120,10 @@ public class TestCompanyDAOImpl extends TestCase {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void testFindAllCompanies(){
+		CompanyDAOImpl testDaoImpl = new CompanyDAOImpl();
+		testDaoImpl.findAllCompanies();
 	}
 }

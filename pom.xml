@@ -84,7 +84,7 @@
 		<dependency>
 			<groupId>com.google.code.morphia</groupId>
 			<artifactId>morphia</artifactId>
-			<version>0.97-SNAPSHOT</version>
+			<version>0.97</version>
 		</dependency>
 
 	</dependencies>
