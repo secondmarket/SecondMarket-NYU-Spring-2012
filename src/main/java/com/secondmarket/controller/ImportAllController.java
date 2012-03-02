@@ -65,12 +65,15 @@ public class ImportAllController {
 		status.setComplete();
 		Importer dataImporter = new CrunchBaseImporter();
 		dataImporter.storeAllCompaniess();
-		
-//		dataImporter.storeOneCompany(company.getCompanyName());
-//		Company retrievedCompany = dataImporter.retrieveOneCompany();
+
+		// dataImporter.storeOneCompany(company.getCompanyName());
+		// Company retrievedCompany = dataImporter.retrieveOneCompany();
 		List<Company> list = dataImporter.retrieveAllCompanies();
-		return new ModelAndView("DisplayAllCompany", "company",
-				company);
+		ModelAndView modelAndView = new ModelAndView("DisplayAllCompany",
+				"company", company);
+		modelAndView.addObject("companies", list);
+		System.out.println(list.size());
+		return modelAndView;
 	}
 
 }

@@ -107,7 +107,7 @@ public final class CrunchBaseImporter implements Importer {
 		String url = "http://api.crunchbase.com/v/1/companies.js";
 		List<Object> allCompaniesList = getDataListFromCrunchBase(url);
 		// Get the first one-hundred companies in a list
-		List<Object> list = allCompaniesList.subList(0, 10);
+		List<Object> list = allCompaniesList.subList(0, 100);
 
 		Map<String, Object> tempMap = null;
 		Map<String, Object> map = null;
