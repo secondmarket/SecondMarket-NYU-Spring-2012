@@ -24,15 +24,15 @@
 			List<Company> data = (List<Company>) request
 					.getAttribute("companies");
 			for (itr = data.iterator(); itr.hasNext();) {
-				Company company = (Company) itr.next();
+				Company companyModel = (Company) itr.next();
 		%>
 
 		<tr>
-			<td width="20%"><%=company.getCompanyName()%></td>
-			<td width="20%"><%=company.getLocation()%></td>
-			<td width="20%"><%=company.getCountry()%></td>
-			<td width="20%"><%=company.getFunding()%></td>
-			<td width="20%"><%=company.getIndustry()%></td>
+			<td width="20%" style="text-align: center"><%=companyModel.getCompanyName()%></td>
+			<td width="20%" style="text-align: center"><%=companyModel.getLocation()%></td>
+			<td width="20%" style="text-align: center"><%=companyModel.getCountry()%></td>
+			<td width="20%" style="text-align: center"><%=companyModel.getFunding()%></td>
+			<td width="20%" style="text-align: center"><%=companyModel.getIndustry()%></td>
 		</tr>
 
 		<%

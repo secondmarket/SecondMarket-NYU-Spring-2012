@@ -1,19 +1,32 @@
 package com.secondmarket.model;
 
+import java.util.Map;
+
 import org.bson.types.ObjectId;
 
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Transient;
 
-@Entity(value="company", concern="safe")
+@Entity(value = "company", concern = "safe")
 public class Company {
-
 	@Id
 	private ObjectId id;
+
 	private String companyName;
+
+	private Map<String, String> data;
+
+	@Transient
 	private String location;
+
+	@Transient
 	private String country;
+
+	@Transient
 	private String funding;
+
+	@Transient
 	private String industry;
 
 	public Company() {
@@ -34,6 +47,14 @@ public class Company {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	public Map<String, String> getData() {
+		return data;
+	}
+
+	public void setData(Map<String, String> data) {
+		this.data = data;
 	}
 
 	public String getLocation() {

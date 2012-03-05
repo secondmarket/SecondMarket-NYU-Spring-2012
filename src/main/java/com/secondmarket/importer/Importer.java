@@ -6,10 +6,6 @@ import com.secondmarket.model.Company;
 
 public interface Importer {
 
-	void storeOneCompany(String companyName);
-
-	Company retrieveOneCompany();
-
 	void storeAllCompaniess();
 
 	List<Company> retrieveAllCompanies();

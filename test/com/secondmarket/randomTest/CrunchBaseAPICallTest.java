@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
-public class AnotherTest {
+public class CrunchBaseAPICallTest {
 
 	public void testParser() throws Exception {
 
@@ -43,7 +43,7 @@ public class AnotherTest {
 	}
 
 	public static void main(String[] args) {
-		AnotherTest test = new AnotherTest();
+		CrunchBaseAPICallTest test = new CrunchBaseAPICallTest();
 		try {
 			test.testParser();
 		} catch (Exception e) {
