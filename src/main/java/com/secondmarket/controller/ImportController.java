@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,10 +19,10 @@ import com.secondmarket.importerImpl.CrunchBaseImporter;
 import com.secondmarket.model.Company;
 
 @Controller
-@RequestMapping(value = "/SecondMarket/importall.htm")
 public class ImportController {
 	/** Logger for this class and subclasses */
 	protected final Log logger = LogFactory.getLog(getClass());
+	private Importer dataImporter = new CrunchBaseImporter();
 
 	/**
 	 * Initialize the first form page with newly created Company model
@@ -31,7 +32,7 @@ public class ImportController {
 	 * @param model
 	 * @return view string
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/SecondMarket/importall.htm", method = RequestMethod.GET)
 	public String initForm(ModelMap model) {
 		logger.info("Returning ImportForm");
 		Company company = new Company();
@@ -57,21 +58,31 @@ public class ImportController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView processSubmit(
-			@ModelAttribute("company") Company company, BindingResult result,
-			SessionStatus status) {
+	@RequestMapping(value = "/SecondMarket/importall.htm", method = RequestMethod.POST)
+	public ModelAndView importAll(@ModelAttribute("company") Company company,
+			BindingResult result, SessionStatus status) {
 		logger.info("Returning ImportSuccess");
 		status.setComplete();
-		Importer dataImporter = new CrunchBaseImporter();
 
 		dataImporter.storeAllCompaniess();
 
 		List<Company> list = dataImporter.retrieveAllCompanies();
 
-		ModelAndView modelAndView = new ModelAndView("DisplayAllCompany",
-				"company", company);
+		ModelAndView modelAndView = new ModelAndView("MainPage", "company",
+				company);
 		modelAndView.addObject("companies", list);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/SecondMarket/viewcompanyinfo.htm", method = RequestMethod.GET)
+	public ModelAndView checkCompanyDetailedInfo(
+			@RequestParam("companyName") String companyName) {
+		System.out.println("<-- " + companyName + " -->");
+
+		Company company = dataImporter.retrieveCompanyByName(companyName);
+
+		ModelAndView modelAndView = new ModelAndView("CompanyPage", "company",
+				company);
 		return modelAndView;
 	}
 

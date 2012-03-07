@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
-import com.google.code.morphia.mapping.MapperOptions;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -24,32 +23,30 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	private DB db;
 	private Mongo mongo;
 	private DBCollection dbCollection;
-	private Datastore ds;
+
 	private BasicDBObject basicDBObject;
 	private Gson gson = new Gson();// Using Gson to format the JSON object
 	private DataFilter filter = new DataFilter();// Filter data
 
+	private Datastore ds;
+	private Morphia morphia;
+
 	public CompanyDAOImpl() {
 		try {
+
 			mongo = new Mongo("localhost", 27017);
-			// Database name: secondmarket
 			db = mongo.getDB("secondmarket");
-			// Collection name: company
 			dbCollection = db.getCollection("company");
-			// Drop all the existing collections
 			dbCollection.drop();
-			// Using Morphia to map the model
-			Morphia morphia = new Morphia();
-			// Initialize Datastore
-			ds = morphia.createDatastore(mongo, "secondmarket");
-			// Declare the mapping model class
-			morphia.map(Company.class);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
 			System.out.println("MongoDB is not running!");
 			e.printStackTrace();
 		}
+		morphia = new Morphia();
+		morphia.map(Company.class);
+		ds = morphia.createDatastore(mongo, "secondmarket");
 	}
 
 	public void saveCompany(String companyName, Map<String, String> map) {
@@ -59,14 +56,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		ds.save(company);
 	}
 
-	public void findCompanyByName(String companyName) {
-		System.out.println("finding the specified company: " + companyName);
-
-	}
-
 	public List<Company> findAllCompanies() {
-		Morphia morphia = new Morphia();
-		Datastore ds = morphia.createDatastore(mongo, "secondmarket");
 		List<Company> rawDataList = ds.find(Company.class).asList();
 		List<Company> companyList = new ArrayList<Company>();
 
@@ -83,6 +73,15 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		}
 
 		return companyList;
+	}
+
+	public Company findCompanyByName(String companyName) {
+		Company company = ds.find(Company.class).field("companyName")
+				.equal(companyName).get();
+		Map<String, String> map = company.getData();
+		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+		filter.getAndSetCompanyDetailedInfo(basicDBObject, company);
+		return company;
 	}
 
 }

@@ -7,6 +7,30 @@ import com.secondmarket.model.Company;
 
 public class DataFilter {
 
+	/**
+	 * Sees if the company has funding by checking "total_money_raised"
+	 * attribute
+	 * 
+	 * @param basicDBObject
+	 * @return true if the attribute is not equal with "$0"
+	 */
+	public boolean checkCompanyFundings(BasicDBObject basicDBObject) {
+		if (basicDBObject.containsField("total_money_raised")
+				&& !"$0".equals(basicDBObject.get("total_money_raised")
+						.toString().trim())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Retrieves the basic information and set the attributes to the company
+	 * object
+	 * 
+	 * @param basicDBObject
+	 * @param company
+	 */
 	public void getAndSetCompanyBasicInfo(BasicDBObject basicDBObject,
 			Company company) {
 
@@ -68,6 +92,11 @@ public class DataFilter {
 		} else {
 			company.setIndustry("Not provided");
 		}
+		System.out.println("======================");
+	}
 
+	public void getAndSetCompanyDetailedInfo(BasicDBObject basicDBObject,
+			Company company) {
+		this.getAndSetCompanyBasicInfo(basicDBObject, company);
 	}
 }

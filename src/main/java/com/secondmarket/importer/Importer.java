@@ -9,4 +9,6 @@ public interface Importer {
 	void storeAllCompaniess();
 
 	List<Company> retrieveAllCompanies();
+
+	Company retrieveCompanyByName(String companyName);
 }

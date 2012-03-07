@@ -25,7 +25,12 @@
 	</table>
 
 	<div align="center">
-		<a href="/SecondMarket/import.htm">Home</a>
+		<table>
+			<tr>
+				<th><a href="javascript: history.go(-1)">Go back</a>&nbsp;&nbsp;</th>
+				<th><a href="/SecondMarket/importall.htm">Home</a></th>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>

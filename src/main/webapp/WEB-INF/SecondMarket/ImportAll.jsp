@@ -3,35 +3,49 @@
 <html>
 <head>
 <style>
-.error {
-	color: #ff0000;
-	width:70%;
+.button {
+	border: 1px solid #666;
+	background: #CCC;
+	height: 25px;
+	width: 100px;
 }
 
-.errorblock {
-	color: #000;
-	background-color: #ffEEEE;
-	border: 3px solid #ff0000;
-	padding: 8px;
-	margin: 16px;
+.button:hover {
+	border: 1px solid #BFBFBF;
+	background: #BFBFBF;
+}
+
+label {
+	width: 80px;
+	margin: 2px 4px 6px 4px;
+	text-align: right;
 }
 </style>
 </head>
 <body>
-	<h2>SecondMarket Data Aggregation Project</h2>
 
-	<form:form method="POST" commandName="company">
+
+	<div id="myimage">
 		<table>
 			<tr>
-				<td>Click to import data</td>
-			</tr>
-
-			<tr>
-				<td colspan="3"><input type="submit" value="ImportAll"/></td>
+				<th><a href="https://www.secondmarket.com/"> <img
+						src="../images/secondmarket-logo.png"
+						alt="Second Market"
+						title="Click to open SecondMarket website" /></a></th>
+				<th><h3>  -----SecondMarket Data Aggregation Project</h3></th>
 			</tr>
 		</table>
+	</div>
+
+
+	<form:form method="POST" commandName="company">
+		<fieldset>
+			<legend>Click to import data</legend>
+			<label>&nbsp; </label> <input type="submit" value="Import"
+				class="button" />
+		</fieldset>
 	</form:form>
 
- 
+
 </body>
 </html>

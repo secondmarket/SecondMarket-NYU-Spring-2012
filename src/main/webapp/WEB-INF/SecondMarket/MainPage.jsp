@@ -28,7 +28,15 @@
 		%>
 
 		<tr>
-			<td width="20%" style="text-align: center"><%=companyModel.getCompanyName()%></td>
+
+			<td width="20%" style="text-align: center">
+				<%
+					out.println("<a href=\"/SecondMarket/viewcompanyinfo.htm?companyName="
+								+ companyModel.getCompanyName()
+								+ "\">"
+								+ companyModel.getCompanyName() + "</a>");
+				%>
+			</td>
 			<td width="20%" style="text-align: center"><%=companyModel.getLocation()%></td>
 			<td width="20%" style="text-align: center"><%=companyModel.getCountry()%></td>
 			<td width="20%" style="text-align: center"><%=companyModel.getFunding()%></td>
@@ -49,7 +57,7 @@
 
 	</table>
 	<div align="center">
-		<a href="/SecondMarket/import.htm">Home</a>
+		<a href="/SecondMarket/importall.htm">Home</a>
 	</div>
 </body>
 </html>

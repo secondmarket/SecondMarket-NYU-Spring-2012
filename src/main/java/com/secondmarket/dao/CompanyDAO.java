@@ -9,7 +9,7 @@ public interface CompanyDAO {
 
 	void saveCompany(String companyName, Map<String, String> map);
 
-	void findCompanyByName(String companyName);
-
 	List<Company> findAllCompanies();
+
+	Company findCompanyByName(String companyName);
 }
