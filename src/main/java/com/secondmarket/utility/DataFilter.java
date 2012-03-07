@@ -98,5 +98,15 @@ public class DataFilter {
 	public void getAndSetCompanyDetailedInfo(BasicDBObject basicDBObject,
 			Company company) {
 		this.getAndSetCompanyBasicInfo(basicDBObject, company);
+		
+		// Set overview
+		if (basicDBObject.containsField("overview")) {
+			company.setOverview(basicDBObject.get("overview").toString());
+
+			System.out.println("->"
+					+ basicDBObject.get("overview").toString());
+		} else {
+			company.setIndustry("Not provided");
+		}
 	}
 }

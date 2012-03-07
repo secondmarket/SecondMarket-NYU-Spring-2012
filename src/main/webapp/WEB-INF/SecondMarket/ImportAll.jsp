@@ -25,21 +25,18 @@ label {
 <body>
 
 
-	<div id="myimage">
-		<table>
-			<tr>
-				<th><a href="https://www.secondmarket.com/"> <img
-						src="../images/secondmarket-logo.png"
-						alt="Second Market"
-						title="Click to open SecondMarket website" /></a></th>
-				<th><h3>  -----SecondMarket Data Aggregation Project</h3></th>
-			</tr>
-		</table>
-	</div>
+	<table width="70%" align="center">
+		<tr>
+			<th><a href="https://www.secondmarket.com/"> <img
+					src="../images/secondmarket-logo.png" alt="Second Market"
+					title="Click to open SecondMarket website" /></a></th>
+			<th><h3>--Data Aggregation Project</h3></th>
+		</tr>
+	</table>
 
 
 	<form:form method="POST" commandName="company">
-		<fieldset>
+		<fieldset width="70%">
 			<legend>Click to import data</legend>
 			<label>&nbsp; </label> <input type="submit" value="Import"
 				class="button" />

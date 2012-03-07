@@ -7,20 +7,36 @@
 	<table border="1" cellpadding="5" cellspacing="5" width="70%"
 		align="center"
 		style="background-color: #E6E6E6; border: 1px dashed black;">
+
+
 		<tr>
 			<th style="text-align: center">Company</th>
-			<th style="text-align: center">Location</th>
-			<th style="text-align: center">Country</th>
-			<th style="text-align: center">Funding</th>
-			<th style="text-align: center">Industry</th>
+			<td style="text-align: center">${company.companyName}</td>
 		</tr>
-		<tr>
-			<td width="20%" style="text-align: center">${company.companyName}</td>
-			<td width="20%" style="text-align: center">${company.location}</td>
-			<td width="20%" style="text-align: center">${company.country}</td>
-			<td width="20%" style="text-align: center">${company.funding}</td>
-			<td width="20%" style="text-align: center">${company.industry}</td>
 
+		<tr>
+			<th style="text-align: center">Funding</th>
+			<td style="text-align: center">${company.funding}</td>
+		</tr>
+
+		<tr>
+			<th style="text-align: center">Industry</th>
+			<td style="text-align: center">${company.industry}</td>
+		</tr>
+
+		<tr>
+			<th style="text-align: center">Location</th>
+			<td style="text-align: center">${company.location}</td>
+		</tr>
+
+		<tr>
+			<th style="text-align: center">Country</th>
+			<td style="text-align: center">${company.country}</td>
+		</tr>
+
+		<tr>
+			<th style="text-align: center">Overview</th>
+			<td>${company.overview}</td>
 		</tr>
 	</table>
 

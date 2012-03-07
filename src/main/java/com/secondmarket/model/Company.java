@@ -29,6 +29,9 @@ public class Company {
 	@Transient
 	private String industry;
 
+	@Transient
+	private String overview;
+
 	public Company() {
 
 	}
@@ -87,6 +90,14 @@ public class Company {
 
 	public void setIndustry(String industry) {
 		this.industry = industry;
+	}
+
+	public String getOverview() {
+		return overview;
+	}
+
+	public void setOverview(String overview) {
+		this.overview = overview;
 	}
 
 }
