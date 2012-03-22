@@ -17,16 +17,16 @@ public class Company {
 
 	private Map<String, String> data;
 
-	@Transient
+//	@Transient
 	private String location;
 
-	@Transient
+//	@Transient
 	private String country;
 
-	@Transient
+//	@Transient
 	private String funding;
 
-	@Transient
+//	@Transient
 	private String industry;
 
 	@Transient

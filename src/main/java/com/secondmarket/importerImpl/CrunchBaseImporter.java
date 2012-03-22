@@ -7,9 +7,13 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -42,7 +46,7 @@ public final class CrunchBaseImporter implements Importer {
 	 * @param url
 	 * @return Map<String, Object> map
 	 */
-	private Map<String, String> getDataMapFromCrunchBase(String url) {
+	private Map<String, String> getDataInMapFromCrunchBase(String url) {
 		URL resource = null;
 		try {
 			resource = new URL(url);
@@ -84,7 +88,13 @@ public final class CrunchBaseImporter implements Importer {
 		return map;
 	}
 
-	private List<Object> getDataListFromCrunchBase(String url) {
+	/**
+	 * Calls the CrunchBase API and returns the data in a list
+	 * 
+	 * @param url
+	 * @return List<Object> list
+	 */
+	private List<Object> getDataInListFromCrunchBase(String url) {
 		URL resource = null;
 		try {
 			resource = new URL(url);
@@ -124,14 +134,14 @@ public final class CrunchBaseImporter implements Importer {
 
 	public void storeAllCompaniess() {
 		String url = "http://api.crunchbase.com/v/1/companies.js";
-		List<Object> allCompaniesList = getDataListFromCrunchBase(url);
-		// Get the first one-hundred companies in a list
-		List<Object> list = allCompaniesList.subList(0, 50);
+		List<Object> allCompaniesList = getDataInListFromCrunchBase(url);
+
+		List<Object> list = allCompaniesList.subList(0, 300);
 
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> map = null;
 		String companyUrl = null;
-		boolean hasFunding;
+		boolean isEligible;
 
 		for (int i = 0; i < list.size(); i++) {
 			nameAndPermalinkMap = (Map<String, String>) list.get(i);
@@ -139,13 +149,13 @@ public final class CrunchBaseImporter implements Importer {
 					&& nameAndPermalinkMap.containsKey("permalink")) {
 				companyUrl = "http://api.crunchbase.com/v/1/company/"
 						+ nameAndPermalinkMap.get("permalink") + ".js";
-				map = getDataMapFromCrunchBase(companyUrl);
+				map = getDataInMapFromCrunchBase(companyUrl);
 
 				BasicDBObject basicDBObject = (BasicDBObject) JSON.parse(gson
 						.toJson(map));
 
-				hasFunding = filter.checkCompanyFundings(basicDBObject);
-				if (hasFunding) {
+				isEligible = filter.checkCompanyEligibility(basicDBObject);
+				if (isEligible) {
 					orgDao.saveCompany(nameAndPermalinkMap.get("name"), map);
 				} else {
 					continue;
@@ -166,6 +176,64 @@ public final class CrunchBaseImporter implements Importer {
 	public Company retrieveCompanyByName(String companyName) {
 		Company company = orgDao.findCompanyByName(companyName);
 		return company;
+	}
+
+	public List<Company> retrieveCompaniesByImpreciseName(String companyName) {
+		List<Company> list = orgDao.findCompaniesByImpreciseName(companyName);
+		return list;
+	}
+
+	public List<Company> retrieveCompaniesInPage(int pageIndex,
+			int numberOfElementsPerPage) {
+		List<Company> paginatedList = orgDao.findCompaniesInPage(pageIndex,
+				numberOfElementsPerPage);
+		return paginatedList;
+	}
+
+	public String getPaginatedDataInJson(List<Company> paginatedList) {
+		// Notice: use LinkedHashMap instead of HashMap
+		// To maintain the order of JSON data
+		Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
+
+		// Loop through the list and generate JSON string
+		Iterator<Company> companyIterator = paginatedList.iterator();
+		while (companyIterator.hasNext()) {
+			Company company = companyIterator.next();
+			Map<String, Object> companyJson = new HashMap<String, Object>();
+			companyJson.put("name", company.getCompanyName());
+			companyJson.put("location", company.getLocation());
+			companyJson.put("country", company.getCountry());
+			companyJson.put("funding", company.getFunding());
+			companyJson.put("industry", company.getIndustry());
+			jsonMap.put(company.getCompanyName(), companyJson);
+		}
+
+		String jsonMapString = "";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			jsonMapString = mapper.writeValueAsString(jsonMap);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// Using GSON to format the data
+		return gson.toJson(jsonMapString);
+	}
+
+	public String getExistingPageAmount(int companiesPerPage) {
+		int numberOfPages = orgDao.getPageAmount(companiesPerPage);
+		return String.valueOf(numberOfPages);
+	}
+
+	public List<Company> retrieveSortedCompaniesInPage(int pageIndex,
+			int numberOfElementsPerPage, String sortByField,
+			boolean isDescending) {
+		List<Company> paginatedList = orgDao.findSortedCompaniesInPage(
+				pageIndex, numberOfElementsPerPage, sortByField, isDescending);
+		return paginatedList;
 	}
 
 }

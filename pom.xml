@@ -15,6 +15,7 @@
 		<org.springframework.version>3.0.4.RELEASE</org.springframework.version>
 		<services.version>1.0.30-SNAPSHOT</services.version>
 		<morphia.version>0.98</morphia.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<repositories>
@@ -22,6 +23,12 @@
 			<id>morphia.googlecode.com</id>
 			<name>Morphia Repo at Google Code</name>
 			<url>http://morphia.googlecode.com/svn/mavenrepo</url>
+		</repository>
+
+		<repository>
+			<id>json-taglib</id>
+			<name>json-taglib</name>
+			<url>http://www.mvnsearch.org/maven2</url>
 		</repository>
 	</repositories>
 
@@ -85,6 +92,12 @@
 			<groupId>com.google.code.morphia</groupId>
 			<artifactId>morphia</artifactId>
 			<version>0.97</version>
+		</dependency>
+
+		<dependency>
+			<groupId>json-taglib</groupId>
+			<artifactId>json-taglib</artifactId>
+			<version>0.4.1</version>
 		</dependency>
 
 	</dependencies>

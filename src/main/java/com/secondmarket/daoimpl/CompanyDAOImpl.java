@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
@@ -51,7 +52,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 	public void saveCompany(String companyName, Map<String, String> map) {
 		Company company = new Company();
-		company.setCompanyName(companyName);
+		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+		filter.getAndSetCompanyBasicInfo(basicDBObject, company);
 		company.setData(map);
 		ds.save(company);
 	}
@@ -78,10 +80,91 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	public Company findCompanyByName(String companyName) {
 		Company company = ds.find(Company.class).field("companyName")
 				.equal(companyName).get();
+
 		Map<String, String> map = company.getData();
 		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 		filter.getAndSetCompanyDetailedInfo(basicDBObject, company);
 		return company;
+	}
+
+	public List<Company> findCompaniesByImpreciseName(String companyName) {
+		List<Company> companyList = ds.find(Company.class).field("companyName")
+				.equal(Pattern.compile(companyName, Pattern.CASE_INSENSITIVE))
+				.asList();
+
+		Iterator<Company> it = companyList.iterator();
+		while (it.hasNext()) {
+			Company company = it.next();
+			Map<String, String> map = company.getData();
+			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+			filter.getAndSetCompanyDetailedInfo(basicDBObject, company);
+		}
+		return companyList;
+	}
+
+	public List<Company> findCompaniesInPage(int pageIndex,
+			int numberOfElementsPerPage) {
+		List<Company> tempList = null;
+		if (pageIndex != 0) {
+			tempList = ds.createQuery(Company.class)
+					.offset(pageIndex * numberOfElementsPerPage)
+					.limit(numberOfElementsPerPage).asList();
+		} else {
+			tempList = ds.createQuery(Company.class)
+					.limit(numberOfElementsPerPage).asList();
+		}
+
+		// Filter out basic info
+		List<Company> paginatedList = new ArrayList<Company>();
+		Iterator<Company> it = tempList.iterator();
+		while (it.hasNext()) {
+			Company company = it.next();
+			Map<String, String> map = company.getData();
+			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+
+			// Filter the data and update the company model
+			filter.getAndSetCompanyBasicInfo(basicDBObject, company);
+			paginatedList.add(company);
+		}
+
+		return paginatedList;
+	}
+
+	public int getPageAmount(int companiesPerPage) {
+		long numberOfCompanies = ds.createQuery(Company.class).countAll();
+		int numberOfPages = (int) Math.ceil(((double) numberOfCompanies) / 10);
+		return numberOfPages;
+	}
+
+	public List<Company> findSortedCompaniesInPage(int pageIndex,
+			int numberOfElementsPerPage, String sortByField,
+			boolean isDescending) {
+		String orderStr = (isDescending) ? ("-" + sortByField) : sortByField;
+
+		List<Company> tempList = null;
+		if (pageIndex != 0) {
+			tempList = ds.createQuery(Company.class).order(orderStr)
+					.offset(pageIndex * numberOfElementsPerPage)
+					.limit(numberOfElementsPerPage).asList();
+		} else {
+			tempList = ds.createQuery(Company.class).order(orderStr)
+					.limit(numberOfElementsPerPage).asList();
+		}
+
+		// Filter out basic info
+		List<Company> paginatedList = new ArrayList<Company>();
+		Iterator<Company> it = tempList.iterator();
+		while (it.hasNext()) {
+			Company company = it.next();
+			Map<String, String> map = company.getData();
+			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+
+			// Filter the data and update the company model
+			filter.getAndSetCompanyBasicInfo(basicDBObject, company);
+			paginatedList.add(company);
+		}
+
+		return paginatedList;
 	}
 
 }
