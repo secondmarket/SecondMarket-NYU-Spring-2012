@@ -47,15 +47,14 @@ public class TestCompanyDAOImpl extends TestCase {
 			BasicDBObject searchQuery = new BasicDBObject();
 			searchQuery.put("name", "MongoDB");
 
-//			DBCursor cursorAll = collection.find();
+			// DBCursor cursorAll = collection.find();
 			DBCursor cursor = collection.find(searchQuery);
-			
-			
+
 			StringBuffer result = new StringBuffer();
 			while (cursor.hasNext()) {
 				result.append(cursor.next());
 			}
-			System.out.println(result.toString());
+			
 			Assert.assertTrue(result.toString().length() != 0);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -63,7 +62,7 @@ public class TestCompanyDAOImpl extends TestCase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void testAvailableDatabase() {
 		try {
 			Mongo mongo = new Mongo("localhost", 27017);
@@ -75,55 +74,13 @@ public class TestCompanyDAOImpl extends TestCase {
 			}
 
 			Assert.assertTrue(result.toString().length() != 0);
-			
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public void importDataByCompanyName(String companyName) {
-/*		 String url = "http://api.crunchbase.com/v/1/company/"
-		 + organizationName + ".js";
-*/
-		String url = "http://api.crunchbase.com/v/1/person/mark-zuckerberg.js";
 
-		URL resource = null;
-		try {
-			resource = new URL(url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		ObjectMapper mapper = new ObjectMapper();
-
-		mapper.getDeserializationConfig().withDateFormat(
-				new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy"));
-
-		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-
-		InputStream input = null;
-		try {
-			try {
-				input = resource.openStream();
-				Map<String, Object> map = (Map<String, Object>) mapper
-						.readValue(input, Map.class);
-
-				DBObject dbObject = (DBObject) JSON.parse(map.toString());
-
-			} finally {
-				if (input != null) {
-					input.close();
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void testFindAllCompanies(){
-		CompanyDAOImpl testDaoImpl = new CompanyDAOImpl();
-		testDaoImpl.findAllCompanies();
-	}
 }

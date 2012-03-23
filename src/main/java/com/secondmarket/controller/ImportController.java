@@ -60,6 +60,8 @@ public class ImportController {
 		logger.info("Returning main page");
 		status.setComplete();
 
+		//TODO Generate master list, using utility function
+		
 		dataImporter.storeAllCompaniess();
 
 		return "main";

@@ -1,11 +1,13 @@
 package com.secondmarket.utility;
 
+import org.springframework.web.util.HtmlUtils;
+
 import com.mongodb.util.JSON;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.secondmarket.model.Company;
 
-public class DataFilter {
+public final class DataFilter {
 
 	/**
 	 * Checks if the company has funding by comparing the value of
@@ -29,8 +31,10 @@ public class DataFilter {
 	public boolean checkCompanyEligibility(BasicDBObject basicDBObject) {
 		// Zero-funding companies are not considered
 		if (basicDBObject.containsField("total_money_raised")
-				&& "$0".equals(basicDBObject.get("total_money_raised")
-						.toString().trim())) {
+				&& basicDBObject.get("total_money_raised").toString().trim()
+						.length() == 2
+				&& basicDBObject.get("total_money_raised").toString().trim()
+						.endsWith("0")) {
 			return false;
 		}
 
@@ -66,84 +70,111 @@ public class DataFilter {
 	 * @param basicDBObject
 	 * @param company
 	 */
-	public void getAndSetCompanyBasicInfo(BasicDBObject basicDBObject,
+	public void retrieveAndSetCompanyBasicInfo(BasicDBObject basicDBObject,
 			Company company) {
 
 		// Set company name
 		if (basicDBObject.containsField("name")) {
-			company.setCompanyName(basicDBObject.get("name").toString());
+			company.setCompanyName(basicDBObject.get("name").toString().trim());
 
-			System.out.println("->" + basicDBObject.get("name").toString());
+			System.out.println("->"
+					+ basicDBObject.get("name").toString().trim());
 		} else {
-			company.setCompanyName("Not provided");
+			company.setCompanyName("unexisted");
+			System.out.println("Company name not found!" + "\n"
+					+ basicDBObject.toString() + "\n");
 		}
 
 		// Set location and country
 		if (basicDBObject.containsField("offices")) {
-			BasicDBList value = (BasicDBList) JSON.parse(basicDBObject.get(
-					"offices").toString());
+			BasicDBList value = (BasicDBList) JSON.parse(basicDBObject
+					.get("offices").toString().trim());
 			if (value.size() > 0) {
 				BasicDBObject valueObj = (BasicDBObject) value.get(0);
 
 				if (valueObj.containsField("state_code")) {
-					company.setLocation(valueObj.get("state_code").toString());
+					company.setLocation(valueObj.get("state_code").toString()
+							.trim());
 
 					// System.out
 					// .println("->" + valueObj.get("state_code").toString());
 				} else {
-					company.setLocation("N/A");
+					company.setLocation("unknown");
 				}
 
 				if (valueObj.containsField("country_code")) {
-					company.setCountry(valueObj.get("country_code").toString());
+					company.setCountry(valueObj.get("country_code").toString()
+							.trim());
 
 					// System.out.println("->"
 					// + valueObj.get("country_code").toString());
 				} else {
-					company.setCountry("N/A");
+					company.setCountry("unknown");
 				}
 			} else {
-				company.setLocation("N/A");
-				company.setCountry("N/A");
+				company.setLocation("unknown");
+				company.setCountry("unknown");
 			}
 
 		} else {
-			company.setLocation("No offices");
-			company.setCountry("No offices");
+			company.setLocation("no offices");
+			company.setCountry("no offices");
 		}
 
-		// Set funding
+		// Set funding and fundingAmount
 		if (basicDBObject.containsField("total_money_raised")) {
-			company.setFunding(basicDBObject.get("total_money_raised")
-					.toString());
+			company.setFunding(HtmlUtils.htmlEscapeHex(basicDBObject
+					.get("total_money_raised").toString().trim()));
+
+			String funding = basicDBObject.get("total_money_raised").toString()
+					.trim();
+			double fundingAmount;
+			if (funding.endsWith("k") || funding.endsWith("K")) {
+				fundingAmount = Double.parseDouble(funding.substring(1,
+						funding.length() - 1));
+			} else if (funding.endsWith("M") || funding.endsWith("m")) {
+				fundingAmount = Double.parseDouble(funding.substring(1,
+						funding.length() - 1)) * 1000.0;
+			} else if (funding.endsWith("B") || funding.endsWith("b")) {
+				fundingAmount = Double.parseDouble(funding.substring(1,
+						funding.length() - 1)) * 1000000.0;
+			} else if (funding.endsWith("T") || funding.endsWith("t")) {
+				fundingAmount = Double.parseDouble(funding.substring(1,
+						funding.length() - 1)) * 1000000000.0;
+			} else {
+				fundingAmount = Double.MAX_VALUE;
+			}
+			company.setFundingAmount(fundingAmount);
 
 			// System.out.println("->"
 			// + basicDBObject.get("total_money_raised").toString());
 		} else {
-			company.setFunding("Not provided");
+			company.setFunding("n/a");
 		}
 
 		// Set industry
 		if (basicDBObject.containsField("category_code")) {
-			company.setIndustry(basicDBObject.get("category_code").toString());
+			company.setIndustry(basicDBObject.get("category_code").toString()
+					.trim());
 
 			// System.out.println("->"
 			// + basicDBObject.get("category_code").toString());
 		} else {
-			company.setIndustry("Not provided");
+			company.setIndustry("undefined");
 		}
 		// System.out.println("======================");
 	}
 
-	public void getAndSetCompanyDetailedInfo(BasicDBObject basicDBObject,
+	public void retrieveAndSetCompanyDetailedInfo(BasicDBObject basicDBObject,
 			Company company) {
-		this.getAndSetCompanyBasicInfo(basicDBObject, company);
+		// Set basic information
+		this.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
 
-		// Set overview
+		// Set overview for detailed page
 		if (basicDBObject.containsField("overview")) {
-			company.setOverview(basicDBObject.get("overview").toString());
+			company.setOverview(basicDBObject.get("overview").toString().trim());
 		} else {
-			company.setIndustry("Not provided");
+			company.setOverview("undefined");
 		}
 	}
 }

@@ -43,8 +43,7 @@
 	<div align="center">
 		<table>
 			<tr>
-				<th><a href="javascript: history.go(-1)">Go back</a>&nbsp;&nbsp;</th>
-				<th><a href="/SecondMarket/mainpage.htm">Home</a></th>
+				<th><a href="javascript: self.close();">Close</a></th>
 			</tr>
 		</table>
 	</div>

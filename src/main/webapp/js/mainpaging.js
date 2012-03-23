@@ -16,7 +16,7 @@ function loadContent(pageIndex){
       			var tablebody = '';
       			$.each(jsonData, function(key, val){
       				tablebody += '<tr><td width="20%" style="text-align: center">' + 
-					'<a href=\"/SecondMarket/viewcompanyinfo.htm?companyName=' + val.name + '\">' + val.name + '</a>' +
+					'<a href=\"/SecondMarket/viewcompanyinfo.htm?companyName=' + val.name + '\" target=\"_blank\">' + val.name + '</a>' +
       				'</td><td width="20%" style="text-align: center">' + val.location + 
       				'</td><td width="20%" style="text-align: center">' + val.country + 
 					'</td><td width="20%" style="text-align: center">' + val.funding + 

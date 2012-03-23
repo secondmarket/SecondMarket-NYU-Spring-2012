@@ -47,7 +47,7 @@
 
 	<div id="searchform" align="center">
 		<form:form method="POST" commandName="company"
-			action="/SecondMarket/search.htm">
+			action="/SecondMarket/search.htm" target="_blank">
 			<table>
 				<tr>
 					<td><form:label path="companyName">Company Name</form:label></td>
@@ -64,7 +64,7 @@
 			<th><a href="#" onclick=loadSortedRecords("companyName")>Company</a></th>
 			<th><a href="#" onclick=loadSortedRecords("location")>Location</a></th>
 			<th><a href="#" onclick=loadSortedRecords("country")>Country</a></th>
-			<th><a href="#" onclick=loadSortedRecords("funding")>Funding</a></th>
+			<th><a href="#" onclick=loadSortedRecords("fundingAmount")>Funding</a></th>
 			<th><a href="#" onclick=loadSortedRecords("industry")>Industry</a></th>
 		</tr>
 	</table>

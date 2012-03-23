@@ -21,7 +21,7 @@
 
 	<div id="searchform" align="center">
 		<form:form method="POST" commandName="company"
-			action="/SecondMarket/search.htm">
+			action="/SecondMarket/search.htm" target="_blank">
 			<table>
 				<tr>
 					<td><form:label path="companyName">Company Name</form:label></td>
@@ -55,6 +55,6 @@
 	<input type="hidden" name="searchedpage_count" id="searchedpage_count" />
 
 	<div align="center">
-		<a href="/SecondMarket/mainpage.htm">Home</a>
+		<a href="javascript: self.close();">Close Search</a>
 	</div>
 </html>

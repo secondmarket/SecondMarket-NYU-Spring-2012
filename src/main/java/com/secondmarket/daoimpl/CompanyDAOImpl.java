@@ -53,7 +53,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	public void saveCompany(String companyName, Map<String, String> map) {
 		Company company = new Company();
 		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
-		filter.getAndSetCompanyBasicInfo(basicDBObject, company);
+		filter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
 		company.setData(map);
 		ds.save(company);
 	}
@@ -69,7 +69,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 
 			// Filter the data and update the company model
-			filter.getAndSetCompanyBasicInfo(basicDBObject, company);
+			filter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
 
 			companyList.add(company);
 		}
@@ -83,7 +83,9 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 		Map<String, String> map = company.getData();
 		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
-		filter.getAndSetCompanyDetailedInfo(basicDBObject, company);
+		// TODO get another map by calling getWikiData(), then pass 2
+		// basicDBObject in the function below
+		filter.retrieveAndSetCompanyDetailedInfo(basicDBObject, company);
 		return company;
 	}
 
@@ -97,7 +99,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			Company company = it.next();
 			Map<String, String> map = company.getData();
 			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
-			filter.getAndSetCompanyDetailedInfo(basicDBObject, company);
+			filter.retrieveAndSetCompanyDetailedInfo(basicDBObject, company);
 		}
 		return companyList;
 	}
@@ -123,7 +125,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 
 			// Filter the data and update the company model
-			filter.getAndSetCompanyBasicInfo(basicDBObject, company);
+			filter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
 			paginatedList.add(company);
 		}
 
@@ -160,7 +162,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 
 			// Filter the data and update the company model
-			filter.getAndSetCompanyBasicInfo(basicDBObject, company);
+			filter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
 			paginatedList.add(company);
 		}
 

@@ -17,16 +17,14 @@ public class Company {
 
 	private Map<String, String> data;
 
-//	@Transient
 	private String location;
 
-//	@Transient
 	private String country;
 
-//	@Transient
 	private String funding;
 
-//	@Transient
+	private double fundingAmount;
+
 	private String industry;
 
 	@Transient
@@ -82,6 +80,14 @@ public class Company {
 
 	public void setFunding(String funding) {
 		this.funding = funding;
+	}
+
+	public double getFundingAmount() {
+		return fundingAmount;
+	}
+
+	public void setFundingAmount(double fundingAmount) {
+		this.fundingAmount = fundingAmount;
 	}
 
 	public String getIndustry() {
