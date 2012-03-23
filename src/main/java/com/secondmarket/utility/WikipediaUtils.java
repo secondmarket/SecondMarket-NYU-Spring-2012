@@ -1,4 +1,4 @@
-package com.secondmarket.importerImpl;
+package com.secondmarket.utility;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,12 +24,14 @@ import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.importer.Importer;
 import com.secondmarket.model.Company;
-import com.secondmarket.utility.DataFilter;
 
-public class WikipediaImporter{
+public class WikipediaUtils{
 
-	private CompanyDAO orgDao;
 	private Gson gson;
+
+	public WikipediaUtils() {
+		gson = new Gson();
+	}
 
 	/**
 	 * Calls the Wikipedia API and returns the data in a map
@@ -143,38 +145,53 @@ public class WikipediaImporter{
 		}
 		return tmpList;
 	}
+	
+	public String getCompanyTitle(List<String> titleList){
+		if(titleList.size() == 1)
+			return titleList.get(0);
+		for(String title: titleList){
+			System.out.println(title);
+	    	String pageUrl = "http://en.wikipedia.org/w/api.php?action=query&titles=" + title + "&prop=revisions&rvprop=content&format=json";
+	    	Map<String, String> tmp = DataMapper.getDataInMapFromAPI(pageUrl);
+	    	if(tmp.containsKey("query")){
+	    		Object str = tmp.get("query");
+	    		if(str instanceof Map){
+	    			
+	    			String str1 = gson.toJson(str);
+	    			if(str1.contains("{{Infobox")){
+	    				System.out.println("!!!!!!!!!!!!!");
+	    				return title;
+		    			
+		    		}
+	    		}
+	    	}
+		}
+		return null;
+	}
+	
+	public String findCompanyUrl(String name){
+		String url = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + name + "&srprop=timestamp&format=json";
+		Map<String, String> result = DataMapper.getDataInMapFromAPI(url);
+	    List<String> titleList = getPossibleTitles(result);
+	    
+	    String title = getCompanyTitle(titleList);
+	    return title;
+	}
 
 	/**
 	 * @param args
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
+		
+		WikipediaUtils dataImporter = new WikipediaUtils();
 		String url = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=amazon&srprop=timestamp&format=json";
 		System.out.println(getDataMapFromWikipedia(url));
-	    for(String str: getPossibleTitles(getDataMapFromWikipedia(url))){
-	    	System.out.println(str);
-	    }
+	    List<String> titleList = getPossibleTitles(getDataMapFromWikipedia(url));
 	    
-	    String url2 = "http://en.wikipedia.org/w/api.php?action=query&titles=SecondMarket&prop=revisions&rvprop=content&format=json";
-	    Map<String, String> tmp = getDataMapFromWikipedia(url2);
-	 //   System.out.println(tmp);
-	    Iterator<String> it = tmp.keySet().iterator();
-	    while(it.hasNext()){
-	    	System.out.println(it.next());
-	    	Object entry = tmp.get("query");
-	    	if(entry instanceof Map){
-	    		Map newEntry = (Map) entry;
-	    		if(newEntry.containsKey("infobox")){
-	    			System.out.print("YES");
-	    		}
-	    		Object pages = newEntry.get("pages");
-	    		Map newPages = (Map) pages;
-	    		
-	    //		Object a1 = newEntry.get("27749988");
-	    //		Map a2 = (Map) a1;
-	    		
-	    	}
+	    String title = dataImporter.getCompanyTitle(titleList);
+	    if(title != null){
+	    	System.out.println(title);
 	    }
-	    
 	}
 }
