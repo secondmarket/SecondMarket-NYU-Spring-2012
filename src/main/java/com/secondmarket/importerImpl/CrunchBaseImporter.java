@@ -12,80 +12,56 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.util.JSON;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.importer.Importer;
 import com.secondmarket.model.Company;
-import com.secondmarket.utility.DataFilter;
 import com.secondmarket.utility.DataMapper;
 
 public final class CrunchBaseImporter implements Importer {
 
-	private CompanyDAO orgDao;
+	private CompanyDAO companyDao;
 	private Gson gson;
 
 	public CrunchBaseImporter() {
-		orgDao = new CompanyDAOImpl();
+		companyDao = new CompanyDAOImpl();
 		gson = new Gson();
 	}
 
-	public void storeAllCompaniess() {
-		String url = "http://api.crunchbase.com/v/1/companies.js";
-		List<Object> allCompaniesList = DataMapper
-				.getDataInListFromCrunchBase(url);
-
-		List<Object> list = allCompaniesList.subList(0, 300);
-
+	public void storeAllCompanies() {
+		List<Object> list = companyDao.getMasterList();
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> map = null;
 		String companyUrl = null;
-		boolean isEligible;
 
 		for (int i = 0; i < list.size(); i++) {
 			nameAndPermalinkMap = (Map<String, String>) list.get(i);
-			if (nameAndPermalinkMap.containsKey("name")
-					&& nameAndPermalinkMap.containsKey("permalink")) {
-				companyUrl = "http://api.crunchbase.com/v/1/company/"
-						+ nameAndPermalinkMap.get("permalink") + ".js";
-				map = DataMapper.getDataInMapFromCrunchBase(companyUrl);
-
-				BasicDBObject basicDBObject = (BasicDBObject) JSON.parse(gson
-						.toJson(map));
-
-				isEligible = DataFilter.checkCompanyEligibility(basicDBObject);
-				if (isEligible) {
-					orgDao.saveCompany(nameAndPermalinkMap.get("name"), map);
-				} else {
-					continue;
-				}
-
-			} else {
-				System.out.println("No permalink found!");
-			}
+			companyUrl = "http://api.crunchbase.com/v/1/company/"
+					+ nameAndPermalinkMap.get("permalink") + ".js";
+			map = DataMapper.getDataInMapFromCrunchBase(companyUrl);
+			companyDao.saveCompany(nameAndPermalinkMap.get("name"), map);
 		}
-
 	}
 
 	public List<Company> retrieveAllCompanies() {
-		List<Company> list = orgDao.findAllCompanies();
+		List<Company> list = companyDao.findAllCompanies();
 		return list;
 	}
 
 	public Company retrieveCompanyByName(String companyName) {
-		Company company = orgDao.findCompanyByName(companyName);
+		Company company = companyDao.findCompanyByName(companyName);
 		return company;
 	}
 
 	public List<Company> retrieveCompaniesByImpreciseName(String companyName) {
-		List<Company> list = orgDao.findCompaniesByImpreciseName(companyName);
+		List<Company> list = companyDao
+				.findCompaniesByImpreciseName(companyName);
 		return list;
 	}
 
 	public List<Company> retrieveCompaniesInPage(int pageIndex,
 			int numberOfElementsPerPage) {
-		List<Company> paginatedList = orgDao.findCompaniesInPage(pageIndex,
+		List<Company> paginatedList = companyDao.findCompaniesInPage(pageIndex,
 				numberOfElementsPerPage);
 		return paginatedList;
 	}
@@ -124,14 +100,14 @@ public final class CrunchBaseImporter implements Importer {
 	}
 
 	public String getExistingPageAmount(int companiesPerPage) {
-		int numberOfPages = orgDao.getPageAmount(companiesPerPage);
+		int numberOfPages = companyDao.getPageAmount(companiesPerPage);
 		return String.valueOf(numberOfPages);
 	}
 
 	public List<Company> retrieveSortedCompaniesInPage(int pageIndex,
 			int numberOfElementsPerPage, String sortByField,
 			boolean isDescending) {
-		List<Company> paginatedList = orgDao.findSortedCompaniesInPage(
+		List<Company> paginatedList = companyDao.findSortedCompaniesInPage(
 				pageIndex, numberOfElementsPerPage, sortByField, isDescending);
 		return paginatedList;
 	}

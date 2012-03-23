@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
@@ -45,6 +46,22 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		morphia = new Morphia();
 		morphia.map(Company.class);
 		ds = morphia.createDatastore(mongo, "secondmarket");
+	}
+
+	public void saveMasterlist(List<Object> masterList) {
+		// Using different collection
+		DBCollection coll = db.getCollection("companies");
+		coll.drop();
+		BasicDBObject doc = new BasicDBObject();
+		doc.put("masterlist", masterList);
+		coll.insert(doc);
+	}
+
+	public List<Object> getMasterList() {
+		DBCollection coll = db.getCollection("companies");
+		DBObject companies = coll.findOne();
+		List<Object> masterList = (List<Object>) companies.get("masterlist");
+		return masterList;
 	}
 
 	public void saveCompany(String companyName, Map<String, String> map) {

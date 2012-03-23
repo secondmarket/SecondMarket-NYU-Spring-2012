@@ -18,12 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.secondmarket.importer.Importer;
 import com.secondmarket.importerImpl.CrunchBaseImporter;
+import com.secondmarket.importerImpl.MasterListGenerator;
 import com.secondmarket.model.Company;
 
 @Controller
 public class ImportController {
 	/** Logger for this class and subclasses */
 	protected final Log logger = LogFactory.getLog(getClass());
+	private MasterListGenerator generator = new MasterListGenerator();
 	private Importer dataImporter = new CrunchBaseImporter();
 
 	/**
@@ -43,9 +45,8 @@ public class ImportController {
 	}
 
 	/**
-	 * Handles the form submission, if the validation fails, returns the form
-	 * page with error message; if the validation passes, returns the new page
-	 * and display the imported data
+	 * Handles the import action, first generates the master company list and
+	 * persist in database, then import CrunchBase company data
 	 * 
 	 * @param company
 	 * @param result
@@ -60,9 +61,11 @@ public class ImportController {
 		logger.info("Returning main page");
 		status.setComplete();
 
-		//TODO Generate master list, using utility function
-		
-		dataImporter.storeAllCompaniess();
+		// First store the master list from CruchBase
+		generator.storeMasterList();
+
+		// Then import CrunchBase data
+		dataImporter.storeAllCompanies();
 
 		return "main";
 

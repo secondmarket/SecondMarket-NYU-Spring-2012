@@ -22,4 +22,8 @@ public interface CompanyDAO {
 			boolean isDescending);
 
 	int getPageAmount(int companiesPerPage);
+
+	void saveMasterlist(List<Object> masterList);
+
+	List<Object> getMasterList();
 }

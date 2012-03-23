@@ -6,7 +6,7 @@ import com.secondmarket.model.Company;
 
 public interface Importer {
 
-	void storeAllCompaniess();
+	void storeAllCompanies();
 
 	List<Company> retrieveAllCompanies();
 

@@ -9,7 +9,7 @@ public class TestCrunchBaseImporter extends TestCase {
 
 	public void testGetAllCompaniesData() {
 		Importer dataImporter = new CrunchBaseImporter();
-		dataImporter.storeAllCompaniess();
+		dataImporter.storeAllCompanies();
 		Assert.assertTrue(true);
 	}
 
