@@ -30,7 +30,7 @@ public final class DataMapper {
 	 * @param url
 	 * @return Map<String, Object> map
 	 */
-	public static Map<String, String> getDataInMapFromCrunchBase(String url) {
+	public static Map<String, String> getDataInMapFromAPI(String url) {
 		URL resource = null;
 		try {
 			resource = new URL(url);
@@ -78,7 +78,7 @@ public final class DataMapper {
 	 * @param url
 	 * @return List<Object> list
 	 */
-	public static List<Object> getDataInListFromCrunchBase(String url) {
+	public static List<Object> getDataInListFromAPI(String url) {
 		URL resource = null;
 		try {
 			resource = new URL(url);

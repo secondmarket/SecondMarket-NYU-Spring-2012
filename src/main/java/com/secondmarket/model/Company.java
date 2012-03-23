@@ -15,7 +15,7 @@ public class Company {
 
 	private String companyName;
 
-	private Map<String, String> data;
+	private Map<String, String> crunchbaseDoc;
 
 	private String location;
 
@@ -50,12 +50,12 @@ public class Company {
 		this.companyName = companyName;
 	}
 
-	public Map<String, String> getData() {
-		return data;
+	public Map<String, String> getCrunchbaseDoc() {
+		return crunchbaseDoc;
 	}
 
-	public void setData(Map<String, String> data) {
-		this.data = data;
+	public void setCrunchbaseDoc(Map<String, String> crunchbaseDoc) {
+		this.crunchbaseDoc = crunchbaseDoc;
 	}
 
 	public String getLocation() {

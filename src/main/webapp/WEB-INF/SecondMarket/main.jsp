@@ -73,10 +73,10 @@
 		width="70%" align="center"
 		style="background-color: #E6E6E6; border: 1px dashed black;">
 
-	</table>
+	</table><br>
 
 
-	<div id="content"></div>
+	<div id="content" align="center"></div>
 	<input type="hidden" name="page_count" id="page_count" />
 
 	<div align="center">

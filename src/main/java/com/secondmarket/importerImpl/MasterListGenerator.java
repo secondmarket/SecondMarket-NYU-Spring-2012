@@ -1,7 +1,6 @@
 package com.secondmarket.importerImpl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public final class MasterListGenerator {
 	public void storeMasterList() {
 
 		List<Object> allCompaniesList = DataMapper
-				.getDataInListFromCrunchBase(url_CrunchBaseCompanies);
+				.getDataInListFromAPI(url_CrunchBaseCompanies);
 
 		List<Object> list = allCompaniesList.subList(0, 300);
 
@@ -45,7 +44,7 @@ public final class MasterListGenerator {
 				companyUrl = "http://api.crunchbase.com/v/1/company/"
 						+ nameAndPermalinkMap.get("permalink") + ".js";
 				tempResponseJSONMap = DataMapper
-						.getDataInMapFromCrunchBase(companyUrl);
+						.getDataInMapFromAPI(companyUrl);
 
 				BasicDBObject basicDBObject = (BasicDBObject) JSON.parse(gson
 						.toJson(tempResponseJSONMap));

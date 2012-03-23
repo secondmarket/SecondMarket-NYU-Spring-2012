@@ -51,7 +51,7 @@
 
 	</table>
 
-	<div id="content"></div>
+	<div id="content" align="center"></div>
 	<input type="hidden" name="searchedpage_count" id="searchedpage_count" />
 
 	<div align="center">

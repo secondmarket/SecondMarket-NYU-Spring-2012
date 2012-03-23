@@ -68,7 +68,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Company company = new Company();
 		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 		DataFilter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
-		company.setData(map);
+		company.setCrunchbaseDoc(map);
 		ds.save(company);
 	}
 
@@ -79,7 +79,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Iterator<Company> it = rawDataList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
-			Map<String, String> map = company.getData();
+			Map<String, String> map = company.getCrunchbaseDoc();
 			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 
 			// Filter the data and update the company model
@@ -95,7 +95,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Company company = ds.find(Company.class).field("companyName")
 				.equal(companyName).get();
 
-		Map<String, String> map = company.getData();
+		Map<String, String> map = company.getCrunchbaseDoc();
 		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 		// TODO get another map by calling getWikiData(), then pass 2
 		// basicDBObject in the function below
@@ -111,7 +111,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Iterator<Company> it = companyList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
-			Map<String, String> map = company.getData();
+			Map<String, String> map = company.getCrunchbaseDoc();
 			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 			DataFilter
 					.retrieveAndSetCompanyDetailedInfo(basicDBObject, company);
@@ -136,7 +136,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Iterator<Company> it = tempList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
-			Map<String, String> map = company.getData();
+			Map<String, String> map = company.getCrunchbaseDoc();
 			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 
 			// Filter the data and update the company model
@@ -173,7 +173,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Iterator<Company> it = tempList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
-			Map<String, String> map = company.getData();
+			Map<String, String> map = company.getCrunchbaseDoc();
 			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 
 			// Filter the data and update the company model

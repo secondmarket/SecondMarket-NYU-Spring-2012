@@ -38,7 +38,7 @@ public final class CrunchBaseImporter implements Importer {
 			nameAndPermalinkMap = (Map<String, String>) list.get(i);
 			companyUrl = "http://api.crunchbase.com/v/1/company/"
 					+ nameAndPermalinkMap.get("permalink") + ".js";
-			map = DataMapper.getDataInMapFromCrunchBase(companyUrl);
+			map = DataMapper.getDataInMapFromAPI(companyUrl);
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"), map);
 		}
 	}
