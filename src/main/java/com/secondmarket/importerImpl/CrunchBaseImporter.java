@@ -25,19 +25,16 @@ public final class CrunchBaseImporter implements Importer {
 
 	private CompanyDAO orgDao;
 	private Gson gson;
-	private DataFilter filter;// Filter data
-	private DataMapper mapper;
 
 	public CrunchBaseImporter() {
 		orgDao = new CompanyDAOImpl();
 		gson = new Gson();
-		filter = new DataFilter();
-		mapper = new DataMapper();
 	}
 
 	public void storeAllCompaniess() {
 		String url = "http://api.crunchbase.com/v/1/companies.js";
-		List<Object> allCompaniesList = mapper.getDataInListFromCrunchBase(url);
+		List<Object> allCompaniesList = DataMapper
+				.getDataInListFromCrunchBase(url);
 
 		List<Object> list = allCompaniesList.subList(0, 300);
 
@@ -52,12 +49,12 @@ public final class CrunchBaseImporter implements Importer {
 					&& nameAndPermalinkMap.containsKey("permalink")) {
 				companyUrl = "http://api.crunchbase.com/v/1/company/"
 						+ nameAndPermalinkMap.get("permalink") + ".js";
-				map = mapper.getDataInMapFromCrunchBase(companyUrl);
+				map = DataMapper.getDataInMapFromCrunchBase(companyUrl);
 
 				BasicDBObject basicDBObject = (BasicDBObject) JSON.parse(gson
 						.toJson(map));
 
-				isEligible = filter.checkCompanyEligibility(basicDBObject);
+				isEligible = DataFilter.checkCompanyEligibility(basicDBObject);
 				if (isEligible) {
 					orgDao.saveCompany(nameAndPermalinkMap.get("name"), map);
 				} else {

@@ -18,10 +18,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.google.gson.Gson;
 
 public final class DataMapper {
-	private Gson gson;
+	private static Gson gson = new Gson();
 
-	public DataMapper() {
-		gson = new Gson();
+	// private constructor to avoid unnecessary instantiation
+	private DataMapper() {
 	}
 
 	/**
@@ -30,7 +30,7 @@ public final class DataMapper {
 	 * @param url
 	 * @return Map<String, Object> map
 	 */
-	public Map<String, String> getDataInMapFromCrunchBase(String url) {
+	public static Map<String, String> getDataInMapFromCrunchBase(String url) {
 		URL resource = null;
 		try {
 			resource = new URL(url);
@@ -78,7 +78,7 @@ public final class DataMapper {
 	 * @param url
 	 * @return List<Object> list
 	 */
-	public List<Object> getDataInListFromCrunchBase(String url) {
+	public static List<Object> getDataInListFromCrunchBase(String url) {
 		URL resource = null;
 		try {
 			resource = new URL(url);

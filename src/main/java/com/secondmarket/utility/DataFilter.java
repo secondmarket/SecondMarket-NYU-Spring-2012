@@ -9,6 +9,10 @@ import com.secondmarket.model.Company;
 
 public final class DataFilter {
 
+	// private constructor to avoid unnecessary instantiation
+	private DataFilter() {
+	}
+
 	/**
 	 * Checks if the company has funding by comparing the value of
 	 * "total_money_raised" field, return false if the value is "$0";
@@ -28,7 +32,7 @@ public final class DataFilter {
 	 * @param basicDBObject
 	 * @return boolean
 	 */
-	public boolean checkCompanyEligibility(BasicDBObject basicDBObject) {
+	public static boolean checkCompanyEligibility(BasicDBObject basicDBObject) {
 		// Zero-funding companies are not considered
 		if (basicDBObject.containsField("total_money_raised")
 				&& basicDBObject.get("total_money_raised").toString().trim()
@@ -70,8 +74,8 @@ public final class DataFilter {
 	 * @param basicDBObject
 	 * @param company
 	 */
-	public void retrieveAndSetCompanyBasicInfo(BasicDBObject basicDBObject,
-			Company company) {
+	public static void retrieveAndSetCompanyBasicInfo(
+			BasicDBObject basicDBObject, Company company) {
 
 		// Set company name
 		if (basicDBObject.containsField("name")) {
@@ -165,10 +169,10 @@ public final class DataFilter {
 		// System.out.println("======================");
 	}
 
-	public void retrieveAndSetCompanyDetailedInfo(BasicDBObject basicDBObject,
-			Company company) {
+	public static void retrieveAndSetCompanyDetailedInfo(
+			BasicDBObject basicDBObject, Company company) {
 		// Set basic information
-		this.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
+		retrieveAndSetCompanyBasicInfo(basicDBObject, company);
 
 		// Set overview for detailed page
 		if (basicDBObject.containsField("overview")) {
