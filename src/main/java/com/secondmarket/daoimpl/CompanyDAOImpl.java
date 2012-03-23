@@ -24,10 +24,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	private DB db;
 	private Mongo mongo;
 	private DBCollection dbCollection;
-
 	private BasicDBObject basicDBObject;
 	private Gson gson = new Gson();// Using Gson to format the JSON object
-
 	private Datastore ds;
 	private Morphia morphia;
 
