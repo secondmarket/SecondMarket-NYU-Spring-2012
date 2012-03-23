@@ -16,6 +16,8 @@ public class Company {
 	private String companyName;
 
 	private Map<String, String> crunchbaseDoc;
+	
+	private Map<String, String> wikipediaDoc;
 
 	private String location;
 

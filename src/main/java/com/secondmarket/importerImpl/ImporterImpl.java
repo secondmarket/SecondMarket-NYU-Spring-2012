@@ -18,12 +18,12 @@ import com.secondmarket.importer.Importer;
 import com.secondmarket.model.Company;
 import com.secondmarket.utility.DataMapper;
 
-public final class CrunchBaseImporter implements Importer {
+public final class ImporterImpl implements Importer {
 
 	private CompanyDAO companyDao;
 	private Gson gson;
 
-	public CrunchBaseImporter() {
+	public ImporterImpl() {
 		companyDao = new CompanyDAOImpl();
 		gson = new Gson();
 	}
@@ -31,15 +31,23 @@ public final class CrunchBaseImporter implements Importer {
 	public void storeAllCompanies() {
 		List<Object> list = companyDao.getMasterList();
 		Map<String, String> nameAndPermalinkMap = null;
-		Map<String, String> map = null;
-		String companyUrl = null;
+		Map<String, String> crunchbaseDoc = null;
+		Map<String, String> wikipediaDoc = null;
+		String url_CrunchBase = null;
+		String url_Wikipedia = null;
+		String companyName = null;
 
 		for (int i = 0; i < list.size(); i++) {
 			nameAndPermalinkMap = (Map<String, String>) list.get(i);
-			companyUrl = "http://api.crunchbase.com/v/1/company/"
-					+ nameAndPermalinkMap.get("permalink") + ".js";
-			map = DataMapper.getDataInMapFromAPI(companyUrl);
-			companyDao.saveCompany(nameAndPermalinkMap.get("name"), map);
+			companyName = nameAndPermalinkMap.get("permalink");
+			url_CrunchBase = "http://api.crunchbase.com/v/1/company/"
+					+ companyName + ".js";
+			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
+			
+			
+			
+			//TODO pass one more map for wikipedia doc
+			companyDao.saveCompany(nameAndPermalinkMap.get("name"), crunchbaseDoc);
 		}
 	}
 
