@@ -55,6 +55,14 @@ public class Company {
 	public Map<String, String> getCrunchbaseDoc() {
 		return crunchbaseDoc;
 	}
+	
+	public Map<String, String> getWikipedia(){
+		return wikipediaDoc;
+	}
+	
+	public void setWikipediaDoc(Map<String, String> wikipediaDoc){
+		this.wikipediaDoc = wikipediaDoc;
+	}
 
 	public void setCrunchbaseDoc(Map<String, String> crunchbaseDoc) {
 		this.crunchbaseDoc = crunchbaseDoc;
