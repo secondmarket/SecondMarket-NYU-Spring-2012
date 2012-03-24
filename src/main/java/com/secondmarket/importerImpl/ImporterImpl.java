@@ -54,6 +54,12 @@ public final class ImporterImpl implements Importer {
 			if(title == null){
 				count++;
 			}
+			else{
+				url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
+						+ title + "&prop=revisions&rvprop=content&format=json";
+
+				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
+			}
 			
 			//TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"), crunchbaseDoc);
