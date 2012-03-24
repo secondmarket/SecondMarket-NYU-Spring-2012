@@ -1,31 +1,13 @@
 package com.secondmarket.utility;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.jetty.util.URIUtil;
 
 import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.util.JSON;
-import com.secondmarket.biz.Importer;
-import com.secondmarket.dao.CompanyDAO;
-import com.secondmarket.daoimpl.CompanyDAOImpl;
-import com.secondmarket.model.Company;
 
 public class WikipediaUtils {
 
@@ -126,7 +108,8 @@ public class WikipediaUtils {
 			System.out.println("NULL");
 		}
 
-		System.out.print(dataImporter.percentEncodeReservedCharacters("@main page!$"));
+		System.out.print(dataImporter
+				.percentEncodeReservedCharacters("@main page!$"));
 		String pageUrl = "http://en.wikipedia.org/w/api.php?action=query&titles=amazon@&prop=revisions&rvprop=content&format=json";
 
 		Map<String, String> tmpMap = DataMapper.getDataInMapFromAPI(pageUrl);
