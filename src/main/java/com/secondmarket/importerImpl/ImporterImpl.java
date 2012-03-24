@@ -17,11 +17,14 @@ import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.importer.Importer;
 import com.secondmarket.model.Company;
 import com.secondmarket.utility.DataMapper;
+import com.secondmarket.utility.WikipediaUtils;
 
 public final class ImporterImpl implements Importer {
 
 	private CompanyDAO companyDao;
 	private Gson gson;
+	public WikipediaUtils wikiUtils = new WikipediaUtils();
+
 
 	public ImporterImpl() {
 		companyDao = new CompanyDAOImpl();
@@ -36,6 +39,9 @@ public final class ImporterImpl implements Importer {
 		String url_CrunchBase = null;
 		String url_Wikipedia = null;
 		String companyName = null;
+		
+		String title = null;
+		int count = 0;
 
 		for (int i = 0; i < list.size(); i++) {
 			nameAndPermalinkMap = (Map<String, String>) list.get(i);
@@ -44,11 +50,15 @@ public final class ImporterImpl implements Importer {
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
 			
-			
+			title = wikiUtils.findCompanyUrl(companyName);
+			if(title == null){
+				count++;
+			}
 			
 			//TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"), crunchbaseDoc);
 		}
+		System.out.println(count);
 	}
 
 	public List<Company> retrieveAllCompanies() {
