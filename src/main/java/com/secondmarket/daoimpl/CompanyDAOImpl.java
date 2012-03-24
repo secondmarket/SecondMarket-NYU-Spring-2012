@@ -19,7 +19,7 @@ import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.model.Company;
-import com.secondmarket.utility.DataFilter;
+import com.secondmarket.utility.DataAggregator;
 
 public final class CompanyDAOImpl implements CompanyDAO {
 	private DB db;
@@ -28,6 +28,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	private Gson gson = new Gson();// Using Gson to format the JSON object
 	private Datastore ds;
 	private Morphia morphia;
+
+	private DataAggregator aggregator;
 
 	public CompanyDAOImpl() {
 		try {
@@ -45,6 +47,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		morphia = new Morphia();
 		morphia.map(Company.class);
 		ds = morphia.createDatastore(mongo, "secondmarket");
+		aggregator = new DataAggregator();
 	}
 
 	public void saveMasterlist(List<Object> masterList) {
@@ -72,7 +75,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 				.toJson(wikipediaDoc));
 		// TODO change the filter structure for wikipedia, then add one
 		// parameter for the function below
-		DataFilter.retrieveAndSetCompanyBasicInfo(cbBasicDBObject, company);
+		aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject, company);
 		company.setCrunchbaseDoc(crunchbaseDoc);
 		company.setWikipediaDoc(wikipediaDoc);
 		ds.save(company);
@@ -90,7 +93,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			cbBasicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 
 			// Filter the data and update the company model
-			DataFilter.retrieveAndSetCompanyBasicInfo(cbBasicDBObject, company);
+			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject, company);
 
 			companyList.add(company);
 		}
@@ -107,7 +110,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 				.toJson(map));
 		// TODO get another map by calling getWikiData(), then pass 2
 		// basicDBObject in the function below
-		DataFilter.retrieveAndSetCompanyDetailedInfo(cbBasicDBObject, company);
+		aggregator.filterAndSetCompanyDetailedInfo(cbBasicDBObject, company);
 		return company;
 	}
 
@@ -122,8 +125,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			Map<String, String> map = company.getCrunchbaseDoc();
 			BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
 					.toJson(map));
-			DataFilter.retrieveAndSetCompanyDetailedInfo(cbBasicDBObject,
-					company);
+			aggregator
+					.filterAndSetCompanyDetailedInfo(cbBasicDBObject, company);
 		}
 		return companyList;
 	}
@@ -150,7 +153,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 					.toJson(map));
 
 			// Filter the data and update the company model
-			DataFilter.retrieveAndSetCompanyBasicInfo(cbBasicDBObject, company);
+			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject, company);
 			paginatedList.add(company);
 		}
 
@@ -189,7 +192,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 					.toJson(map));
 
 			// Filter the data and update the company model
-			DataFilter.retrieveAndSetCompanyBasicInfo(cbBasicDBObject, company);
+			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject, company);
 			paginatedList.add(company);
 		}
 

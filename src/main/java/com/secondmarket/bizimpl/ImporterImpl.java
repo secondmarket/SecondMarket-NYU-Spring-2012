@@ -53,7 +53,7 @@ public final class ImporterImpl implements Importer {
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
 			
-			title = wikiUtils.findCompanyUrl(companyName);
+			/*title = wikiUtils.findCompanyUrl(companyName);
 			if(title == null){
 				count++;
 			}
@@ -62,7 +62,7 @@ public final class ImporterImpl implements Importer {
 						+ title + "&prop=revisions&rvprop=content&format=json";
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
-			}
+			}*/
 			
 			//Can not merge?
 			//TODO pass one more map for wikipedia doc

@@ -31,11 +31,21 @@ public class DataAggregator {
 		country = cbFilter.getCounrty(basicDBObject);
 		industry = cbFilter.getIndustry(basicDBObject);
 
+		company.setCompanyName(companyName);
+		System.out.println(companyName);
+		company.setFunding(funding);
+		company.setFundingAmount(fundingAmount);
+		company.setLocation(location);
+		company.setCountry(country);
+		company.setIndustry(industry);
+
 	}
 
 	public void filterAndSetCompanyDetailedInfo(BasicDBObject basicDBObject,
 			Company company) {
+		this.filterAndSetCompanyBasicInfo(basicDBObject, company);
 		String overview;
-
+		overview = cbFilter.getOverview(basicDBObject);
+		company.setOverview(overview);
 	}
 }

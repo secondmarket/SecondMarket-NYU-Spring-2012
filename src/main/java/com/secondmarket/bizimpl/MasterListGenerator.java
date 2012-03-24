@@ -13,19 +13,21 @@ import com.mongodb.util.JSON;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.model.Company;
-import com.secondmarket.utility.DataFilter;
+import com.secondmarket.utility.CrunchBaseUtils;
 import com.secondmarket.utility.DataMapper;
 
 public final class MasterListGenerator {
 
 	private final String url_CrunchBaseCompanies = "http://api.crunchbase.com/v/1/companies.js";
 	private CompanyDAO orgDao;
+	private CrunchBaseUtils crunchbaseUtils;
 	private Gson gson;
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	public MasterListGenerator() {
 		orgDao = new CompanyDAOImpl();
+		crunchbaseUtils = new CrunchBaseUtils();
 		gson = new Gson();
 	}
 
@@ -34,7 +36,7 @@ public final class MasterListGenerator {
 		List<Object> allCompaniesList = DataMapper
 				.getDataInListFromAPI(url_CrunchBaseCompanies);
 
-		// List<Object> list = allCompaniesList.subList(0, 300);
+		List<Object> list = allCompaniesList.subList(0, 300);
 
 		List<Object> eligibleCompanyList = new ArrayList<Object>();
 		Map<String, String> nameAndPermalinkMap = null;
@@ -42,8 +44,8 @@ public final class MasterListGenerator {
 		String companyUrl = null;
 		boolean isEligible;
 
-		for (int i = 0; i < allCompaniesList.size(); i++) {
-			nameAndPermalinkMap = (Map<String, String>) allCompaniesList.get(i);
+		for (int i = 0; i < list.size(); i++) {
+			nameAndPermalinkMap = (Map<String, String>) list.get(i);
 			if (nameAndPermalinkMap.containsKey("name")
 					&& nameAndPermalinkMap.containsKey("permalink")) {
 				companyUrl = "http://api.crunchbase.com/v/1/company/"
@@ -55,13 +57,13 @@ public final class MasterListGenerator {
 					BasicDBObject basicDBObject = (BasicDBObject) JSON
 							.parse(gson.toJson(tempResponseJSONMap));
 
-					isEligible = DataFilter
+					isEligible = crunchbaseUtils
 							.checkCompanyEligibility(basicDBObject);
 					if (isEligible) {
 						// logger.info(nameAndPermalinkMap.get("permalink"));
 						System.out
 								.println(nameAndPermalinkMap.get("permalink"));
-						eligibleCompanyList.add(allCompaniesList.get(i));
+						eligibleCompanyList.add(list.get(i));
 					} else {
 						continue;
 					}
