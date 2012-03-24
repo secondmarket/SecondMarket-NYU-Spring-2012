@@ -1,4 +1,4 @@
-package com.secondmarket.importerImpl;
+package com.secondmarket.bizimpl;
 
 import java.util.ArrayList;
 import java.util.List;

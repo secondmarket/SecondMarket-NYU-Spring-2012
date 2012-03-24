@@ -22,9 +22,9 @@ import org.eclipse.jetty.util.URIUtil;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
+import com.secondmarket.biz.Importer;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.daoimpl.CompanyDAOImpl;
-import com.secondmarket.importer.Importer;
 import com.secondmarket.model.Company;
 
 public class WikipediaUtils {

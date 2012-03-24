@@ -1,4 +1,4 @@
-package com.secondmarket.importerImpl;
+package com.secondmarket.bizimpl;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,9 +12,9 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.google.gson.Gson;
+import com.secondmarket.biz.Importer;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.daoimpl.CompanyDAOImpl;
-import com.secondmarket.importer.Importer;
 import com.secondmarket.model.Company;
 import com.secondmarket.utility.DataMapper;
 import com.secondmarket.utility.WikipediaUtils;
@@ -32,7 +32,10 @@ public final class ImporterImpl implements Importer {
 	}
 
 	public void storeAllCompanies() {
-		List<Object> list = companyDao.getMasterList();
+		List<Object> masterList = companyDao.getMasterList();
+		
+		List<Object> list = masterList.subList(0, 111);
+		
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> crunchbaseDoc = null;
 		Map<String, String> wikipediaDoc = null;

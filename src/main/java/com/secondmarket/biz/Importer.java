@@ -1,4 +1,4 @@
-package com.secondmarket.importer;
+package com.secondmarket.biz;
 
 import java.util.List;
 
