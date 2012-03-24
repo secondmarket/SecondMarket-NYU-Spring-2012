@@ -61,7 +61,7 @@ public final class ImporterImpl implements Importer {
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 			}
 			
-			//No Assume unchanged retest
+			//Can not merge?
 			//TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"), crunchbaseDoc);
 		}
