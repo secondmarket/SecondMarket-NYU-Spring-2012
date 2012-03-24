@@ -18,6 +18,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.google.gson.Gson;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public final class DataMapper {
 	private static Gson gson = new Gson();
 

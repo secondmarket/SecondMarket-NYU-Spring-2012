@@ -19,6 +19,11 @@ import com.secondmarket.model.Company;
 import com.secondmarket.utility.DataMapper;
 import com.secondmarket.utility.WikipediaUtils;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public final class ImporterImpl implements Importer {
 
 	private CompanyDAO companyDao;

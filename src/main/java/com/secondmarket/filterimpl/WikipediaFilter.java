@@ -3,6 +3,11 @@ package com.secondmarket.filterimpl;
 import com.mongodb.BasicDBObject;
 import com.secondmarket.filter.Filter;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public class WikipediaFilter implements Filter {
 
 	public String getCompanyName(BasicDBObject basicDBObject) {

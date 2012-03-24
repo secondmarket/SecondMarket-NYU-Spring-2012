@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.secondmarket.model.Company;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public interface Importer {
 
 	void storeAllCompanies();

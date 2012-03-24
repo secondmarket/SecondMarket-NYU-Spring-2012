@@ -7,6 +7,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import com.secondmarket.filter.Filter;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public final class CrunchBaseFilter implements Filter {
 	/**
 	 * Checks if the company has funding by comparing the value of

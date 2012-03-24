@@ -21,6 +21,11 @@ import com.secondmarket.bizimpl.ImporterImpl;
 import com.secondmarket.bizimpl.MasterListGenerator;
 import com.secondmarket.model.Company;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 @Controller
 public class ImportController {
 	/** Logger for this class and subclasses */

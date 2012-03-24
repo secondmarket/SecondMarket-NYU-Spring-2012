@@ -21,6 +21,11 @@ import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.model.Company;
 import com.secondmarket.utility.DataAggregator;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public final class CompanyDAOImpl implements CompanyDAO {
 	private DB db;
 	private Mongo mongo;

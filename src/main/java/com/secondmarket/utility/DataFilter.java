@@ -7,6 +7,11 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.secondmarket.model.Company;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public final class DataFilter {
 
 	// private constructor to avoid unnecessary instantiation

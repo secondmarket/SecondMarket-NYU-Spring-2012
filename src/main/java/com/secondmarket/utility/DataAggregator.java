@@ -6,6 +6,11 @@ import com.secondmarket.filterimpl.CrunchBaseFilter;
 import com.secondmarket.filterimpl.WikipediaFilter;
 import com.secondmarket.model.Company;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public class DataAggregator {
 	private Filter cbFilter;
 	private Filter wikiFilter;

@@ -16,6 +16,11 @@ import com.secondmarket.model.Company;
 import com.secondmarket.utility.CrunchBaseUtils;
 import com.secondmarket.utility.DataMapper;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public final class MasterListGenerator {
 
 	private final String url_CrunchBaseCompanies = "http://api.crunchbase.com/v/1/companies.js";

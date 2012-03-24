@@ -8,6 +8,11 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Transient;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 @Entity(value = "company", concern = "safe")
 public class Company {
 	@Id

@@ -2,6 +2,11 @@ package com.secondmarket.utility;
 
 import com.mongodb.BasicDBObject;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public final class CrunchBaseUtils {
 
 	/**

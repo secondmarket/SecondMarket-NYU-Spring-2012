@@ -5,6 +5,11 @@ import java.util.Map;
 
 import com.secondmarket.model.Company;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public interface CompanyDAO {
 
 	void saveCompany(String companyName, Map<String, String> map, Map<String, String> wikiMap);

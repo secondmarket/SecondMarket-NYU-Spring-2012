@@ -2,6 +2,11 @@ package com.secondmarket.filter;
 
 import com.mongodb.BasicDBObject;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 public interface Filter {
 
 	String getCompanyName(BasicDBObject basicDBObject);
