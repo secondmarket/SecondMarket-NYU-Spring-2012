@@ -92,7 +92,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return companyList;
 	}
 
-	public Company findCompanyByName(String companyName) {
+	
+	 public Company findCompanyByName(String companyName) {
 		Company company = ds.find(Company.class).field("companyName")
 				.equal(companyName).get();
 
@@ -103,6 +104,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		DataFilter.retrieveAndSetCompanyDetailedInfo(basicDBObject, company);
 		return company;
 	}
+	
 
 	public List<Company> findCompaniesByImpreciseName(String companyName) {
 		List<Company> companyList = ds.find(Company.class).field("companyName")
@@ -150,7 +152,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 	public int getPageAmount(int companiesPerPage) {
 		long numberOfCompanies = ds.createQuery(Company.class).countAll();
-		int numberOfPages = (int) Math.ceil(((double) numberOfCompanies) / 10);
+		int numberOfPages = (int) Math.ceil(((double) numberOfCompanies) / companiesPerPage);
 		return numberOfPages;
 	}
 
