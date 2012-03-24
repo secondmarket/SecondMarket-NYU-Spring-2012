@@ -17,7 +17,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.secondmarket.importer.Importer;
-import com.secondmarket.importerImpl.CrunchBaseImporter;
+import com.secondmarket.importerImpl.ImporterImpl;
 import com.secondmarket.importerImpl.MasterListGenerator;
 import com.secondmarket.model.Company;
 
@@ -26,7 +26,7 @@ public class ImportController {
 	/** Logger for this class and subclasses */
 	protected final Log logger = LogFactory.getLog(getClass());
 	private MasterListGenerator generator = new MasterListGenerator();
-	private Importer dataImporter = new CrunchBaseImporter();
+	private Importer dataImporter = new ImporterImpl();
 
 	/**
 	 * Initialize the first form page with newly created Company model

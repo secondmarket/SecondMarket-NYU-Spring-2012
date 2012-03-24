@@ -7,7 +7,7 @@ import com.secondmarket.model.Company;
 
 public interface CompanyDAO {
 
-	void saveCompany(String companyName, Map<String, String> map);
+	void saveCompany(String companyName, Map<String, String> map, Map<String, String> wikiMap);
 
 	List<Company> findAllCompanies();
 

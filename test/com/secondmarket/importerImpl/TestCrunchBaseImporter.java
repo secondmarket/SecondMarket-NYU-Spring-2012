@@ -8,7 +8,7 @@ import com.secondmarket.importer.Importer;
 public class TestCrunchBaseImporter extends TestCase {
 
 	public void testGetAllCompaniesData() {
-		Importer dataImporter = new CrunchBaseImporter();
+		Importer dataImporter = new ImporterImpl();
 		dataImporter.storeAllCompanies();
 		Assert.assertTrue(true);
 	}
