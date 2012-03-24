@@ -2,7 +2,7 @@ package com.secondmarket.filter;
 
 import com.mongodb.BasicDBObject;
 
-public interface DataFilter {
+public interface Filter {
 
 	String getCompanyName(BasicDBObject basicDBObject);
 

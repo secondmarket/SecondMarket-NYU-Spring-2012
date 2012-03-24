@@ -1,9 +1,9 @@
 package com.secondmarket.filterimpl;
 
 import com.mongodb.BasicDBObject;
-import com.secondmarket.filter.DataFilter;
+import com.secondmarket.filter.Filter;
 
-public class WikipediaFilter implements DataFilter {
+public class WikipediaFilter implements Filter {
 
 	public String getCompanyName(BasicDBObject basicDBObject) {
 		// TODO Auto-generated method stub

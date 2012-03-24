@@ -5,9 +5,9 @@ import org.springframework.web.util.HtmlUtils;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
-import com.secondmarket.filter.DataFilter;
+import com.secondmarket.filter.Filter;
 
-public final class CrunchBaseFilter implements DataFilter {
+public final class CrunchBaseFilter implements Filter {
 	/**
 	 * Checks if the company has funding by comparing the value of
 	 * "total_money_raised" field, return false if the value is "$0";
