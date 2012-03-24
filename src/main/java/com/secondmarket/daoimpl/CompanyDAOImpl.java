@@ -64,12 +64,12 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return masterList;
 	}
 
-	public void saveCompany(String companyName, Map<String, String> map, Map<String, String> wikiMap) {
+	public void saveCompany(String companyName, Map<String, String> crunchbaseDoc, Map<String, String> wikipediaDoc) {
 		Company company = new Company();
-		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(crunchbaseDoc));
 		DataFilter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
-		company.setCrunchbaseDoc(map);
-		company.setWikipediaDoc(wikiMap);
+		company.setCrunchbaseDoc(crunchbaseDoc);
+		company.setWikipediaDoc(wikipediaDoc);
 		ds.save(company);
 	}
 
