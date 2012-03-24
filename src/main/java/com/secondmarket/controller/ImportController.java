@@ -62,7 +62,8 @@ public class ImportController {
 		status.setComplete();
 
 		// First store the master list from CruchBase
-		generator.storeMasterList();
+		//TODO Master company list generated, includes 13862 companies
+//		generator.storeMasterList();
 
 		// Then import CrunchBase data
 		dataImporter.storeAllCompanies();
