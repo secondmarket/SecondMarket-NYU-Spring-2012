@@ -1,6 +1,7 @@
 package com.secondmarket.utility;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -58,6 +59,8 @@ public final class DataMapper {
 			e1.printStackTrace();
 		} catch (JsonMappingException e1) {
 			e1.printStackTrace();
+		} catch (FileNotFoundException fnfe){
+			return null;
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} finally {

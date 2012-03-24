@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.secondmarket.importer.Importer;
-import com.secondmarket.importerImpl.ImporterImpl;
-import com.secondmarket.importerImpl.MasterListGenerator;
+import com.secondmarket.biz.Importer;
+import com.secondmarket.bizimpl.ImporterImpl;
+import com.secondmarket.bizimpl.MasterListGenerator;
 import com.secondmarket.model.Company;
 
 @Controller
@@ -62,7 +62,8 @@ public class ImportController {
 		status.setComplete();
 
 		// First store the master list from CruchBase
-		generator.storeMasterList();
+		//TODO Master company list generated, includes 13862 companies
+//		generator.storeMasterList();
 
 		// Then import CrunchBase data
 		dataImporter.storeAllCompanies();

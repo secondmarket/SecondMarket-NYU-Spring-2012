@@ -25,7 +25,6 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	private DB db;
 	private Mongo mongo;
 	private DBCollection dbCollection;
-	private BasicDBObject basicDBObject;
 	private Gson gson = new Gson();// Using Gson to format the JSON object
 	private Datastore ds;
 	private Morphia morphia;
@@ -64,27 +63,34 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return masterList;
 	}
 
-	public void saveCompany(String companyName, Map<String, String> map, Map<String, String> wikiMap) {
+	public void saveCompany(String companyName,
+			Map<String, String> crunchbaseDoc, Map<String, String> wikipediaDoc) {
 		Company company = new Company();
-		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
-		DataFilter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
-		company.setCrunchbaseDoc(map);
-		company.setWikipediaDoc(wikiMap);
+		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
+				.toJson(crunchbaseDoc));
+		BasicDBObject wikiBasicDBObject = (BasicDBObject) JSON.parse(gson
+				.toJson(wikipediaDoc));
+		// TODO change the filter structure for wikipedia, then add one
+		// parameter for the function below
+		DataFilter.retrieveAndSetCompanyBasicInfo(cbBasicDBObject, company);
+		company.setCrunchbaseDoc(crunchbaseDoc);
+		company.setWikipediaDoc(wikipediaDoc);
 		ds.save(company);
 	}
 
 	public List<Company> findAllCompanies() {
 		List<Company> rawDataList = ds.find(Company.class).asList();
 		List<Company> companyList = new ArrayList<Company>();
+		BasicDBObject cbBasicDBObject = null;
 
 		Iterator<Company> it = rawDataList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
 			Map<String, String> map = company.getCrunchbaseDoc();
-			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+			cbBasicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
 
 			// Filter the data and update the company model
-			DataFilter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
+			DataFilter.retrieveAndSetCompanyBasicInfo(cbBasicDBObject, company);
 
 			companyList.add(company);
 		}
@@ -97,10 +103,11 @@ public final class CompanyDAOImpl implements CompanyDAO {
 				.equal(companyName).get();
 
 		Map<String, String> map = company.getCrunchbaseDoc();
-		basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
+				.toJson(map));
 		// TODO get another map by calling getWikiData(), then pass 2
 		// basicDBObject in the function below
-		DataFilter.retrieveAndSetCompanyDetailedInfo(basicDBObject, company);
+		DataFilter.retrieveAndSetCompanyDetailedInfo(cbBasicDBObject, company);
 		return company;
 	}
 
@@ -113,9 +120,10 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		while (it.hasNext()) {
 			Company company = it.next();
 			Map<String, String> map = company.getCrunchbaseDoc();
-			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
-			DataFilter
-					.retrieveAndSetCompanyDetailedInfo(basicDBObject, company);
+			BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
+					.toJson(map));
+			DataFilter.retrieveAndSetCompanyDetailedInfo(cbBasicDBObject,
+					company);
 		}
 		return companyList;
 	}
@@ -138,10 +146,11 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		while (it.hasNext()) {
 			Company company = it.next();
 			Map<String, String> map = company.getCrunchbaseDoc();
-			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+			BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
+					.toJson(map));
 
 			// Filter the data and update the company model
-			DataFilter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
+			DataFilter.retrieveAndSetCompanyBasicInfo(cbBasicDBObject, company);
 			paginatedList.add(company);
 		}
 
@@ -150,7 +159,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 	public int getPageAmount(int companiesPerPage) {
 		long numberOfCompanies = ds.createQuery(Company.class).countAll();
-		int numberOfPages = (int) Math.ceil(((double) numberOfCompanies) / 10);
+		int numberOfPages = (int) Math.ceil(((double) numberOfCompanies)
+				/ companiesPerPage);
 		return numberOfPages;
 	}
 
@@ -175,10 +185,11 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		while (it.hasNext()) {
 			Company company = it.next();
 			Map<String, String> map = company.getCrunchbaseDoc();
-			basicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+			BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
+					.toJson(map));
 
 			// Filter the data and update the company model
-			DataFilter.retrieveAndSetCompanyBasicInfo(basicDBObject, company);
+			DataFilter.retrieveAndSetCompanyBasicInfo(cbBasicDBObject, company);
 			paginatedList.add(company);
 		}
 
