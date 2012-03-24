@@ -49,9 +49,10 @@ public final class ImporterImpl implements Importer {
 			url_CrunchBase = "http://api.crunchbase.com/v/1/company/"
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
-			
+			System.out.println("-> CrunchBase: " + companyName);
 			title = wikiUtils.findCompanyUrl(companyName);
 			if(title == null){
+				System.out.print(companyName + "can not display ----------------");
 				count++;
 			}
 			else{
@@ -59,6 +60,7 @@ public final class ImporterImpl implements Importer {
 						+ title + "&prop=revisions&rvprop=content&format=json";
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
+				System.out.println("Wiki -> " + title);
 			}
 			
 			//No Assume unchanged retest

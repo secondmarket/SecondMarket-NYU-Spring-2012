@@ -1,32 +1,17 @@
 package com.secondmarket.utility;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.jetty.util.URIUtil;
-
 import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.util.JSON;
-import com.secondmarket.dao.CompanyDAO;
-import com.secondmarket.daoimpl.CompanyDAOImpl;
-import com.secondmarket.importer.Importer;
-import com.secondmarket.model.Company;
 
+/***
+ * 
+ * @author Danjuan Ye
+ *
+ */
 public class WikipediaUtils {
 
 	private Gson gson;
@@ -39,6 +24,12 @@ public class WikipediaUtils {
 		return URIUtil.encodePath(title);
 	}
 
+	/***
+	 * Using Wikipedia Search API to get possible titles 
+	 * according to the specialized Crunchbase Company Name
+	 * @param companyName
+	 * @return Possible titles
+	 */
 	private List<String> getPossibleTitlesbySearch(String companyName) {
 
 		List<String> tmpList = new ArrayList<String>();
@@ -60,8 +51,11 @@ public class WikipediaUtils {
 								if (newItem.containsKey("title")) {
 									String title = (String) newItem
 											.get("title");
-									// System.out.println(title);
-									tmpList.add(title);
+								    //System.out.println(title);
+								    if(compareTwoStrings(title, companyName)){
+								    	tmpList.add(title);
+								    	System.out.println("Filted titles -> "+ title);
+								    }
 								}
 							}
 						}
@@ -71,11 +65,51 @@ public class WikipediaUtils {
 		}
 		return tmpList;
 	}
+	
+	/**
+	 * Delete the no meaning characters in a string. 
+	 * For example: $sea son& -> season
+	 * @param str
+	 * @return
+	 */
+	private String deleteNonMeaningChars(String str){
+		StringBuilder sb = new StringBuilder();
+		str = str.toLowerCase();
+		for(int i = 0; i < str.length(); i++){
+			if(str.charAt(i) >= 'a' && str.charAt(i) <= 'z'){
+				sb.append(str.charAt(i));
+			}
+		}
+		return sb.toString();
+	}
 
+	/***
+	 * Compare two strings
+	 * @param str1
+	 * @param str2
+	 * @return
+	 */
+	private boolean compareTwoStrings(String str1, String str2){
+		String newStr1 = deleteNonMeaningChars(str1);
+		String newStr2 = deleteNonMeaningChars(str2);
+		if(newStr1.contains(newStr2)||newStr2.contains(newStr1)){
+			return true;
+		}
+		return false;
+	}
+	
+	/***
+	 * Get the most possible title for wikipedia 
+	 * Filter criteria: to check whether it contains infobox or not if the possible titles size is bigger than 1.
+	 * if the size is 1, return it directly.
+	 * @param titleList
+	 * @return
+	 */
 	public String getCompanyTitle(List<String> titleList) {
 
-		if (titleList.size() == 1)
-			return titleList.get(0);
+		if (titleList.size() == 1){
+			return percentEncodeReservedCharacters(titleList.get(0));
+		}
 		for (String title : titleList) {
 			String newTitle = percentEncodeReservedCharacters(title);
 			// System.out.println(title);
@@ -88,9 +122,9 @@ public class WikipediaUtils {
 			if (tmpMap.containsKey("query")) {
 
 				Object str = tmpMap.get("query");
-				String str1 = gson.toJson(str);
-				if (str1.contains("{{Infobox")) {
-					System.out.println("Wiki -> " + newTitle);
+				String str1 = gson.toJson(str).toLowerCase();
+				if (str1.contains("{{infobox") || str1.contains("{{ infobox")) {
+				//	System.out.println("Wiki -> " + newTitle);
 					return newTitle;
 				}
 
@@ -99,6 +133,11 @@ public class WikipediaUtils {
 		return null;
 	}
 
+	/**
+	 * Get the Wikipedia URL according the cruchbase URL
+	 * @param companyName
+	 * @return
+	 */
 	public String findCompanyUrl(String companyName) {
 
 		// Get the possible page titles by search
@@ -117,19 +156,19 @@ public class WikipediaUtils {
 		WikipediaUtils dataImporter = new WikipediaUtils();
 
 		List<String> titleList = dataImporter
-				.getPossibleTitlesbySearch("amazon");
+				.getPossibleTitlesbySearch("zazzle");
 		String title = dataImporter.getCompanyTitle(titleList);
 
 		if (title != null) {
-			System.out.println(title);
+			System.out.println(title + "      &&&&&&&&&&&&&");
 		} else {
 			System.out.println("NULL");
 		}
 
-		System.out.print(dataImporter.percentEncodeReservedCharacters("@main page!$"));
-		String pageUrl = "http://en.wikipedia.org/w/api.php?action=query&titles=amazon@&prop=revisions&rvprop=content&format=json";
-
-		Map<String, String> tmpMap = DataMapper.getDataInMapFromAPI(pageUrl);
-		System.out.println(tmpMap);
+//		System.out.print(dataImporter.percentEncodeReservedCharacters("@main page!$"));
+//		String pageUrl = "http://en.wikipedia.org/w/api.php?action=query&titles=amazon@&prop=revisions&rvprop=content&format=json";
+//
+//		Map<String, String> tmpMap = DataMapper.getDataInMapFromAPI(pageUrl);
+//		System.out.println(tmpMap);
 	}
 }
