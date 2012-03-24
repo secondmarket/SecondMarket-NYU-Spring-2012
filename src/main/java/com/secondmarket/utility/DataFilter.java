@@ -81,8 +81,8 @@ public final class DataFilter {
 		if (basicDBObject.containsField("name")) {
 			company.setCompanyName(basicDBObject.get("name").toString().trim());
 
-			System.out.println("->"
-					+ basicDBObject.get("name").toString().trim());
+		//	System.out.println("->"
+				//	+ basicDBObject.get("name").toString().trim());
 		} else {
 			company.setCompanyName("unexisted");
 			System.out.println("Company name not found!" + "\n"
