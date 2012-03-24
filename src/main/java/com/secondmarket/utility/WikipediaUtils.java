@@ -32,6 +32,7 @@ public class WikipediaUtils {
 	 * @param companyName
 	 * @return Possible titles
 	 */
+	@SuppressWarnings("unchecked")
 	private List<String> getPossibleTitlesbySearch(String companyName) {
 
 		List<String> tmpList = new ArrayList<String>();
@@ -43,13 +44,13 @@ public class WikipediaUtils {
 		if (titlesMap.containsKey("query")) {
 			Object entry = titlesMap.get("query");
 			if (entry instanceof Map) {
-				Map newEntry = (Map) entry;
+				Map<String, String> newEntry = (Map<String, String>) entry;
 				if (newEntry.containsKey("search")) {
 					Object searchItems = newEntry.get("search");
 					if (searchItems instanceof List) {
 						for (Object item : (List<String>) searchItems) {
 							if (item instanceof Map) {
-								Map newItem = (Map) item;
+								Map<String, String> newItem = (Map<String, String>) item;
 								if (newItem.containsKey("title")) {
 									String title = (String) newItem
 											.get("title");
@@ -110,7 +111,9 @@ public class WikipediaUtils {
 	public String getCompanyTitle(List<String> titleList) {
 
 		if (titleList.size() == 1){
-			return percentEncodeReservedCharacters(titleList.get(0));
+			String trueTitle = percentEncodeReservedCharacters(titleList.get(0));
+			System.out.println("Wiki -> " + trueTitle);
+			return 	trueTitle;
 		}
 		for (String title : titleList) {
 			String newTitle = percentEncodeReservedCharacters(title);
@@ -126,7 +129,7 @@ public class WikipediaUtils {
 				Object str = tmpMap.get("query");
 				String str1 = gson.toJson(str).toLowerCase();
 				if (str1.contains("{{infobox") || str1.contains("{{ infobox")) {
-				//	System.out.println("Wiki -> " + newTitle);
+					System.out.println("Wiki -> " + newTitle);
 					return newTitle;
 				}
 
@@ -143,6 +146,7 @@ public class WikipediaUtils {
 	public String findCompanyUrl(String companyName) {
 
 		// Get the possible page titles by search
+		System.out.println(companyName);
 		List<String> titleList = getPossibleTitlesbySearch(companyName);
 		String title = getCompanyTitle(titleList);
 
@@ -167,11 +171,11 @@ public class WikipediaUtils {
 			System.out.println("NULL");
 		}
 
-		System.out.print(dataImporter
-				.percentEncodeReservedCharacters("@main page!$"));
-		String pageUrl = "http://en.wikipedia.org/w/api.php?action=query&titles=amazon@&prop=revisions&rvprop=content&format=json";
-
-		Map<String, String> tmpMap = DataMapper.getDataInMapFromAPI(pageUrl);
-		System.out.println(tmpMap);
+//		System.out.print(dataImporter
+//				.percentEncodeReservedCharacters("@main page!$"));
+//		String pageUrl = "http://en.wikipedia.org/w/api.php?action=query&titles=amazon@&prop=revisions&rvprop=content&format=json";
+//
+//		Map<String, String> tmpMap = DataMapper.getDataInMapFromAPI(pageUrl);
+//		System.out.println(tmpMap);
 	}
 }
