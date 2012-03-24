@@ -54,7 +54,7 @@ public class WikipediaUtils {
 								    //System.out.println(title);
 								    if(compareTwoStrings(title, companyName)){
 								    	tmpList.add(title);
-								    	System.out.println("Filted titles -> "+ title);
+								  //  	System.out.println("Filted titles -> "+ title);
 								    }
 								}
 							}
@@ -156,7 +156,7 @@ public class WikipediaUtils {
 		WikipediaUtils dataImporter = new WikipediaUtils();
 
 		List<String> titleList = dataImporter
-				.getPossibleTitlesbySearch("zazzle");
+				.getPossibleTitlesbySearch("wetpaint");
 		String title = dataImporter.getCompanyTitle(titleList);
 
 		if (title != null) {
