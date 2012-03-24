@@ -167,10 +167,11 @@ public class WikipediaUtils {
 			System.out.println("NULL");
 		}
 
-//		System.out.print(dataImporter.percentEncodeReservedCharacters("@main page!$"));
-//		String pageUrl = "http://en.wikipedia.org/w/api.php?action=query&titles=amazon@&prop=revisions&rvprop=content&format=json";
-//
-//		Map<String, String> tmpMap = DataMapper.getDataInMapFromAPI(pageUrl);
-//		System.out.println(tmpMap);
+		System.out.print(dataImporter
+				.percentEncodeReservedCharacters("@main page!$"));
+		String pageUrl = "http://en.wikipedia.org/w/api.php?action=query&titles=amazon@&prop=revisions&rvprop=content&format=json";
+
+		Map<String, String> tmpMap = DataMapper.getDataInMapFromAPI(pageUrl);
+		System.out.println(tmpMap);
 	}
 }
