@@ -22,14 +22,13 @@ import com.secondmarket.utility.WikipediaUtils;
 /**
  * 
  * @author Ming Li
- *
+ * 
  */
 public final class ImporterImpl implements Importer {
 
 	private CompanyDAO companyDao;
 	private Gson gson;
 	public WikipediaUtils wikiUtils = new WikipediaUtils();
-
 
 	public ImporterImpl() {
 		companyDao = new CompanyDAOImpl();
@@ -38,16 +37,16 @@ public final class ImporterImpl implements Importer {
 
 	public void storeAllCompanies() {
 		List<Object> masterList = companyDao.getMasterList();
-		
+
 		List<Object> list = masterList.subList(0, 111);
-		
+
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> crunchbaseDoc = null;
 		Map<String, String> wikipediaDoc = null;
 		String url_CrunchBase = null;
 		String url_Wikipedia = null;
 		String companyName = null;
-		
+
 		String title = null;
 		int count = 0;
 
@@ -57,21 +56,20 @@ public final class ImporterImpl implements Importer {
 			url_CrunchBase = "http://api.crunchbase.com/v/1/company/"
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
-			
-			/*title = wikiUtils.findCompanyUrl(companyName);
-			if(title == null){
+
+			title = wikiUtils.findCompanyUrl(companyName);
+			if (title == null) {
 				count++;
-			}
-			else{
+			} else {
 				url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
 						+ title + "&prop=revisions&rvprop=content&format=json";
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
-			}*/
-			
-			//Can not merge?
-			//TODO pass one more map for wikipedia doc
-			companyDao.saveCompany(nameAndPermalinkMap.get("name"), crunchbaseDoc, wikipediaDoc);
+			}
+
+			// TODO pass one more map for wikipedia doc
+			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
+					crunchbaseDoc, wikipediaDoc);
 		}
 		System.out.println(count);
 	}
