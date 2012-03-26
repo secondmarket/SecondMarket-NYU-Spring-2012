@@ -11,7 +11,7 @@ import com.google.code.morphia.annotations.Transient;
 /**
  * 
  * @author Ming Li
- *
+ * 
  */
 @Entity(value = "company", concern = "safe")
 public class Company {
@@ -21,7 +21,7 @@ public class Company {
 	private String companyName;
 
 	private Map<String, String> crunchbaseDoc;
-	
+
 	private Map<String, String> wikipediaDoc;
 
 	private String location;
@@ -60,12 +60,12 @@ public class Company {
 	public Map<String, String> getCrunchbaseDoc() {
 		return crunchbaseDoc;
 	}
-	
-	public Map<String, String> getWikipedia(){
+
+	public Map<String, String> getWikipediaDoc() {
 		return wikipediaDoc;
 	}
-	
-	public void setWikipediaDoc(Map<String, String> wikipediaDoc){
+
+	public void setWikipediaDoc(Map<String, String> wikipediaDoc) {
 		this.wikipediaDoc = wikipediaDoc;
 	}
 
