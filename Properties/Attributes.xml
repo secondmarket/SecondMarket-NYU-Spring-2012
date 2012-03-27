@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>example pairs</comment>
+<entry key="MOTD">Hello, world!</entry>
+<entry key="FAVOURITE_FRUIT">Mango</entry>
+<entry key="THE_COW_SAYS">The cow says %s</entry>
+</properties>
