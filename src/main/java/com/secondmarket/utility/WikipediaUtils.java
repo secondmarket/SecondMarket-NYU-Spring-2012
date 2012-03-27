@@ -55,9 +55,9 @@ public class WikipediaUtils {
 									String title = (String) newItem
 											.get("title");
 								    //System.out.println(title);
-								    if(compareTwoStrings(title, companyName)){
+								    if(title.toLowerCase().charAt(0) == companyName.toLowerCase().charAt(0) && compareTwoStrings(title, companyName)){
 								    	tmpList.add(title);
-								  //  	System.out.println("Filted titles -> "+ title);
+								    	System.out.println("Filted titles -> "+ title);
 								    }
 								}
 							}
@@ -162,7 +162,7 @@ public class WikipediaUtils {
 		WikipediaUtils dataImporter = new WikipediaUtils();
 
 		List<String> titleList = dataImporter
-				.getPossibleTitlesbySearch("wetpaint");
+				.getPossibleTitlesbySearch("facebook");
 		String title = dataImporter.getCompanyTitle(titleList);
 
 		if (title != null) {
