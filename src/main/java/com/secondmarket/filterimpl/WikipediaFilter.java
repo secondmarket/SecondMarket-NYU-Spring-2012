@@ -5,7 +5,7 @@ import com.secondmarket.filter.Filter;
 
 /**
  * 
- * @author Ming Li
+ * @author
  *
  */
 public class WikipediaFilter implements Filter {
@@ -41,7 +41,14 @@ public class WikipediaFilter implements Filter {
 	}
 
 	public String getOverview(BasicDBObject basicDBObject) {
-		// TODO Auto-generated method stub
+		
+		/**
+		 * Use regular expression to get the overview paragraph--- e.g.
+		 * 
+		 * From{'''SecondMarket'''} to  {\n\n==History==}, also need to replaceAll the http links
+		 * 
+		 */
+		
 		return null;
 	}
 
