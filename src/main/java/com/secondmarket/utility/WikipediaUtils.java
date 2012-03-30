@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jetty.util.URIUtil;
 
 import com.google.gson.Gson;
+import com.secondmarket.properties.SMProperties;
 
 /***
  * 
@@ -17,9 +20,17 @@ import com.google.gson.Gson;
 public class WikipediaUtils {
 
 	private Gson gson;
+	private SMProperties p;
+	private Matcher myMatcher;
 
 	public WikipediaUtils() {
 		gson = new Gson();
+		try {
+			p = SMProperties.getInstance("WIKI");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private String percentEncodeReservedCharacters(String title) {
@@ -52,8 +63,7 @@ public class WikipediaUtils {
 							if (item instanceof Map) {
 								Map<String, String> newItem = (Map<String, String>) item;
 								if (newItem.containsKey("title")) {
-									String title = (String) newItem
-											.get("title");
+									String title = (String) newItem.get("title");
 								    //System.out.println(title);
 								    if(title.toLowerCase().charAt(0) == companyName.toLowerCase().charAt(0) && compareTwoStrings(title, companyName)){
 								    	tmpList.add(title);
@@ -115,6 +125,8 @@ public class WikipediaUtils {
 			System.out.println("Wiki -> " + trueTitle);
 			return 	trueTitle;
 		}
+	//	List<String> patternList = getInfoboxPattern();
+		Pattern myPattern = getInfoboxSpecifiedPattern();
 		for (String title : titleList) {
 			String newTitle = percentEncodeReservedCharacters(title);
 			// System.out.println(title);
@@ -128,15 +140,46 @@ public class WikipediaUtils {
 
 				Object str = tmpMap.get("query");
 				String str1 = gson.toJson(str).toLowerCase();
-				if (str1.contains("{{infobox") || str1.contains("{{ infobox")) {
+				if (checkPatternMatch(myPattern, str1)) {
 					System.out.println("Wiki -> " + newTitle);
 					return newTitle;
 				}
-
 			}
 		}
 		return null;
 	}
+	
+	public List<String> getInfoboxPattern(){
+		return p.getValues("INFOBOX", "OPTIONS");
+	}
+	
+	public Pattern getInfoboxSpecifiedPattern(){
+		Pattern myPattern = null;
+		try {
+			String str = p.getValue("INFOBOX", "OPTIONS", "OPTION");
+			myPattern = Pattern.compile(str, Pattern.CASE_INSENSITIVE); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return myPattern;
+	}
+	
+	public boolean checkPatternMatch(List<String> list, String text){
+		boolean flag = false;
+		for(String str : list){
+			if(text.contains(str.toLowerCase())){
+				flag = true;
+				break;
+			}
+		}
+		return flag;
+	}
+	
+	public boolean checkPatternMatch(Pattern myPattern, String text){
+		myMatcher = myPattern.matcher(text);
+		return myMatcher.matches();
+	}
+
 
 	/**
 	 * Get the Wikipedia URL according the cruchbase URL
@@ -160,6 +203,14 @@ public class WikipediaUtils {
 	public static void main(String[] args) throws IOException {
 
 		WikipediaUtils dataImporter = new WikipediaUtils();
+		Pattern p = Pattern.compile(".*\\{\\{ *INFOBOX.*", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher("aaa{{infoboxaab");
+		if(m.matches()){
+			System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^");
+		}
+		if(Pattern.matches(".*infobox.*", "aaainfoboxaab")){
+			System.out.println("RIGHT");
+		}
 
 		List<String> titleList = dataImporter
 				.getPossibleTitlesbySearch("facebook");
