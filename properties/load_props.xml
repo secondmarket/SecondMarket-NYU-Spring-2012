@@ -2,12 +2,12 @@
 	<WIKI>
 		<INFOBOX name="INFOBOX">
 			<OPTIONS>
-				<OPTION1>.*\{\{ *INFOBOX.*</OPTION1>
+				<OPTION>.*\{\{ *INFOBOX.*</OPTION>
 			</OPTIONS>
 		</INFOBOX>
 		<FINANCE name="FINANCE">
 			<OPTIONS>
-				<OPTION1>a</OPTION1>
+				<OPTION>a</OPTION>
 			</OPTIONS>
 		</FINANCE>
 	</WIKI>
