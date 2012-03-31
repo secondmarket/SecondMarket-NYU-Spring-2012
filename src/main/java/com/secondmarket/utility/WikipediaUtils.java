@@ -126,7 +126,7 @@ public class WikipediaUtils {
 			return 	trueTitle;
 		}
 	//	List<String> patternList = getInfoboxPattern();
-		Pattern myPattern = getInfoboxSpecifiedPattern();
+	//	Pattern myPattern = getInfoboxSpecifiedPattern();
 		for (String title : titleList) {
 			String newTitle = percentEncodeReservedCharacters(title);
 			// System.out.println(title);
@@ -140,7 +140,8 @@ public class WikipediaUtils {
 
 				Object str = tmpMap.get("query");
 				String str1 = gson.toJson(str).toLowerCase();
-				if (checkPatternMatch(myPattern, str1)) {
+			//	if (checkPatternMatch(myPattern, str1)) {
+				if (str1.contains("{{infobox") || str1.contains("{{ infobox")) {
 					System.out.println("Wiki -> " + newTitle);
 					return newTitle;
 				}
