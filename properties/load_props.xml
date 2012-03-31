@@ -1,0 +1,17 @@
+<root>
+	<WIKI>
+		<INFOBOX name="INFOBOX">
+			<OPTIONS>
+				<OPTION>.*\{\{ *INFOBOX.*</OPTION>
+			</OPTIONS>
+		</INFOBOX>
+		<FINANCE name="FINANCE">
+			<OPTIONS>
+				<OPTION>a</OPTION>
+			</OPTIONS>
+		</FINANCE>
+	</WIKI>
+	<CRUNCHBASE>
+	</CRUNCHBASE>
+</root>
+ 
