@@ -149,6 +149,7 @@ public class WikipediaFilter implements Filter {
 		int nextEndIndex = allTopicsBody.indexOf("\\n==");
 		String topicBody = "";
 		String tempBody = "";
+		// int i = 0;
 		while (nextEndIndex != -1) {
 			topicBody = allTopicsBody.substring(indexMarker, indexMarker
 					+ nextEndIndex);
@@ -158,8 +159,6 @@ public class WikipediaFilter implements Filter {
 			System.out.println(topicName);
 
 			String cleanedString = this.cleanTextBody(topicBody);
-			System.out.println(cleanedString);
-			System.out.println("\n\n");
 			List<String> sentenceList = this.extractEventSentences(
 					cleanedString, company);
 			if (sentenceList.size() != 0) {
@@ -169,6 +168,8 @@ public class WikipediaFilter implements Filter {
 			tempBody = allTopicsBody.substring(indexMarker + nextEndIndex + 1);
 			indexMarker = indexMarker + nextEndIndex + 1;
 			nextEndIndex = tempBody.indexOf("\\n==");
+
+			// i++;
 		}
 
 		return contentMap;
@@ -194,29 +195,42 @@ public class WikipediaFilter implements Filter {
 	}
 
 	public String cleanTextBody(String topicBody) {
-		// First get rid of topic name part
+		// First get rid of section name part
 		topicBody = topicBody.replaceAll("n\\s*={2,}.+={2,}", "");
 
 		// Wikipedia has its own mark-up syntax "As of",
 		// http://en.wikipedia.org/wiki/Wikipedia:As_of, which can not be parsed
 		// by bliki WikiModel
-		topicBody = topicBody.replace("{{As of|", "{{As of ").replace(
-				"{{as of|", "{{as of ");
+		topicBody = topicBody.replaceAll("(?i)(\\{{2})(As of\\|)(.*?)(\\}{2})",
+				"As of $3");
+
+		System.out.println("0000000" + topicBody + "\n");
 
 		WikiModel wikiModel = new WikiModel(
 				"http://en.wikipedia.org/wiki/${image}",
 				"http://en.wikipedia.org/wiki/${title}");
 		String htmlStr = wikiModel.render(topicBody);
 
+		// System.out.println("1111111" + htmlStr + "\n");
+
 		Whitelist whiteList = Whitelist.none();
 		String cleanedStr = Jsoup.clean(htmlStr, whiteList);
 
-		// 1) Clean tags like "[1]"
-		// 2) Clean tags like "\\n"
-		// 3) Clean tags like "{{" (left by "As of" syntax)
-		// 4) Clean tags like "}}" (letf by "As of" syntax)
+		// System.out.println("2222222" + cleanedStr + "\n");
+
+		// cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "")
+		// .replaceAll("\\\\n", "").replace("{{", "").replace("}}", "");
+
+		// Remove tags like "[1]"
+		// Remove tags like "\\n"
+		// Remove all slashes
 		cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "")
-				.replaceAll("\\\\n", "").replace("{{", "").replace("}}", "");
+				.replaceAll("\\\\n", "").replace("\\", "");
+
+		// Remove "{{any content}}"
+		cleanedStr = cleanedStr.replaceAll("\\{{2}.*?\\}{2}", "");
+
+		// System.out.println("33333333" + cleanedStr + "\n");
 
 		// Clean tags like "\\\" and "\\"
 		cleanedStr = cleanedStr.replace("\\\\\\", "").replace("\\\\", " ");
@@ -224,12 +238,14 @@ public class WikipediaFilter implements Filter {
 		// Format the text with exactly one white space for multiple spaces
 		cleanedStr = cleanedStr.replaceAll("\\s+", " ");
 
+		System.out.println("4444444" + cleanedStr + "\n");
+
 		return cleanedStr;
 	}
 
 	/**
 	 * Extracts the sentences that contain both year and company name
-	 * infomration
+	 * information
 	 * 
 	 * @param cleanedString
 	 * @param company
@@ -262,7 +278,6 @@ public class WikipediaFilter implements Filter {
 			Matcher companyNameMatcher = companyNamePattern.matcher(sentence);
 			if (yearMatcher.find() && companyNameMatcher.find()) {
 				eventSentencesList.add(sentence);
-//				System.out.println("-------> " + sentence);
 			} else {
 				// System.out.println(sentence);
 				continue;
@@ -380,5 +395,13 @@ public class WikipediaFilter implements Filter {
 
 		return null;
 	}
+
+	/*
+	 * public static void main(String[] args) { WikipediaFilter test = new
+	 * WikipediaFilter(); String topicBody =
+	 * "[[Facebook]]<ref name=\\\"Growth\\\">{{Cite news | =December 19, 2008/ |titleEldon, Eric}}</ref> {{As of|February 2012}}, Facebook has more {{I don't know}} yes it is"
+	 * ; topicBody = topicBody.replaceAll("(?i)(\\{{2})(As of\\|)(.*?)(\\}{2})",
+	 * "As of $3"); System.out.println(topicBody); }
+	 */
 
 }
