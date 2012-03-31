@@ -1,4 +1,4 @@
-package com.secondmarket.filterimpl;
+package com.secondmarket.filter;
 
 import info.bliki.wiki.model.WikiModel;
 
@@ -23,7 +23,6 @@ import org.jsoup.safety.Whitelist;
 
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
-import com.secondmarket.filter.Filter;
 import com.secondmarket.model.Company;
 
 /**
@@ -31,7 +30,7 @@ import com.secondmarket.model.Company;
  * @author
  * 
  */
-public class WikipediaFilter implements Filter {
+public class WikipediaFilter {
 
 	private Gson gson;
 

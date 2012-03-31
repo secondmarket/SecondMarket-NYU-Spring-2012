@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.mongodb.BasicDBObject;
-import com.secondmarket.filterimpl.CrunchBaseFilter;
-import com.secondmarket.filterimpl.WikipediaFilter;
+import com.secondmarket.filter.CrunchBaseFilter;
+import com.secondmarket.filter.WikipediaFilter;
 import com.secondmarket.model.Company;
 
 /**

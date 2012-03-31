@@ -1,18 +1,17 @@
-package com.secondmarket.filterimpl;
+package com.secondmarket.filter;
 
 import org.springframework.web.util.HtmlUtils;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
-import com.secondmarket.filter.Filter;
 
 /**
  * 
  * @author Ming Li
  * 
  */
-public final class CrunchBaseFilter implements Filter {
+public final class CrunchBaseFilter{
 	public String getCompanyName(BasicDBObject basicDBObject) {
 		if (basicDBObject.containsField("name")) {
 			return basicDBObject.get("name").toString().trim();
