@@ -53,7 +53,7 @@ public class WikipediaUtils {
 		Map<String, String> titlesMap = DataMapper.getDataInMapFromAPI(url);
 
 		if (titlesMap.containsKey("query")) {
-			System.out.println(titlesMap);
+		//	System.out.println(titlesMap);
 			Object entry = titlesMap.get("query");
 			if (entry instanceof Map) {
 				Map<String, String> newEntry = (Map<String, String>) entry;
