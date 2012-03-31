@@ -26,9 +26,9 @@ import org.xml.sax.SAXException;
  * @author Danjuan
  *
  */
-public class XMLStreamPropertyLoader {
+public class XMLPropertyLoader {
 
-	public static final XMLStreamPropertyLoader INSTANCE = new XMLStreamPropertyLoader();
+	public static final XMLPropertyLoader INSTANCE = new XMLPropertyLoader();
 	// constants used for reading and writing the XML
 	private static final String CLOSE_TAG = ">";
 	private static final String END_TAG = "/>";
@@ -54,7 +54,7 @@ public class XMLStreamPropertyLoader {
 		INDENTS.add("");
 	}
 
-	public static XMLStreamPropertyLoader getInstance() {
+	public static XMLPropertyLoader getInstance() {
 		return INSTANCE;
 	}
 

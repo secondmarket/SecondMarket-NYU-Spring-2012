@@ -62,7 +62,7 @@ public class ClasspathPropertyLoader implements PropertyLoader{
 		System.out.println("Loader property file: " + file);
 		fileStream = getClass().getClassLoader().getResourceAsStream(file);
 		if(fileStream == null){
-			System.out.println("[e] - file " + file + "not found in classpath");
+			System.out.println("[e] - file " + file + " not found in classpath");
 			//changes for webstart - try to find the file not on the //classpath
 			String paths = System.getProperty(KS_PROPERTY_PATH);
 			if(paths != null){
@@ -110,8 +110,8 @@ public class ClasspathPropertyLoader implements PropertyLoader{
 		}
 	}
 	
-	protected XMLStreamPropertyLoader getLoader(){
-		return XMLStreamPropertyLoader.getInstance();
+	protected XMLPropertyLoader getLoader(){
+		return XMLPropertyLoader.getInstance();
 	}
 
 }

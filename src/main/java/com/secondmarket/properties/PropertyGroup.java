@@ -12,16 +12,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
 /***
  * @author Danjuan
- * PropertyGroup can be used to represent any grouping of properties for a
- * variety of purposes. Each PropertyGroup contains a name, a value, a
- * Properties object containing name/value pairs, a Map of lists, a Map of child
- * PropertyGroup objects, a {@link PropertyLoader}. Each group is intended to be 
- * a unit of information which is logically grouped together. PropertyGroups are 
- * loaded and stored by an implementation of PropertyLoader. Each PropertyGroup 
- * must have a PropertyLoader, and all PropertyGroups with the exception of the 
- * root group, have its parent PropertyGroup as its PropertyLoader.
+ * 
  */
 public class PropertyGroup implements PropertyLoader {
 	public static final String PATH_DELIMITER = ".";
@@ -35,18 +29,12 @@ public class PropertyGroup implements PropertyLoader {
 	private static final int MINIMUM_TOKEN_COUNT = 4;
 
 	private static PropertyGroup root;
-
-	/**
-	 * Local fields
-	 */
-	private String name; // Either the tag name, or the "name"
-	// attribute of this group
-	private String value; // Value between open and close tags
-	private Properties properties; // attributes of THIS group
-	private Map<String, PropertyGroup> groups; // sub-groups belonging to THIS
-												// group
-	private Map lists; // property lists belonging to THIS group
-	private PropertyLoader loader; // The loader for THIS group
+	private String name;
+	private String value;
+	private Properties properties;
+	private Map<String, PropertyGroup> groups;
+	private Map lists;
+	private PropertyLoader loader;
 
 	/**
 	 * Private constructor used to create new PropertyGroups
@@ -76,9 +64,6 @@ public class PropertyGroup implements PropertyLoader {
 	 * Determines if this group was actually defined somewhere, or if it is
 	 * merely a placeholder
 	 * 
-	 * @return true if this group has a non-null value, attributes, lists, or
-	 *         children who have non-null values, attributes or lists. false
-	 *         otherwise
 	 */
 	public synchronized boolean exists() {
 		boolean exists = (properties.size() > 0 || listsExist() || ((value != null)));
@@ -111,25 +96,16 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets the value of this group. If the value is substituted, gets the
-	 * substituted value.
-	 * 
-	 * 
-	 * @return a String containing the value of this group.
+	 * Gets the value of this group.
 	 */
 	public String getValue() {
-	//	return substitute(value);
+		// return substitute(value);
 		return value;
 	}
 
 	/**
 	 * return all of the values in the list
 	 * 
-	 * @param name
-	 *            a String representing the name of the list
-	 * 
-	 * @return an Iterator containing the values of the list, null if no list is
-	 *         found
 	 */
 	public List getList(String name) {
 		PropertyGroup group;
@@ -140,15 +116,10 @@ public class PropertyGroup implements PropertyLoader {
 		group = getGroup(path, 0, path.length - 2);
 
 		return group.getListValue(path[path.length - 1]);
-	} 
+	}
+
 	/**
-	 * Gets specified property's value, if the value is substituted, return the
-	 * substituted value
-	 * 
-	 * @param String
-	 *            name of the attribute to get
-	 * 
-	 * @return property's value, null if property is not found
+	 * Gets specified property's value.
 	 */
 	public String getProperty(String name) {
 		PropertyGroup group;
@@ -161,32 +132,14 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets a property value from relative path and name. If value is
-	 * substituted, gets the substituted value
-	 * 
-	 * @param path
-	 *            relative path
-	 * @param name
-	 *            name of the property to get
-	 * 
-	 * @return attribute's value, null if property not found
+	 * Gets a property value from relative path and name.
 	 */
 	public String getProperty(String path, String name) {
 		return getGroup(path).getProperty(name);
 	}
 
 	/**
-	 * Gets specified property value converted to a <code>Boolean</code>. The
-	 * method considers the strings <code>"true"</code> and <code>"y"</code> as
-	 * true (case ignored). All other strings will return false. If property is
-	 * substituted, then the substituted value is utilized to get
-	 * <code>Boolean</code>.
-	 * 
-	 * @param name
-	 *            of the property to get
-	 * 
-	 * @return Property's value converted to a <code>Boolean</code>, null if
-	 *         property is not found
+	 * Gets specified property value converted to a Boolean.
 	 */
 	public Boolean getBooleanProperty(String name) {
 		Boolean ret = null;
@@ -199,33 +152,14 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets a property value converted to a <code>Boolean</code> from relative
-	 * path and name. If property is substituted, then the substituted value is
-	 * utilized to get <code>Boolean</code>.
-	 * 
-	 * @param path
-	 *            relative path
-	 * @param name
-	 *            name of the property to get
-	 * 
-	 * @return Property's value converted to a <code>Boolean</code>, null if
-	 *         property is not found
-	 * @see #getBooleanProperty(String)
+	 * Gets a property value converted to a Boolean from relative path and name.
 	 */
 	public Boolean getBooleanProperty(String path, String name) {
 		return getGroup(path).getBooleanProperty(name);
 	}
 
 	/**
-	 * Gets specified property value converted to a <code>Integer</code>. Null
-	 * will be returned if either the property is not found or is not a valid
-	 * integer. If property is substituted, then the substituted value is
-	 * utilized to get <code>Integer</code>.
-	 * 
-	 * @param name
-	 *            of the property to get
-	 * @return Property's value converted to a <code>Integer</code>, null if it
-	 *         does not exist
+	 * Gets specified property value converted to a Integer.
 	 */
 	public Integer getIntegerProperty(String name) {
 		Integer ret = null;
@@ -237,18 +171,10 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets a property value converted to a <code>Integer</code> from relative
-	 * path and name. If property is substituted, then the substituted value is
-	 * utilized to get <code>Integer</code>.
+	 * Gets a property value converted to a Integer from relative path and name.
+	 * If property is substituted, then the substituted value is utilized to get
+	 * Integer.
 	 * 
-	 * @param String
-	 *            path relative path
-	 * @param String
-	 *            name of the property to get
-	 * 
-	 * @return Property's value converted to a <code>Integer</code>, null if it
-	 *         does not exist
-	 * @see #getIntegerProperty(String)
 	 */
 	public Integer getIntegerProperty(String path, String name) {
 		return getGroup(path).getIntegerProperty(name);
@@ -257,25 +183,14 @@ public class PropertyGroup implements PropertyLoader {
 	/**
 	 * Gets a group value from relative path. If the value is substituted, gets
 	 * the substituted value
-	 * 
-	 * @param path
-	 *            relative path
-	 * 
-	 * @return value of the group specified by path, null if the group does not
-	 *         exist
 	 */
 	public String getValue(String path) {
 		return getGroup(path).getValue();
-	} // end method getProperty
+	}
 
 	/**
-	 * Gets a <code>PropertyGroup</code> using relative path.
+	 * Gets a PropertyGroup using relative path.
 	 * 
-	 * @param group
-	 *            name of group defined from <code>this</code> object
-	 * 
-	 * @return group specified by the relative path, returns empty
-	 *         <code>PropertyGroup</code> if group does not exist
 	 */
 	public PropertyGroup getGroup(String path) {
 		String[] parsedPath = parsePath(path);
@@ -311,13 +226,10 @@ public class PropertyGroup implements PropertyLoader {
 				String token = tokenizer.nextToken();
 				if (token.equals(SUBSTITUTE_DELIMITER)) {
 					substitute = true;
-				} // end if
-				else if (token.equals(OPEN_SUBSTITUTE)) {
-				} // end else if
-				else if (token.equals(CLOSE_SUBSTITUTE)) {
+				} else if (token.equals(OPEN_SUBSTITUTE)) {
+				} else if (token.equals(CLOSE_SUBSTITUTE)) {
 					substitute = false;
-				} // end else if
-				else {
+				} else {
 					if (substitute) {
 						int lastIndex = token.lastIndexOf(PATH_DELIMITER);
 
@@ -344,21 +256,19 @@ public class PropertyGroup implements PropertyLoader {
 							}
 						}
 
-					} // end if
-					else {
+					} else {
 						buffer.append(substitute(token));
-					} // end else
-				} // end if
-			} // end while
-		} // end if
-		else {
+					}
+				}
+			}
+		} else {
 			return value;
-		} // end else
+		}
 		return buffer.toString();
-	} // end method substitute
+	}
 
 	/**
-	 * Gets the value of the given property in this <code>PropertyGroup</code>
+	 * Gets the value of the given property in this PropertyGroup
 	 * 
 	 */
 	private String getPropertyValue(String name) {
@@ -366,7 +276,7 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets a List from this <code>PropertyGroup</code>
+	 * Gets a List from this PropertyGroup
 	 * 
 	 */
 	private synchronized List getListValue(String name) {
@@ -423,7 +333,7 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Parses path into <code>String</code> array.
+	 * Parses path into String array.
 	 */
 	private static String[] parsePath(String s) {
 		StringTokenizer st = new StringTokenizer(s, PATH_DELIMITER);
@@ -435,19 +345,10 @@ public class PropertyGroup implements PropertyLoader {
 			path[i] = st.nextToken();
 		}
 		return path;
-	} // end method parsePath
+	}
 
 	/**
-	 * Gets a Properties object of all properties for this group. For each
-	 * property that is substituted, the substituted value is returned. For each
-	 * call to this method, a new Properties object is constructed; therefore
-	 * changes made to the underlying PropertyGroup will not be propagated
-	 * automatically. In order to listen for changes, use the
-	 * {@link #addPropertyChangedListener(PropertyGroupListener)} method to
-	 * register for changes
-	 * 
-	 * @return all properties (name/value pairs) for this group, substituted as
-	 *         necessary
+	 * Gets a Properties object of all properties for this group.
 	 */
 	public synchronized Properties getProperties() {
 		Properties substitutedProps = new Properties();
@@ -462,11 +363,7 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets an unmodifiable <code>Collection</code> of names of all lists within
-	 * this <code>PropertyGroup</code>
-	 * 
-	 * 
-	 * @return names of each list for this group
+	 * Gets names of each list for this group
 	 */
 	public synchronized Collection getLists() {
 		Collection retval = new ArrayList(lists.size());
@@ -482,10 +379,7 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets an unmodifiable <code>Collection</code> of all child groups within
-	 * this <code>PropertyGroup</code> hurley is a big chump
-	 * 
-	 * @return PropertyGroup objects of each child group for this group
+	 * Gets PropertyGroup objects of each child group for this group
 	 */
 	public synchronized Collection getGroups() {
 		Collection retval = new ArrayList(groups.size());
@@ -501,10 +395,7 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets an unmodifiable <code>Map</code> of all child groups within this
-	 * <code>PropertyGroup</code> hurley is a big chump
-	 * 
-	 * @return PropertyGroup objects of each child group for this group
+	 * Gets PropertyGroup objects of each child group for this group
 	 */
 	public synchronized Map<String, PropertyGroup> getGroupsMap() {
 
@@ -520,9 +411,8 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets list of property names for this <code>PropertyGroup</code>
+	 * Gets list of property names
 	 * 
-	 * @return all names of properties in this <code>PropertyGroup</code>
 	 */
 	public Collection getPropertyNames() {
 		return Collections.unmodifiableSet(properties.keySet());
@@ -531,7 +421,6 @@ public class PropertyGroup implements PropertyLoader {
 	/**
 	 * Gets list of child group names for this group
 	 * 
-	 * @return all names of child groups for this <code>PropertyGroup</code>
 	 */
 	public synchronized Collection getGroupNames() {
 		Collection retval = new ArrayList(groups.size());
@@ -549,9 +438,7 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets list of list names for this <code>PropertyGroup</code>
-	 * 
-	 * @return all names of lists for this <code>PropertyGroup</code>
+	 * Gets list of list names
 	 */
 	public synchronized Collection getListNames() {
 		Collection retval = new ArrayList(lists.size());
@@ -568,39 +455,28 @@ public class PropertyGroup implements PropertyLoader {
 		return Collections.unmodifiableCollection(retval);
 	}
 
-	/******* GET ORIGINAL VALUES -- UNSUBSTITUTED PROPERTIES, VALUES, LISTS ********/
+	/******* GET ORIGINAL VALUES -- *******/
 	/**
-	 * Gets orignal Properties for this <code>PropertyGroup</code>, values are
-	 * NOT substituted
-	 * 
-	 * @return unsubstituted properties for this <code>PropertyGroup</code>
+	 * Gets orignal Properties
 	 */
 	public Properties getOriginalProperties() {
 		return properties;
 	}
 
 	/**
-	 * Gets orignal value for this <code>PropertyGroup</code>, value is NOT
-	 * substituted
-	 * 
-	 * @return unsubstituted value for this <code>PropertyGroup</code>
+	 * Gets orignal value
 	 */
 	public String getOriginalValue() {
 		return value;
 	}
 
 	/**
-	 * Gets orignal list values for a list in this <code>PropertyGroup</code>,
-	 * values are NOT substituted
+	 * Gets orignal list values for a list in this PropertyGroup, values
 	 * 
-	 * @param name
-	 *            the name of the list for which to retrieve original values
-	 * 
-	 * @return unsubstituted properties for this <code>PropertyGroup</code>
 	 */
 	public List getOriginalList(String name) {
 		return ((PropertyGroupList) getList(name)).getOriginalList();
-	} // end method getList
+	}
 
 	/*************************************************
 	 * ROOT METHODS
@@ -609,7 +485,6 @@ public class PropertyGroup implements PropertyLoader {
 	 * Gets the root property group. The name of the loader to use is defined by
 	 * the "property.loader.class" system property.
 	 * 
-	 * @return the root property group.
 	 */
 	public static PropertyGroup getRoot() throws Exception {
 
@@ -630,17 +505,10 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets the root's <code>PropertyLoader</code>. If property.loader.class is
-	 * specified in the system properties, then that is used, otherwise, the
-	 * {@link #DEFAULT_LOADER} is used
+	 * Gets the root's PropertyLoader. If property.loader.class is specified in
+	 * the system properties, then that is used, otherwise, the DEFAULT_LOADER
+	 * is used
 	 * 
-	 * @return the loader utilized to load the root <code>PropertyGroup</code>
-	 * 
-	 * @throws PropertyException
-	 *             wraps <code>ClassCastException</code>,
-	 *             <code>InstantiationException</code>,
-	 *             <code>IllegalAccessException</code>,
-	 *             <code>ClassNotFoundException</code>
 	 */
 	private static PropertyLoader getRootLoader() throws Exception {
 
@@ -672,11 +540,6 @@ public class PropertyGroup implements PropertyLoader {
 
 	/**
 	 * Obtains a property group using the specified loader
-	 * 
-	 * @param loader
-	 *            the <code>PropertyLoader</code> to use to load the properties
-	 * 
-	 * @return a <code>PropertyGroup</code> loaded from the loader
 	 */
 	public static PropertyGroup getGroup(PropertyLoader loader)
 			throws Exception {
@@ -686,16 +549,9 @@ public class PropertyGroup implements PropertyLoader {
 		return group;
 	}
 
-	/*********************************************************
-	 * MODIFIER METHODS
-	 *********************************************************/
 	/**
-	 * Sets the value of a property in this <code>PropertyGroup</code>
+	 * Sets the value of a property in this PropertyGroup
 	 * 
-	 * @param prop
-	 *            the name of the property
-	 * @param value
-	 *            the value of the property
 	 */
 	public String setProperty(String prop, String value) {
 		PropertyGroup group;
@@ -712,41 +568,24 @@ public class PropertyGroup implements PropertyLoader {
 	 */
 	private String setPropertyValue(String name, String value) {
 		String retval = (String) properties.setProperty(name, value);
-
-		// PropertyGroupEvent event = new PropertyGroupEvent(this, value);
-		// propertyChangedDispatcher.dispatch(event);
 		return retval;
 	}
 
 	/**
-	 * Sets the value of a list in this <code>PropertyGroup</code>
+	 * Sets the value of a list in this PropertyGroup
 	 * 
-	 * 
-	 * @param listName
-	 *            the name of the list to set, if this list does not exist, it
-	 *            is added
-	 * @param list
-	 *            the <code>List</code> you wish to set
 	 */
 	public void setList(String listName, List list) {
 		PropertyGroupList pgList = new PropertyGroupList(listName, list);
 		lists.put(listName, pgList);
-
-		// PropertyGroupEvent event = new PropertyGroupEvent(this, listName);
-		// listChangedDispatcher.dispatch(event);
 	}
 
 	/**
-	 * Sets the value of this <code>PropertyGroup</code>
+	 * Sets the value of this PropertyGroup
 	 * 
-	 * @param value
-	 *            the value of the group
 	 */
 	public void setValue(String value) {
 		this.value = value;
-
-		// PropertyGroupEvent event = new PropertyGroupEvent(this, null);
-		// valueChangedDispatcher.dispatch(event);
 	}
 
 	/**
@@ -772,10 +611,6 @@ public class PropertyGroup implements PropertyLoader {
 		// Clear Properties object and value for this group
 		this.value = null;
 		this.properties.clear();
-
-		// fire event
-		// PropertyGroupEvent event = new PropertyGroupEvent(this, null);
-		// groupClearedDispatcher.dispatch(event);
 	}
 
 	/******************************************************
@@ -783,9 +618,6 @@ public class PropertyGroup implements PropertyLoader {
 	 ******************************************************/
 	/**
 	 * Clears and reloads parameters from all sources.
-	 * 
-	 * @throws KnightException
-	 *             when there is a problem in loading properties
 	 */
 	public void reload() throws Exception {
 
@@ -797,9 +629,6 @@ public class PropertyGroup implements PropertyLoader {
 	 * Loads groups using loader. Since a group's parent is its loader (except
 	 * for the root), this method will be called recursively until the root is
 	 * reached. Then, the root will be reloaded from its PropertyLoader.
-	 * 
-	 * @param group
-	 *            the group to
 	 */
 	public void load(PropertyGroup group) throws Exception {
 		load();
@@ -817,8 +646,6 @@ public class PropertyGroup implements PropertyLoader {
 	 * for the root), this method will be called recursively until the root is
 	 * reached. Then, the root will be restored from its PropertyLoader.
 	 * 
-	 * @param group
-	 *            group to be stored
 	 */
 	public void store(PropertyGroup group) throws Exception {
 		store();
@@ -832,11 +659,7 @@ public class PropertyGroup implements PropertyLoader {
 	}
 
 	/**
-	 * Gets a string representation of this <code>PropertyGroup</code>; shows
-	 * the name, value, attributes, and the names of all lists and child groups
-	 * 
-	 * 
-	 * @return string representation of this <code>PropertyGroup</code>
+	 * Gets a string representation of this PropertyGroup;
 	 */
 	public String toString() {
 		StringBuffer toString = new StringBuffer(128);

@@ -53,6 +53,7 @@ public class WikipediaUtils {
 		Map<String, String> titlesMap = DataMapper.getDataInMapFromAPI(url);
 
 		if (titlesMap.containsKey("query")) {
+			System.out.println(titlesMap);
 			Object entry = titlesMap.get("query");
 			if (entry instanceof Map) {
 				Map<String, String> newEntry = (Map<String, String>) entry;
@@ -75,6 +76,9 @@ public class WikipediaUtils {
 					}
 				}
 			}
+		}
+		else{
+			System.out.println("ERROR : " + titlesMap);
 		}
 		return tmpList;
 	}
@@ -126,7 +130,7 @@ public class WikipediaUtils {
 			return 	trueTitle;
 		}
 	//	List<String> patternList = getInfoboxPattern();
-	//	Pattern myPattern = getInfoboxSpecifiedPattern();
+		Pattern myPattern = getInfoboxSpecifiedPattern();
 		for (String title : titleList) {
 			String newTitle = percentEncodeReservedCharacters(title);
 			// System.out.println(title);
@@ -140,8 +144,8 @@ public class WikipediaUtils {
 
 				Object str = tmpMap.get("query");
 				String str1 = gson.toJson(str).toLowerCase();
-			//	if (checkPatternMatch(myPattern, str1)) {
-				if (str1.contains("{{infobox") || str1.contains("{{ infobox")) {
+				if (checkPatternMatch(myPattern, str1)) {
+			//	if (str1.contains("{{infobox") || str1.contains("{{ infobox")) {
 					System.out.println("Wiki -> " + newTitle);
 					return newTitle;
 				}
@@ -204,17 +208,7 @@ public class WikipediaUtils {
 	public static void main(String[] args) throws IOException {
 
 		WikipediaUtils dataImporter = new WikipediaUtils();
-		Pattern p = Pattern.compile(".*\\{\\{ *INFOBOX.*", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher("aaa{{infoboxaab");
-		if(m.matches()){
-			System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^");
-		}
-		if(Pattern.matches(".*infobox.*", "aaainfoboxaab")){
-			System.out.println("RIGHT");
-		}
-
-		List<String> titleList = dataImporter
-				.getPossibleTitlesbySearch("facebook");
+		List<String> titleList = dataImporter.getPossibleTitlesbySearch("facebook");
 		String title = dataImporter.getCompanyTitle(titleList);
 
 		if (title != null) {
