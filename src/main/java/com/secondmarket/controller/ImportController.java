@@ -24,7 +24,7 @@ import com.secondmarket.model.Company;
 /**
  * 
  * @author Ming Li
- *
+ * 
  */
 @Controller
 public class ImportController {
@@ -67,7 +67,7 @@ public class ImportController {
 		status.setComplete();
 
 		// First store the master list from CruchBase
-		//TODO Master company list generated, includes 13862 companies
+		// TODO Master company list generated, includes 13862 companies
 //		generator.storeMasterList();
 
 		// Then import CrunchBase data

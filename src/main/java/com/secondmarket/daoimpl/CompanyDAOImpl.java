@@ -24,7 +24,7 @@ import com.secondmarket.utility.DataAggregator;
 /**
  * 
  * @author Ming Li
- *
+ * 
  */
 public final class CompanyDAOImpl implements CompanyDAO {
 	private DB db;
@@ -42,7 +42,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
 			dbCollection = db.getCollection("company");
-			dbCollection.drop();
+			// dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -78,9 +78,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 				.toJson(crunchbaseDoc));
 		BasicDBObject wikiBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(wikipediaDoc));
-		// TODO change the filter structure for wikipedia, then add one
-		// parameter for the function below
-		aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject, company);
+		aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject,
+				wikiBasicDBObject, company);
 		company.setCrunchbaseDoc(crunchbaseDoc);
 		company.setWikipediaDoc(wikipediaDoc);
 		ds.save(company);
@@ -94,11 +93,16 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Iterator<Company> it = rawDataList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
-			Map<String, String> map = company.getCrunchbaseDoc();
-			cbBasicDBObject = (BasicDBObject) JSON.parse(gson.toJson(map));
+			Map<String, String> cbMap = company.getCrunchbaseDoc();
+			cbBasicDBObject = (BasicDBObject) JSON.parse(gson.toJson(cbMap));
+
+			Map<String, String> wikiMap = company.getWikipediaDoc();
+			BasicDBObject wikiBasicDBObject = (BasicDBObject) JSON.parse(gson
+					.toJson(wikiMap));
 
 			// Filter the data and update the company model
-			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject, company);
+			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject,
+					wikiBasicDBObject, company);
 
 			companyList.add(company);
 		}
@@ -110,12 +114,16 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Company company = ds.find(Company.class).field("companyName")
 				.equal(companyName).get();
 
-		Map<String, String> map = company.getCrunchbaseDoc();
+		Map<String, String> cbMap = company.getCrunchbaseDoc();
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
-				.toJson(map));
-		// TODO get another map by calling getWikiData(), then pass 2
-		// basicDBObject in the function below
-		aggregator.filterAndSetCompanyDetailedInfo(cbBasicDBObject, company);
+				.toJson(cbMap));
+
+		Map<String, String> wikiMap = company.getWikipediaDoc();
+		BasicDBObject wikiBasicDBObject = (BasicDBObject) JSON.parse(gson
+				.toJson(wikiMap));
+
+		aggregator.filterAndSetCompanyDetailedInfo(cbBasicDBObject,
+				wikiBasicDBObject, company);
 		return company;
 	}
 
@@ -127,11 +135,14 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Iterator<Company> it = companyList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
-			Map<String, String> map = company.getCrunchbaseDoc();
+			Map<String, String> cbMap = company.getCrunchbaseDoc();
 			BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
-					.toJson(map));
-			aggregator
-					.filterAndSetCompanyDetailedInfo(cbBasicDBObject, company);
+					.toJson(cbMap));
+			Map<String, String> wikiMap = company.getWikipediaDoc();
+			BasicDBObject wikiBasicDBObject = (BasicDBObject) JSON.parse(gson
+					.toJson(wikiMap));
+			aggregator.filterAndSetCompanyDetailedInfo(cbBasicDBObject,
+					wikiBasicDBObject, company);
 		}
 		return companyList;
 	}
@@ -153,12 +164,16 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Iterator<Company> it = tempList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
-			Map<String, String> map = company.getCrunchbaseDoc();
+			Map<String, String> cbMap = company.getCrunchbaseDoc();
 			BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
-					.toJson(map));
+					.toJson(cbMap));
+			Map<String, String> wikiMap = company.getWikipediaDoc();
+			BasicDBObject wikiBasicDBObject = (BasicDBObject) JSON.parse(gson
+					.toJson(wikiMap));
 
 			// Filter the data and update the company model
-			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject, company);
+			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject,
+					wikiBasicDBObject, company);
 			paginatedList.add(company);
 		}
 
@@ -192,12 +207,16 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Iterator<Company> it = tempList.iterator();
 		while (it.hasNext()) {
 			Company company = it.next();
-			Map<String, String> map = company.getCrunchbaseDoc();
+			Map<String, String> cbMap = company.getCrunchbaseDoc();
 			BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
-					.toJson(map));
+					.toJson(cbMap));
+			Map<String, String> wikiMap = company.getWikipediaDoc();
+			BasicDBObject wikiBasicDBObject = (BasicDBObject) JSON.parse(gson
+					.toJson(wikiMap));
 
 			// Filter the data and update the company model
-			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject, company);
+			aggregator.filterAndSetCompanyBasicInfo(cbBasicDBObject,
+					wikiBasicDBObject, company);
 			paginatedList.add(company);
 		}
 
