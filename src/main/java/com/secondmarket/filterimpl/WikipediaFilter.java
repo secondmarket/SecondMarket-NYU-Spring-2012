@@ -284,7 +284,7 @@ public class WikipediaFilter implements Filter {
 		InputStream inputStream = null;
 		try {
 			inputStream = this.getClass().getResourceAsStream(
-					"/file/en-sent.bin");
+					"/com/secondmarket/traineddata/en-sent.bin");
 			SentenceModel sentenceModel = new SentenceModel(inputStream);
 			inputStream.close();
 			sentenceDetector = new SentenceDetectorME(sentenceModel);
