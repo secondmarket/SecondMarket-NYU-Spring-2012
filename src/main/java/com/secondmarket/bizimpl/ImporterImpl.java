@@ -16,6 +16,7 @@ import com.secondmarket.biz.Importer;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.model.Company;
+import com.secondmarket.properties.SMProperties;
 import com.secondmarket.utility.DataMapper;
 import com.secondmarket.utility.WikipediaUtils;
 
@@ -28,11 +29,20 @@ public final class ImporterImpl implements Importer {
 
 	private CompanyDAO companyDao;
 	private Gson gson;
-	public WikipediaUtils wikiUtils = new WikipediaUtils();
+	private WikipediaUtils wikiUtils;
+	private SMProperties wikiProperty;
+	
 
 	public ImporterImpl() {
-		companyDao = new CompanyDAOImpl();
 		gson = new Gson();
+		try {
+			wikiProperty = SMProperties.getInstance("WIKI");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		wikiUtils = new WikipediaUtils(wikiProperty);
+		companyDao = new CompanyDAOImpl(wikiProperty);
 	}
 
 	public void storeAllCompanies() {

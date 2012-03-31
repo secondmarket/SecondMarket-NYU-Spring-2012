@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 /***
  * 
@@ -44,9 +45,9 @@ public class SMProperties {
 		return properties.get(key);
 	}
 	
-	public List<String> getValues(String source, String key){
+	public List<Pattern> getValues(String source, String key){
+		List<Pattern> patternList = new ArrayList<Pattern>();
 		PropertyGroup group = properties.get(source);
-		List<String> values = new ArrayList<String>();
 		Collection<String> c = group.getGroupNames();
 		Collection<String> collection = null;
 		
@@ -54,6 +55,7 @@ public class SMProperties {
 		Iterator<String> iterator = null;
 		String subkey = null;
 		String value = null;
+		Pattern myPattern;
 		while(i.hasNext()){
 			String name = (String)i.next();
 			if(key.equalsIgnoreCase(name)){
@@ -66,14 +68,15 @@ public class SMProperties {
 					if(value != null){
 						value = value.replace("\"", "");
 					}
-					values.add(value);
+					myPattern = Pattern.compile(value, Pattern.CASE_INSENSITIVE);
+					patternList.add(myPattern);
 				}
 			}
 		}
-		return values;
+		return patternList;
 	}
 	
-	public String getValue(String source, String key, String subkey) throws Exception{
+	public Pattern getValue(String source, String key, String subkey) throws Exception{
 		PropertyGroup group = properties.get(source);
 		String values = null;
 		if(group == null){
@@ -91,7 +94,7 @@ public class SMProperties {
 				}
 			}
 		}
-		return values;
+		return Pattern.compile(values, Pattern.CASE_INSENSITIVE);
 	}
 	
 	public PropertyGroup getPropertyGroup(String source){
