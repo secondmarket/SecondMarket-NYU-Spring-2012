@@ -70,7 +70,7 @@ public final class ImporterImpl implements Importer {
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
 					crunchbaseDoc, wikipediaDoc);
-			wikipediaDoc = null;
+			wikipediaDoc = null;		
 		}
 		System.out.println(count);
 	}

@@ -30,6 +30,11 @@
 			<name>json-taglib</name>
 			<url>http://www.mvnsearch.org/maven2</url>
 		</repository>
+
+		<repository>
+			<id>googlecode.svn.gwtwiki</id>
+			<url>dav:https://gwtwiki.googlecode.com/svn/maven-repository/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -99,6 +104,31 @@
 			<artifactId>json-taglib</artifactId>
 			<version>0.4.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>info.bliki.wiki</groupId>
+			<artifactId>bliki-core</artifactId>
+			<version>3.0.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.opennlp</groupId>
+			<artifactId>opennlp-tools</artifactId>
+			<version>1.5.2-incubating</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xerces</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
 
 	</dependencies>
 	<build>
