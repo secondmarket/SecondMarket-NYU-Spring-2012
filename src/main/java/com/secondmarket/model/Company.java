@@ -1,9 +1,11 @@
 package com.secondmarket.model;
 
+import java.util.List;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
 
+import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Transient;
@@ -33,6 +35,9 @@ public class Company {
 	private Map<String, String> crunchbaseDoc;
 
 	private Map<String, String> wikipediaDoc;
+
+	@Embedded
+	private List<FundingRound> fundings;
 
 	@Transient
 	private String overview;
@@ -119,6 +124,14 @@ public class Company {
 
 	public void setOverview(String overview) {
 		this.overview = overview;
+	}
+
+	public List<FundingRound> getFundings() {
+		return fundings;
+	}
+
+	public void setFundings(List<FundingRound> fundings) {
+		this.fundings = fundings;
 	}
 
 }

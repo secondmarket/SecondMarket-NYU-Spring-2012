@@ -76,7 +76,9 @@
 	</table><br>
 
 
-	<div id="content" align="center"></div>
+	<div id="paginator" class="paginatorclass">
+	
+	</div>
 	<input type="hidden" name="page_count" id="page_count" />
 
 	<div align="center">

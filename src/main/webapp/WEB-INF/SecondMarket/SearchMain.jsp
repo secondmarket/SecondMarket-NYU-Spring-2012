@@ -51,7 +51,9 @@
 
 	</table>
 
-	<div id="content" align="center"></div>
+	<div id="paginator" class="paginatorclass">
+	
+	</div>
 	<input type="hidden" name="searchedpage_count" id="searchedpage_count" />
 
 	<div align="center">

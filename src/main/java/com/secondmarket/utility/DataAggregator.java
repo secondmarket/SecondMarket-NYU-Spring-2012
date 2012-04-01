@@ -1,5 +1,6 @@
 package com.secondmarket.utility;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import com.mongodb.BasicDBObject;
 import com.secondmarket.filter.CrunchBaseFilter;
 import com.secondmarket.filter.WikipediaFilter;
 import com.secondmarket.model.Company;
+import com.secondmarket.model.FundingRound;
 
 /**
  * 
@@ -32,6 +34,7 @@ public class DataAggregator {
 		String location;
 		String country;
 		String industry;
+		List<FundingRound> fundings;
 
 		companyName = cbFilter.getCompanyName(cbBasicDBObject);
 		funding = cbFilter.getFunding(cbBasicDBObject);
@@ -39,6 +42,7 @@ public class DataAggregator {
 		location = cbFilter.getLocation(cbBasicDBObject);
 		country = cbFilter.getCounrty(cbBasicDBObject);
 		industry = cbFilter.getIndustry(cbBasicDBObject);
+		fundings = cbFilter.getFundings(cbBasicDBObject);
 
 		company.setCompanyName(companyName);
 		System.out.println(companyName);
@@ -47,6 +51,7 @@ public class DataAggregator {
 		company.setLocation(location);
 		company.setCountry(country);
 		company.setIndustry(industry);
+		company.setFundings(fundings);
 
 	}
 
@@ -57,7 +62,7 @@ public class DataAggregator {
 		String cbOverview = "";
 		String wikiOverview = "";
 		cbOverview = cbFilter.getOverview(cbBasicDBObject);
-		
+
 		StringBuffer wikipediaContentStringBuffer = new StringBuffer();
 		if (wikiBasicDBObject != null) {
 			// wikiOverview = wikiFilter.getOverview(wikiBasicDBObject);
@@ -66,16 +71,18 @@ public class DataAggregator {
 
 			Map<String, List<String>> contentMap = wikiFilter.extractText(
 					wikiBasicDBObject, company);
-			
+
 			// TODO append all the extracted sentences for testing
 			Set<String> keySet = contentMap.keySet();
 			Iterator<String> it = keySet.iterator();
-			while(it.hasNext()){
+			while (it.hasNext()) {
 				String sectionTopic = it.next();
-				wikipediaContentStringBuffer.append("<h5>" + sectionTopic + "</h5>");
+				wikipediaContentStringBuffer.append("<h5>" + sectionTopic
+						+ "</h5>");
 				List<String> sentenceList = contentMap.get(sectionTopic);
-				for (String sentence : sentenceList){
-					wikipediaContentStringBuffer.append(" -- " + sentence + "<br/>");
+				for (String sentence : sentenceList) {
+					wikipediaContentStringBuffer.append(" -- " + sentence
+							+ "<br/>");
 				}
 			}
 		}
