@@ -1,6 +1,5 @@
 package com.secondmarket.utility;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,7 @@ import com.secondmarket.filter.CrunchBaseFilter;
 import com.secondmarket.filter.WikipediaFilter;
 import com.secondmarket.model.Company;
 import com.secondmarket.model.FundingRound;
+import com.secondmarket.properties.SMProperties;
 
 /**
  * 
@@ -21,9 +21,9 @@ public class DataAggregator {
 	private CrunchBaseFilter cbFilter;
 	private WikipediaFilter wikiFilter;
 
-	public DataAggregator() {
+	public DataAggregator(SMProperties wikiProperty) {
 		cbFilter = new CrunchBaseFilter();
-		wikiFilter = new WikipediaFilter();
+		wikiFilter = new WikipediaFilter(wikiProperty);
 	}
 
 	public void filterAndSetCompanyBasicInfo(BasicDBObject cbBasicDBObject,
@@ -69,8 +69,10 @@ public class DataAggregator {
 			// TODO dump the info-box data for now
 			// wikiFilter.getInfoboxData(wikiBasicDBObject);
 
-			Map<String, List<String>> contentMap = wikiFilter.extractText(
-					wikiBasicDBObject, company);
+			// Map<String, List<String>> contentMap = wikiFilter.extractText(
+			// wikiBasicDBObject, company);
+			Map<String, List<String>> contentMap = wikiFilter
+					.getFilteredWikipediaDoc(wikiBasicDBObject, company);
 
 			// TODO append all the extracted sentences for testing
 			Set<String> keySet = contentMap.keySet();

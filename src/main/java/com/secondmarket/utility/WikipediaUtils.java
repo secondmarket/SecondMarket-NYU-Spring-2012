@@ -21,22 +21,17 @@ public class WikipediaUtils {
 
 	private Gson gson;
 	private SMProperties p;
-	private Matcher myMatcher;
 
-	public WikipediaUtils() {
+	public WikipediaUtils(SMProperties p) {
 		gson = new Gson();
-		try {
-			p = SMProperties.getInstance("WIKI");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.p = p;
 	}
+	
 
 	private String percentEncodeReservedCharacters(String title) {
 		return URIUtil.encodePath(title);
 	}
-
+	
 	/***
 	 * Using Wikipedia Search API to get possible titles 
 	 * according to the specialized Crunchbase Company Name
@@ -154,15 +149,14 @@ public class WikipediaUtils {
 		return null;
 	}
 	
-	public List<String> getInfoboxPattern(){
+	public List<Pattern> getInfoboxPattern(){
 		return p.getValues("INFOBOX", "OPTIONS");
 	}
 	
 	public Pattern getInfoboxSpecifiedPattern(){
 		Pattern myPattern = null;
 		try {
-			String str = p.getValue("INFOBOX", "OPTIONS", "OPTION");
-			myPattern = Pattern.compile(str, Pattern.CASE_INSENSITIVE); 
+			myPattern = p.getValue("INFOBOX", "OPTIONS", "OPTION");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -180,9 +174,8 @@ public class WikipediaUtils {
 		return flag;
 	}
 	
-	public boolean checkPatternMatch(Pattern myPattern, String text){
-		myMatcher = myPattern.matcher(text);
-		return myMatcher.matches();
+	public static boolean checkPatternMatch(Pattern myPattern, String text){
+		return myPattern.matcher(text).matches();
 	}
 
 
@@ -207,7 +200,15 @@ public class WikipediaUtils {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		WikipediaUtils dataImporter = new WikipediaUtils();
+		SMProperties wikiProperty = null;
+		try {
+			wikiProperty = SMProperties.getInstance("WIKI");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		WikipediaUtils dataImporter = new WikipediaUtils(wikiProperty);
 		List<String> titleList = dataImporter.getPossibleTitlesbySearch("facebook");
 		String title = dataImporter.getCompanyTitle(titleList);
 

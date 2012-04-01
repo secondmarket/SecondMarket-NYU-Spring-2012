@@ -19,6 +19,7 @@ import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.model.Company;
+import com.secondmarket.properties.SMProperties;
 import com.secondmarket.utility.DataAggregator;
 
 /**
@@ -35,7 +36,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	private Morphia morphia;
 
 	private DataAggregator aggregator;
-
+	
 	public CompanyDAOImpl() {
 		try {
 
@@ -52,7 +53,26 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		morphia = new Morphia();
 		morphia.map(Company.class);
 		ds = morphia.createDatastore(mongo, "secondmarket");
-		aggregator = new DataAggregator();
+	}
+
+
+	public CompanyDAOImpl(SMProperties wikiProperty) {
+		try {
+
+			mongo = new Mongo("localhost", 27017);
+			db = mongo.getDB("secondmarket");
+			dbCollection = db.getCollection("company");
+			// dbCollection.drop();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (MongoException e) {
+			System.out.println("MongoDB is not running!");
+			e.printStackTrace();
+		}
+		morphia = new Morphia();
+		morphia.map(Company.class);
+		ds = morphia.createDatastore(mongo, "secondmarket");
+		aggregator = new DataAggregator(wikiProperty);
 	}
 
 	public void saveMasterlist(List<Object> masterList) {

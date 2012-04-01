@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ import org.jsoup.safety.Whitelist;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.secondmarket.model.Company;
+import com.secondmarket.properties.SMProperties;
+import com.secondmarket.utility.WikipediaUtils;
 
 /**
  * 
@@ -33,9 +36,11 @@ import com.secondmarket.model.Company;
 public class WikipediaFilter {
 
 	private Gson gson;
+	private SMProperties p;
 
-	public WikipediaFilter() {
-		gson = new Gson();
+	public WikipediaFilter(SMProperties wikiProperty) {
+		this.gson = new Gson();
+		this.p = wikiProperty;
 	}
 
 	private String getStringFromNestedJson(String jsonBody, String beginTag,
@@ -393,6 +398,36 @@ public class WikipediaFilter {
 		}
 
 		return null;
+	}
+	
+	/***
+	 * Add by danjuan
+	 * March 31, 2012
+	 * @param basicDBObject
+	 * @param company
+	 * @return
+	 */
+	public Map<String, List<String>> getFilteredWikipediaDoc(BasicDBObject basicDBObject, Company company){
+		Map<String, List<String>> map = extractText(basicDBObject, company);
+		List<Pattern> patternList = p.getValues("CLEAN", "OPTIONS");
+		Iterator<String> iter = map.keySet().iterator();
+		List<String> removedList = new ArrayList<String>();
+		while(iter.hasNext()){
+			String key = iter.next();
+			System.out.println("Key in the MAP: " + key);
+			for(Pattern pattern : patternList){
+				if(WikipediaUtils.checkPatternMatch(pattern, key)){
+					removedList.add(key);
+					System.out.println("MATTCH: " + pattern.toString());
+					break;
+				}
+			}
+		}
+		for(String key : removedList){
+			map.remove(key);
+		}
+		return map;
+		
 	}
 
 	/*
