@@ -165,7 +165,7 @@ public final class CrunchBaseFilter {
 					double raisedAmount = Double.parseDouble(round
 							.get("raised_amount").toString().trim());
 					fundingRound.setRaisedAmount(raisedAmount);
-					System.out.println(raisedAmount);
+					// System.out.println(raisedAmount);
 				} else {
 					fundingRound.setRaisedAmount(0.00);
 				}
@@ -224,8 +224,8 @@ public final class CrunchBaseFilter {
 									&& companyInvestment.get("name") != null) {
 								investorList.add(companyInvestment.get("name")
 										.toString().trim());
-								System.out.println(companyInvestment
-										.get("name").toString().trim());
+								// System.out.println(companyInvestment
+								// .get("name").toString().trim());
 							}
 						} else if (investment.containsField("financial_org")
 								&& investment.get("financial_org") != null) {
@@ -235,8 +235,8 @@ public final class CrunchBaseFilter {
 									&& financialOrgInvestment.get("name") != null) {
 								investorList.add(financialOrgInvestment
 										.get("name").toString().trim());
-								System.out.println(financialOrgInvestment
-										.get("name").toString().trim());
+								// System.out.println(financialOrgInvestment
+								// .get("name").toString().trim());
 							}
 						} else if (investment.containsField("person")
 								&& investment.get("person") != null) {
@@ -255,7 +255,7 @@ public final class CrunchBaseFilter {
 										.toString().trim();
 							}
 							investorList.add(firstName + " " + lastName);
-							System.out.println(firstName + " " + lastName);
+							// System.out.println(firstName + " " + lastName);
 						} else {
 							investorList.add("undefined");
 						}

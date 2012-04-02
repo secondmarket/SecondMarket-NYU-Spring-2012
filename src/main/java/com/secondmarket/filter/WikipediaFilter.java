@@ -161,7 +161,7 @@ public class WikipediaFilter {
 			// System.out.println("topicBody: " + topicBody);
 
 			String topicName = this.getTopicName(topicBody);
-			System.out.println(topicName);
+			// System.out.println(topicName);
 
 			String cleanedString = this.cleanTextBody(topicBody);
 
@@ -214,7 +214,7 @@ public class WikipediaFilter {
 		topicBody = topicBody.replaceAll("(?i)(\\{{2})(As of\\|)(.*?)(\\}{2})",
 				"As of $3");
 
-		System.out.println("0000000" + topicBody + "\n");
+		// System.out.println("0000000" + topicBody + "\n");
 
 		WikiModel wikiModel = new WikiModel(
 				"http://en.wikipedia.org/wiki/${image}",
