@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -163,8 +164,13 @@ public class WikipediaFilter {
 			System.out.println(topicName);
 
 			String cleanedString = this.cleanTextBody(topicBody);
-			List<String> sentenceList = this.extractEventSentences(
-					cleanedString, company);
+
+			// List<String> sentenceList = this.extractEventSentences(
+			// cleanedString, company);
+			String[] detectedSentences = this.sentenceAnalysis(cleanedString);
+			List<String> sentenceList = new ArrayList<String>(
+					Arrays.asList(detectedSentences));
+
 			if (sentenceList.size() != 0) {
 				contentMap.put(topicName, sentenceList);
 			}
@@ -242,7 +248,7 @@ public class WikipediaFilter {
 		// Format the text with exactly one white space for multiple spaces
 		cleanedStr = cleanedStr.replaceAll("\\s+", " ");
 
-		System.out.println("4444444" + cleanedStr + "\n");
+		// System.out.println("4444444" + cleanedStr + "\n");
 
 		return cleanedStr;
 	}
@@ -399,35 +405,36 @@ public class WikipediaFilter {
 
 		return null;
 	}
-	
+
 	/***
-	 * Add by danjuan
-	 * March 31, 2012
+	 * Add by danjuan March 31, 2012
+	 * 
 	 * @param basicDBObject
 	 * @param company
 	 * @return
 	 */
-	public Map<String, List<String>> getFilteredWikipediaDoc(BasicDBObject basicDBObject, Company company){
+	public Map<String, List<String>> getFilteredWikipediaDoc(
+			BasicDBObject basicDBObject, Company company) {
 		Map<String, List<String>> map = extractText(basicDBObject, company);
 		List<Pattern> patternList = p.getValues("CLEAN", "OPTIONS");
 		Iterator<String> iter = map.keySet().iterator();
 		List<String> removedList = new ArrayList<String>();
-		while(iter.hasNext()){
+		while (iter.hasNext()) {
 			String key = iter.next();
 			System.out.println("Key in the MAP: " + key);
-			for(Pattern pattern : patternList){
-				if(WikipediaUtils.checkPatternMatch(pattern, key)){
+			for (Pattern pattern : patternList) {
+				if (WikipediaUtils.checkPatternMatch(pattern, key)) {
 					removedList.add(key);
 					System.out.println("MATTCH: " + pattern.toString());
 					break;
 				}
 			}
 		}
-		for(String key : removedList){
+		for (String key : removedList) {
 			map.remove(key);
 		}
 		return map;
-		
+
 	}
 
 	/*
