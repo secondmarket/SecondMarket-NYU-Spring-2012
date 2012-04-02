@@ -1,7 +1,10 @@
 package com.secondmarket.filter;
 
+import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,6 +23,7 @@ import com.secondmarket.model.FundingRound;
 public final class CrunchBaseFilter {
 	// For converting the integer month number to String month name
 	private String[] months = new DateFormatSymbols().getMonths();
+	private NumberFormat numberFormat = NumberFormat.getInstance();
 
 	public String getCompanyName(BasicDBObject basicDBObject) {
 		if (basicDBObject.containsField("name")
@@ -135,7 +139,6 @@ public final class CrunchBaseFilter {
 
 	public List<FundingRound> getFundings(BasicDBObject basicDBObject) {
 		List<FundingRound> fundings = new ArrayList<FundingRound>();
-		List<String> investorList = new ArrayList<String>();
 
 		if (basicDBObject.containsField("funding_rounds")
 				&& basicDBObject.get("funding_rounds") != null) {
@@ -162,9 +165,32 @@ public final class CrunchBaseFilter {
 				// Set raised_amount
 				if (round.containsField("raised_amount")
 						&& round.get("raised_amount") != null) {
-					double raisedAmount = Double.parseDouble(round
-							.get("raised_amount").toString().trim());
+					String raisedAmountValue = round.get("raised_amount")
+							.toString().trim();
+					double raisedAmount = Double.parseDouble(raisedAmountValue);
+					String raisedAmountString = "";
+
+					numberFormat.setMaximumFractionDigits(0); // No decimal
+																// points
+					String tempRaisedAmountString = numberFormat.format(
+							raisedAmount).replace(",", "");
+
+					if (tempRaisedAmountString.length() <= 6) {
+						raisedAmountString = String.format("%.1fK",
+								raisedAmount / 1000.0);
+					} else if (tempRaisedAmountString.length() > 6
+							&& tempRaisedAmountString.length() <= 9) {
+						raisedAmountString = String.format("%.1fM",
+								raisedAmount / 1000000.0);
+					} else {
+						raisedAmountString = String.format("%.1fB",
+								raisedAmount / 1000000000.0);
+					}
+
+					System.out.println("Raised amount string --> "
+							+ raisedAmountString);
 					fundingRound.setRaisedAmount(raisedAmount);
+					fundingRound.setRaisedAmountString(raisedAmountString);
 					// System.out.println(raisedAmount);
 				} else {
 					fundingRound.setRaisedAmount(0.00);
@@ -174,8 +200,10 @@ public final class CrunchBaseFilter {
 						&& round.get("raised_currency_code") != null) {
 					String raisedCurrencyCode = round
 							.get("raised_currency_code").toString().trim();
-					fundingRound.setRaisedCurrencyCode(raisedCurrencyCode);
-					// System.out.println(raisedCurrencyCode);
+					Currency currency = Currency
+							.getInstance(raisedCurrencyCode);
+					fundingRound.setRaisedCurrencyCode(currency.getSymbol());
+					// System.out.println(currency.getSymbol());
 				} else {
 					fundingRound.setRaisedCurrencyCode("undefined");
 				}
@@ -206,6 +234,7 @@ public final class CrunchBaseFilter {
 				// System.out.println(fundedMonth + " " + fundedYear);
 
 				// Set investments
+				List<String> investorList = new ArrayList<String>();
 				if (round.containsField("investments")
 						&& round.get("investments") != null) {
 					BasicDBList investmentsList = (BasicDBList) JSON
@@ -260,11 +289,11 @@ public final class CrunchBaseFilter {
 							investorList.add("undefined");
 						}
 					}
-
+					fundingRound.setInvestorList(investorList);
 				} else {
 					investorList.add("undefined");
+					fundingRound.setInvestorList(investorList);
 				}
-				fundingRound.setInvestorList(investorList);
 
 				fundings.add(fundingRound);
 			}

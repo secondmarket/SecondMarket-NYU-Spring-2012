@@ -9,6 +9,7 @@ public class FundingRound {
 
 	private String roundCode;
 	private double raisedAmount;
+	private String raisedAmountString;
 	private String raisedCurrencyCode;
 	private String fundedDate;
 	private List<String> investorList;
@@ -27,6 +28,14 @@ public class FundingRound {
 
 	public void setRaisedAmount(double raisedAmount) {
 		this.raisedAmount = raisedAmount;
+	}
+
+	public String getRaisedAmountString() {
+		return raisedAmountString;
+	}
+
+	public void setRaisedAmountString(String raisedAmountString) {
+		this.raisedAmountString = raisedAmountString;
 	}
 
 	public String getRaisedCurrencyCode() {

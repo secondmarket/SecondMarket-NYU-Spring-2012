@@ -48,7 +48,7 @@ public final class ImporterImpl implements Importer {
 	public void storeAllCompanies() {
 		List<Object> masterList = companyDao.getMasterList();
 
-		List<Object> list = masterList.subList(0, 111);
+		List<Object> list = masterList.subList(0, 5);
 
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> crunchbaseDoc = null;
