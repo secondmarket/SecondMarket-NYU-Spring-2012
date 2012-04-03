@@ -31,6 +31,7 @@ public class DataAggregator {
 	public void filterAndSetCompanyBasicInfo(BasicDBObject cbBasicDBObject,
 			BasicDBObject wikiBasicDBObject, Company company) {
 		String companyName;
+		String homepageurl;
 		String funding;
 		double fundingAmount;
 		String location;
@@ -41,6 +42,7 @@ public class DataAggregator {
 		List<Relationship> relationships;
 
 		companyName = cbFilter.getCompanyName(cbBasicDBObject);
+		homepageurl = cbFilter.getHomepageUrl(cbBasicDBObject);
 		funding = cbFilter.getFunding(cbBasicDBObject);
 		fundingAmount = cbFilter.getFundingAmount(cbBasicDBObject);
 		location = cbFilter.getLocation(cbBasicDBObject);
@@ -52,6 +54,7 @@ public class DataAggregator {
 
 		company.setCompanyName(companyName);
 		System.out.println(companyName);
+		company.setHomepageurl(homepageurl);
 		company.setFunding(funding);
 		company.setFundingAmount(fundingAmount);
 		company.setLocation(location);

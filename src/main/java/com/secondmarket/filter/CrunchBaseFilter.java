@@ -35,6 +35,15 @@ public final class CrunchBaseFilter {
 		}
 	}
 
+	public String getHomepageUrl(BasicDBObject basicDBObject) {
+		if (basicDBObject.containsField("homepage_url")
+				&& basicDBObject.get("homepage_url") != null) {
+			return basicDBObject.get("homepage_url").toString().trim();
+		} else {
+			return "undefined";
+		}
+	}
+
 	public String getFunding(BasicDBObject basicDBObject) {
 		if (basicDBObject.containsField("total_money_raised")
 				&& basicDBObject.get("total_money_raised") != null) {

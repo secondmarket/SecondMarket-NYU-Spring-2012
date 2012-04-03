@@ -22,6 +22,8 @@ public class Company {
 
 	private String companyName;
 
+	private String homepageurl;
+
 	private String location;
 
 	private String country;
@@ -66,6 +68,14 @@ public class Company {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	public String getHomepageurl() {
+		return homepageurl;
+	}
+
+	public void setHomepageurl(String homepageurl) {
+		this.homepageurl = homepageurl;
 	}
 
 	public Map<String, String> getCrunchbaseDoc() {
