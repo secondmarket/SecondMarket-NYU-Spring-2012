@@ -5,7 +5,7 @@ import com.mongodb.BasicDBObject;
 /**
  * 
  * @author Ming Li
- *
+ * 
  */
 public final class CrunchBaseUtils {
 
@@ -31,6 +31,7 @@ public final class CrunchBaseUtils {
 	public boolean checkCompanyEligibility(BasicDBObject basicDBObject) {
 		// Zero-funding companies are not considered
 		if (basicDBObject.containsField("total_money_raised")
+				&& basicDBObject.get("total_money_raised") != null
 				&& basicDBObject.get("total_money_raised").toString().trim()
 						.length() == 2
 				&& basicDBObject.get("total_money_raised").toString().trim()
