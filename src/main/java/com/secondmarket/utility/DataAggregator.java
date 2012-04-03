@@ -11,6 +11,7 @@ import com.secondmarket.filter.WikipediaFilter;
 import com.secondmarket.model.Company;
 import com.secondmarket.model.FundingRound;
 import com.secondmarket.model.Office;
+import com.secondmarket.model.Relationship;
 import com.secondmarket.properties.SMProperties;
 
 /**
@@ -37,6 +38,7 @@ public class DataAggregator {
 		String industry;
 		List<FundingRound> fundings;
 		List<Office> offices;
+		List<Relationship> relationships;
 
 		companyName = cbFilter.getCompanyName(cbBasicDBObject);
 		funding = cbFilter.getFunding(cbBasicDBObject);
@@ -46,6 +48,7 @@ public class DataAggregator {
 		industry = cbFilter.getIndustry(cbBasicDBObject);
 		fundings = cbFilter.getFundings(cbBasicDBObject);
 		offices = cbFilter.getOffices(cbBasicDBObject);
+		relationships = cbFilter.getRelationships(cbBasicDBObject);
 
 		company.setCompanyName(companyName);
 		System.out.println(companyName);
@@ -56,6 +59,7 @@ public class DataAggregator {
 		company.setIndustry(industry);
 		company.setFundings(fundings);
 		company.setOffices(offices);
+		company.setRelationships(relationships);
 
 	}
 

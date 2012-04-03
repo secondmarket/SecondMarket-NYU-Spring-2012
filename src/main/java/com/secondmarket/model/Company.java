@@ -42,6 +42,9 @@ public class Company {
 	@Embedded
 	private List<Office> offices;
 
+	@Embedded
+	private List<Relationship> relationships;
+
 	@Transient
 	private String overview;
 
@@ -143,6 +146,14 @@ public class Company {
 
 	public void setOffices(List<Office> offices) {
 		this.offices = offices;
+	}
+
+	public List<Relationship> getRelationships() {
+		return relationships;
+	}
+
+	public void setRelationships(List<Relationship> relationships) {
+		this.relationships = relationships;
 	}
 
 }

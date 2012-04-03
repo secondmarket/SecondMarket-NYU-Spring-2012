@@ -14,6 +14,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import com.secondmarket.model.FundingRound;
 import com.secondmarket.model.Office;
+import com.secondmarket.model.Relationship;
 
 /**
  * 
@@ -187,8 +188,8 @@ public final class CrunchBaseFilter {
 								raisedAmount / 1000000000.0);
 					}
 
-					System.out.println("Raised amount string --> "
-							+ raisedAmountString);
+					// System.out.println("Raised amount string --> "
+					// + raisedAmountString);
 					fundingRound.setRaisedAmount(raisedAmount);
 					fundingRound.setRaisedAmountString(raisedAmountString);
 					// System.out.println(raisedAmount);
@@ -411,4 +412,69 @@ public final class CrunchBaseFilter {
 		return offices;
 	}
 
+	public List<Relationship> getRelationships(BasicDBObject basicDBObject) {
+		List<Relationship> relationships = new ArrayList<Relationship>();
+
+		if (basicDBObject.containsField("relationships")
+				&& basicDBObject.get("relationships") != null) {
+			BasicDBList relationshipList = (BasicDBList) JSON
+					.parse(basicDBObject.get("relationships").toString().trim());
+			Iterator<Object> relationshipIterator = relationshipList.iterator();
+			while (relationshipIterator.hasNext()) {
+				Relationship relationship = new Relationship();
+				BasicDBObject relationshipObj = (BasicDBObject) relationshipIterator
+						.next();
+
+				if (relationshipObj.containsField("is_past")
+						&& relationshipObj.get("is_past") != null
+						&& relationshipObj.getBoolean("is_past") == true) {
+					continue;
+				} else {
+					// Set title
+					if (relationshipObj.containsField("title")
+							&& relationshipObj.get("title") != null) {
+						relationship.setTitle(relationshipObj.get("title")
+								.toString().trim());
+						// System.out.println(relationshipObj.getString("title"));
+					} else {
+						relationship.setTitle("");
+					}
+
+					// Set name
+					if (relationshipObj.containsField("person")
+							&& relationshipObj.get("person") != null) {
+						BasicDBObject personObj = (BasicDBObject) relationshipObj
+								.get("person");
+						String name = "";
+						String firstName = "";
+						String lastName = "";
+						if (personObj.containsField("first_name")
+								&& personObj.get("first_name") != null) {
+							firstName = personObj.get("first_name").toString()
+									.trim();
+						}
+						if (personObj.containsField("last_name")
+								&& personObj.get("last_name") != null) {
+							lastName = personObj.get("last_name").toString()
+									.trim();
+						}
+						name = firstName + " " + lastName;
+						relationship.setName(name);
+						// System.out.println(name);
+
+					} else {
+						relationship.setName("");
+					}
+				}
+				relationships.add(relationship);
+			}
+		} else {
+			Relationship relationship = new Relationship();
+			relationship.setTitle("undefined");
+			relationship.setName("undefined");
+			relationships.add(relationship);
+		}
+
+		return relationships;
+	}
 }
