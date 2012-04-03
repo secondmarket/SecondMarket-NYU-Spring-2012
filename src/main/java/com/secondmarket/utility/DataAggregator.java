@@ -69,27 +69,38 @@ public class DataAggregator {
 
 		StringBuffer wikipediaContentStringBuffer = new StringBuffer();
 		if (wikiBasicDBObject != null) {
-			// wikiOverview = wikiFilter.getOverview(wikiBasicDBObject);
 			// TODO dump the info-box data for now
 			// wikiFilter.getInfoboxData(wikiBasicDBObject);
 
 			// Map<String, List<String>> contentMap = wikiFilter.extractText(
 			// wikiBasicDBObject, company);
-			Map<String, List<String>> contentMap = wikiFilter
-					.getFilteredWikipediaDoc(wikiBasicDBObject, company);
+			/*
+			 * Map<String, List<String>> contentMap = wikiFilter
+			 * .getFilteredWikipediaDoc(wikiBasicDBObject, company);
+			 */
+			Map<String, String> contentMap = wikiFilter.extractText(
+					wikiBasicDBObject, company);
 
 			// TODO append all the extracted sentences for testing
 			Set<String> keySet = contentMap.keySet();
 			Iterator<String> it = keySet.iterator();
 			while (it.hasNext()) {
 				String sectionTopic = it.next();
-				wikipediaContentStringBuffer.append("<h5>" + sectionTopic
-						+ "</h5>");
-				List<String> sentenceList = contentMap.get(sectionTopic);
-				for (String sentence : sentenceList) {
-					wikipediaContentStringBuffer.append(" -- " + sentence
-							+ "<br/>");
+				if (contentMap.get(sectionTopic).length() == 0) {
+					continue;
+				} else {
+					wikipediaContentStringBuffer.append("<h5>" + sectionTopic
+							+ "</h5>");
+					wikipediaContentStringBuffer.append(" -- "
+							+ contentMap.get(sectionTopic) + "<br/>");
+					/*
+					 * List<String> sentenceList = contentMap.get(sectionTopic);
+					 * for (String sentence : sentenceList) {
+					 * wikipediaContentStringBuffer.append(" -- " + sentence +
+					 * "<br/>"); }
+					 */
 				}
+
 			}
 		}
 

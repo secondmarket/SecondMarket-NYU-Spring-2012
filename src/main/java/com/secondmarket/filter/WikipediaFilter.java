@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -138,7 +137,7 @@ public class WikipediaFilter {
 	 * @param basicDBObject
 	 * @return
 	 */
-	public Map<String, List<String>> extractText(BasicDBObject basicDBObject,
+	public Map<String, String> extractText(BasicDBObject basicDBObject,
 			Company company) {
 		String jsonBody = basicDBObject.toString().trim();
 		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
@@ -149,7 +148,9 @@ public class WikipediaFilter {
 		String allTopicsBody = oneWhiteSpaceBody
 				.substring(beginIndex, endIndex);
 
-		Map<String, List<String>> contentMap = new LinkedHashMap<String, List<String>>();
+		// Map<String, List<String>> contentMap = new LinkedHashMap<String,
+		// List<String>>();
+		Map<String, String> contentMap = new LinkedHashMap<String, String>();
 		int indexMarker = 0;
 		int nextEndIndex = allTopicsBody.indexOf("\\n==");
 		String topicBody = "";
@@ -165,15 +166,16 @@ public class WikipediaFilter {
 
 			String cleanedString = this.cleanTextBody(topicBody);
 
-			// List<String> sentenceList = this.extractEventSentences(
-			// cleanedString, company);
-			String[] detectedSentences = this.sentenceAnalysis(cleanedString);
-			List<String> sentenceList = new ArrayList<String>(
-					Arrays.asList(detectedSentences));
-
-			if (sentenceList.size() != 0) {
-				contentMap.put(topicName, sentenceList);
-			}
+			/*
+			 * List<String> sentenceList = this.extractEventSentences(
+			 * cleanedString, company); String[] detectedSentences =
+			 * this.sentenceAnalysis(cleanedString); List<String> sentenceList =
+			 * new ArrayList<String>( Arrays.asList(detectedSentences));
+			 * 
+			 * if (sentenceList.size() != 0) { contentMap.put(topicName,
+			 * sentenceList); }
+			 */
+			contentMap.put(topicName, cleanedString);
 
 			tempBody = allTopicsBody.substring(indexMarker + nextEndIndex + 1);
 			indexMarker = indexMarker + nextEndIndex + 1;
@@ -413,9 +415,10 @@ public class WikipediaFilter {
 	 * @param company
 	 * @return
 	 */
-	public Map<String, List<String>> getFilteredWikipediaDoc(
+	public Map<String, String> getFilteredWikipediaDoc(
 			BasicDBObject basicDBObject, Company company) {
-		Map<String, List<String>> map = extractText(basicDBObject, company);
+//		Map<String, List<String>> map = extractText(basicDBObject, company);
+		Map<String, String> map = extractText(basicDBObject, company);
 		List<Pattern> patternList = p.getValues("CLEAN", "OPTIONS");
 		Iterator<String> iter = map.keySet().iterator();
 		List<String> removedList = new ArrayList<String>();
