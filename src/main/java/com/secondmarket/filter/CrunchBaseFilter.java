@@ -1,6 +1,5 @@
 package com.secondmarket.filter;
 
-import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import com.secondmarket.model.FundingRound;
+import com.secondmarket.model.Office;
 
 /**
  * 
@@ -301,6 +301,114 @@ public final class CrunchBaseFilter {
 		}
 
 		return fundings;
+	}
+
+	public List<Office> getOffices(BasicDBObject basicDBObject) {
+		List<Office> offices = new ArrayList<Office>();
+
+		if (basicDBObject.containsField("offices")
+				&& basicDBObject.get("offices") != null) {
+			BasicDBList officeList = (BasicDBList) JSON.parse(basicDBObject
+					.get("offices").toString().trim());
+			Iterator<Object> officeListIterator = officeList.iterator();
+			while (officeListIterator.hasNext()) {
+				Office office = new Office();
+				BasicDBObject officeObj = (BasicDBObject) officeListIterator
+						.next();
+				// Set address1
+				if (officeObj.containsField("address1")
+						&& officeObj.get("address1") != null) {
+					office.setAddress1(officeObj.get("address1").toString()
+							.trim());
+					// System.out.println("Address1 --> "
+					// + officeObj.get("address1").toString().trim());
+				} else {
+					office.setAddress1("undefined");
+				}
+				// Set address2
+				if (officeObj.containsField("address2")
+						&& officeObj.get("address2") != null) {
+					office.setAddress2(officeObj.get("address2").toString()
+							.trim());
+					// System.out.println("Address2 --> "
+					// + officeObj.get("address2").toString().trim());
+				} else {
+					office.setAddress2("undefined");
+				}
+				// Set zip_code
+				if (officeObj.containsField("zip_code")
+						&& officeObj.get("zip_code") != null) {
+					office.setZipcode(officeObj.get("zip_code").toString()
+							.trim());
+					// System.out.println("Zipcode --> "
+					// + officeObj.get("zip_code").toString().trim());
+				} else {
+					office.setZipcode("undefined");
+				}
+				// Set city
+				if (officeObj.containsField("city")
+						&& officeObj.get("city") != null) {
+					office.setCity(officeObj.get("city").toString().trim());
+					// System.out.println("City --> "
+					// + officeObj.get("city").toString().trim());
+				} else {
+					office.setCity("undefined");
+				}
+				// Set state_code
+				if (officeObj.containsField("state_code")
+						&& officeObj.get("state_code") != null) {
+					office.setStatecode(officeObj.get("state_code").toString()
+							.trim());
+					// System.out.println("state_code --> "
+					// + officeObj.get("state_code").toString().trim());
+				} else {
+					office.setStatecode("undefined");
+				}
+				// Set country_code
+				if (officeObj.containsField("country_code")
+						&& officeObj.get("country_code") != null) {
+					office.setCountrycode(officeObj.get("country_code")
+							.toString().trim());
+					// System.out.println("country_code --> "
+					// + officeObj.get("country_code").toString().trim());
+				} else {
+					office.setCountrycode("undefined");
+				}
+				// Set latitude
+				if (officeObj.containsField("latitude")
+						&& officeObj.get("latitude") != null) {
+					office.setLatitude(Double.parseDouble(officeObj
+							.get("latitude").toString().trim()));
+				} else {
+					office.setLatitude(0.0);
+				}
+
+				// Set longitude
+				if (officeObj.containsField("longitude")
+						&& officeObj.get("longitude") != null) {
+					office.setLongitude(Double.parseDouble(officeObj
+							.get("longitude").toString().trim()));
+				} else {
+					office.setLongitude(0.0);
+				}
+
+				offices.add(office);
+			}
+
+		} else {
+			Office office = new Office();
+			office.setAddress1("N/A");
+			office.setAddress2("N/A");
+			office.setCity("N/A");
+			office.setCountrycode("N/A");
+			office.setStatecode("N/A");
+			office.setZipcode("N/A");
+			office.setLatitude(0.0);
+			office.setLongitude(0.0);
+			offices.add(office);
+		}
+
+		return offices;
 	}
 
 }

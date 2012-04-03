@@ -39,6 +39,9 @@ public class Company {
 	@Embedded
 	private List<FundingRound> fundings;
 
+	@Embedded
+	private List<Office> offices;
+
 	@Transient
 	private String overview;
 
@@ -132,6 +135,14 @@ public class Company {
 
 	public void setFundings(List<FundingRound> fundings) {
 		this.fundings = fundings;
+	}
+
+	public List<Office> getOffices() {
+		return offices;
+	}
+
+	public void setOffices(List<Office> offices) {
+		this.offices = offices;
 	}
 
 }
