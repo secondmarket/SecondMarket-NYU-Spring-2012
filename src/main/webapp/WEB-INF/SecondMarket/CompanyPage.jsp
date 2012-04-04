@@ -19,7 +19,7 @@
 			<th style="text-align: center">Logo</th>
 			<td style="text-align: center">
 				<%
-					Company company = (Company)request.getAttribute("company");
+					Company company = (Company) request.getAttribute("company");
 					out.print("<img src=\"/SecondMarket/getLogo.htm?companyName="
 							+ company.getCompanyName() + "\">");
 				%>
@@ -44,6 +44,15 @@
 		<tr>
 			<th style="text-align: center">Country</th>
 			<td style="text-align: center">${company.country}</td>
+		</tr>
+
+		<tr>
+			<th style="text-align: center">Video</th>
+			<td style="text-align: center">
+				<%
+					out.print(company.getVideos().get(0));
+				%>
+			</td>
 		</tr>
 
 		<tr>

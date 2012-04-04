@@ -43,8 +43,12 @@ public class DataAggregator {
 		List<FundingRound> fundings;
 		List<Office> offices;
 		List<Relationship> relationships;
+		List<String> embedsVideoSrcList;
 
 		companyName = cbFilter.getCompanyName(cbBasicDBObject);
+		System.out.println("==============================" + companyName
+				+ "==============================");
+
 		homepageurl = cbFilter.getHomepageUrl(cbBasicDBObject);
 		funding = cbFilter.getFunding(cbBasicDBObject);
 		fundingAmount = cbFilter.getFundingAmount(cbBasicDBObject);
@@ -61,9 +65,9 @@ public class DataAggregator {
 		offices = cbFilter.getOffices(cbBasicDBObject);
 		relationships = cbFilter.getRelationships(cbBasicDBObject);
 		byte[] imagebyte = cbFilter.getCompanyLogo(cbBasicDBObject);
+		embedsVideoSrcList = cbFilter.getEmbedVideoSrcs(cbBasicDBObject);
 
 		company.setCompanyName(companyName);
-		System.out.println(companyName);
 		company.setHomepageurl(homepageurl);
 		company.setFunding(funding);
 		company.setFundingAmount(fundingAmount);
@@ -78,6 +82,7 @@ public class DataAggregator {
 		company.setOffices(offices);
 		company.setRelationships(relationships);
 		company.setLogo(imagebyte);
+		company.setVideos(embedsVideoSrcList);
 
 	}
 

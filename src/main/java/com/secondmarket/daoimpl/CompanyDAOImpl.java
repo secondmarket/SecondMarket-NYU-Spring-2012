@@ -107,7 +107,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Company company = ds.find(Company.class).field("companyName")
 				.equal(companyName).get();
 
-		System.out.println("*************");
+		/*System.out.println("*************");
 		System.out.println(company.getCountry());
 		System.out.println(company.getFunding());
 		System.out.println(company.getFundingAmount());
@@ -131,7 +131,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			System.out.println("==========");
 		}
 
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");*/
 
 		return company;
 	}

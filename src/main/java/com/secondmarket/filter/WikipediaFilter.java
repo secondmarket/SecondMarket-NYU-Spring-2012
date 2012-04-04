@@ -362,7 +362,7 @@ public class WikipediaFilter {
 
 		// Filter out the following entry sets: info-box, founder, key_people
 		for (String item : infoBoxEntry) {
-			System.out.println(item);
+//			System.out.println(item);
 			if (Pattern
 					.compile(Pattern.quote("infobox"), Pattern.CASE_INSENSITIVE)
 					.matcher(item).find()) {
@@ -388,7 +388,7 @@ public class WikipediaFilter {
 				StringTokenizer st = new StringTokenizer(cleanedStr, "=;");
 				String key = st.nextToken();
 				String value = st.nextToken();
-				System.out.println(key + "-->" + value);
+//				System.out.println(key + "-->" + value);
 			} else {
 				String htmlStr = wikiModel.render(item);
 				Whitelist whiteList = Whitelist.none();
@@ -396,13 +396,13 @@ public class WikipediaFilter {
 				String cleanedStr = Jsoup.clean(htmlStr, whiteList);
 				cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
 				cleanedStr = cleanedStr.replace("{{", "").replace("}}", "");
-				System.out.println(cleanedStr);
+//				System.out.println(cleanedStr);
 				StringTokenizer st = new StringTokenizer(cleanedStr, "=;");
 				String key = st.nextToken();
 				String value = st.nextToken();
-				System.out.println(key + "-->" + value);
+//				System.out.println(key + "-->" + value);
 			}
-			System.out.println();
+//			System.out.println();
 		}
 
 		return null;
@@ -424,11 +424,11 @@ public class WikipediaFilter {
 		List<String> removedList = new ArrayList<String>();
 		while (iter.hasNext()) {
 			String key = iter.next();
-			System.out.println("Key in the MAP: " + key);
+//			System.out.println("Key in the MAP: " + key);
 			for (Pattern pattern : patternList) {
 				if (WikipediaUtils.checkPatternMatch(pattern, key)) {
 					removedList.add(key);
-					System.out.println("MATTCH: " + pattern.toString());
+//					System.out.println("MATTCH: " + pattern.toString());
 					break;
 				}
 			}

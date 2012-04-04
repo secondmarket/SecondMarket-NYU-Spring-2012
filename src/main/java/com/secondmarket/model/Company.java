@@ -41,6 +41,8 @@ public class Company {
 
 	private byte[] logo;
 
+	private List<String> videos;
+
 	private Map<String, String> crunchbaseDoc;
 
 	private Map<String, String> wikipediaDoc;
@@ -192,6 +194,14 @@ public class Company {
 
 	public void setRelationships(List<Relationship> relationships) {
 		this.relationships = relationships;
+	}
+
+	public List<String> getVideos() {
+		return videos;
+	}
+
+	public void setVideos(List<String> videos) {
+		this.videos = videos;
 	}
 
 }

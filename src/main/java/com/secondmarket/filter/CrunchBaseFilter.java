@@ -572,4 +572,44 @@ public final class CrunchBaseFilter {
 		}
 		return foundedMonth + " " + foundedYear;
 	}
+
+	public List<String> getEmbedVideoSrcs(BasicDBObject basicDBObject) {
+		List<String> embedsVideoSrcList = new ArrayList<String>();
+		if (basicDBObject.containsField("video_embeds")
+				&& basicDBObject.get("video_embeds") != null) {
+			BasicDBList videoCodeList = (BasicDBList) JSON.parse(basicDBObject
+					.getString("video_embeds"));
+			Iterator<Object> it = videoCodeList.iterator();
+			while (it.hasNext()) {
+				String embedVideoSrc = "";
+				BasicDBObject embedCodeObj = (BasicDBObject) it.next();
+				if (embedCodeObj.containsField("embed_code")
+						&& embedCodeObj.get("embed_code") != null) {
+					String embedCode = embedCodeObj.get("embed_code")
+							.toString().trim();
+					int beginIndex = embedCode.indexOf("<embed");
+					int endIndex = embedCode.indexOf("</embed>");
+					// System.out
+					// .println("From " + beginIndex + " to " + endIndex);
+					if (beginIndex != -1 && endIndex != -1) {
+						embedVideoSrc = embedCode.substring(beginIndex,
+								endIndex + 8);
+						// System.out.println(embedCode.substring(beginIndex,
+						// endIndex + 8));
+					} else {
+						continue;
+					}
+
+				}
+				embedsVideoSrcList.add(embedVideoSrc);
+			}
+
+		}
+
+		if (embedsVideoSrcList.size() == 0) {
+			embedsVideoSrcList.add("No available video");
+		}
+
+		return embedsVideoSrcList;
+	}
 }

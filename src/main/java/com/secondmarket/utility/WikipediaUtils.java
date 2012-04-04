@@ -63,7 +63,7 @@ public class WikipediaUtils {
 								    //System.out.println(title);
 								    if(title.toLowerCase().charAt(0) == companyName.toLowerCase().charAt(0) && compareTwoStrings(title, companyName)){
 								    	tmpList.add(title);
-								    	System.out.println("Filted titles -> "+ title);
+//								    	System.out.println("Filted titles -> "+ title);
 								    }
 								}
 							}
@@ -73,7 +73,7 @@ public class WikipediaUtils {
 			}
 		}
 		else{
-			System.out.println("ERROR : " + titlesMap);
+//			System.out.println("ERROR : " + titlesMap);
 		}
 		return tmpList;
 	}
@@ -141,7 +141,7 @@ public class WikipediaUtils {
 				String str1 = gson.toJson(str).toLowerCase();
 				if (checkPatternMatch(myPattern, str1)) {
 			//	if (str1.contains("{{infobox") || str1.contains("{{ infobox")) {
-					System.out.println("Wiki -> " + newTitle);
+//					System.out.println("Wiki -> " + newTitle);
 					return newTitle;
 				}
 			}
@@ -187,7 +187,7 @@ public class WikipediaUtils {
 	public String findCompanyUrl(String companyName) {
 
 		// Get the possible page titles by search
-		System.out.println(companyName);
+//		System.out.println(companyName);
 		List<String> titleList = getPossibleTitlesbySearch(companyName);
 		String title = getCompanyTitle(titleList);
 
@@ -213,9 +213,9 @@ public class WikipediaUtils {
 		String title = dataImporter.getCompanyTitle(titleList);
 
 		if (title != null) {
-			System.out.println(title + "      &&&&&&&&&&&&&");
+//			System.out.println(title + "      &&&&&&&&&&&&&");
 		} else {
-			System.out.println("NULL");
+//			System.out.println("NULL");
 		}
 
 //		System.out.print(dataImporter
