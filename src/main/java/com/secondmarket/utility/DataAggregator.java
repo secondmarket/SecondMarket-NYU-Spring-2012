@@ -28,7 +28,7 @@ public class DataAggregator {
 		wikiFilter = new WikipediaFilter(wikiProperty);
 	}
 
-	public void filterAndSetCompanyBasicInfo(BasicDBObject cbBasicDBObject,
+	public void filterAndSetCompanyData(BasicDBObject cbBasicDBObject,
 			BasicDBObject wikiBasicDBObject, Company company) {
 		String companyName;
 		String homepageurl;
@@ -37,6 +37,7 @@ public class DataAggregator {
 		String location;
 		String country;
 		String industry;
+		String overview;
 		List<FundingRound> fundings;
 		List<Office> offices;
 		List<Relationship> relationships;
@@ -48,9 +49,14 @@ public class DataAggregator {
 		location = cbFilter.getLocation(cbBasicDBObject);
 		country = cbFilter.getCounrty(cbBasicDBObject);
 		industry = cbFilter.getIndustry(cbBasicDBObject);
+		overview = cbFilter.getOverview(cbBasicDBObject);
+		String aggregatedOverview = this.appendWikipediaContent(overview,
+				wikiBasicDBObject, company);
+
 		fundings = cbFilter.getFundings(cbBasicDBObject);
 		offices = cbFilter.getOffices(cbBasicDBObject);
 		relationships = cbFilter.getRelationships(cbBasicDBObject);
+		byte[] imagebyte = cbFilter.getCompanyLogo(cbBasicDBObject);
 
 		company.setCompanyName(companyName);
 		System.out.println(companyName);
@@ -60,25 +66,19 @@ public class DataAggregator {
 		company.setLocation(location);
 		company.setCountry(country);
 		company.setIndustry(industry);
+		// company.setOverview(overview);
+		company.setOverview(aggregatedOverview);
 		company.setFundings(fundings);
 		company.setOffices(offices);
 		company.setRelationships(relationships);
+		company.setLogo(imagebyte);
 
 	}
 
-	public void filterAndSetCompanyDetailedInfo(BasicDBObject cbBasicDBObject,
+	private String appendWikipediaContent(String cbOverview,
 			BasicDBObject wikiBasicDBObject, Company company) {
-		this.filterAndSetCompanyBasicInfo(cbBasicDBObject, wikiBasicDBObject,
-				company);
-		String cbOverview = "";
-		String wikiOverview = "";
-		cbOverview = cbFilter.getOverview(cbBasicDBObject);
-
 		StringBuffer wikipediaContentStringBuffer = new StringBuffer();
 		if (wikiBasicDBObject != null) {
-			// TODO dump the info-box data for now
-			// wikiFilter.getInfoboxData(wikiBasicDBObject);
-
 			// Map<String, List<String>> contentMap = wikiFilter.extractText(
 			// wikiBasicDBObject, company);
 			/*
@@ -115,12 +115,7 @@ public class DataAggregator {
 				+ cbOverview + "\n"
 				+ "<h4 style=\"color: red\">Wikipedia:</h4>" + "\n"
 				+ wikipediaContentStringBuffer.toString();
-
-		company.setOverview(aggregatedOverview);
+		return aggregatedOverview;
 	}
 
-	public void filterAndSetCompanyInfobox(BasicDBObject cbBasicDBObject,
-			BasicDBObject wikiBasicDBObject, Company company) {
-
-	}
 }

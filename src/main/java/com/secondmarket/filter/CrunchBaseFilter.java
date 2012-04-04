@@ -1,5 +1,10 @@
 package com.secondmarket.filter;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -485,5 +490,60 @@ public final class CrunchBaseFilter {
 		}
 
 		return relationships;
+	}
+
+	public byte[] getCompanyLogo(BasicDBObject basicDBObject) {
+		String imageURL = this.getCompanyImageUrl(basicDBObject);
+		if (imageURL.length() == 0) {
+			imageURL = "https://dbr2dggbe4ycd.cloudfront.net/company/default_150.png";
+		}
+
+		ByteArrayOutputStream bais = new ByteArrayOutputStream();
+		InputStream is = null;
+		try {
+			URL url = new URL(imageURL);
+			is = url.openStream();
+			byte[] byteChunk = new byte[8192];
+			int n;
+			while ((n = is.read(byteChunk)) > 0) {
+				bais.write(byteChunk, 0, n);
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return bais.toByteArray();
+	}
+
+	public String getCompanyImageUrl(BasicDBObject basicDBObject) {
+		String companyURL = "";
+		if (basicDBObject.containsField("image")
+				&& basicDBObject.get("image") != null) {
+			BasicDBObject availablesizeObj = (BasicDBObject) JSON
+					.parse(basicDBObject.get("image").toString().trim());
+			if (availablesizeObj.containsField("available_sizes")
+					&& availablesizeObj.get("available_sizes") != null) {
+				BasicDBList imageList = (BasicDBList) JSON
+						.parse(availablesizeObj.get("available_sizes")
+								.toString().trim());
+				BasicDBList listObj = (BasicDBList) imageList.get(0);
+				if (listObj.get(1) != null
+						&& (listObj.get(1)) instanceof String) {
+					companyURL = "http://www.crunchbase.com/" + listObj.get(1);
+				}
+			}
+		}
+
+		return companyURL;
 	}
 }

@@ -31,13 +31,12 @@ public final class ImporterImpl implements Importer {
 	private Gson gson;
 	private WikipediaUtils wikiUtils;
 	private SMProperties wikiProperty;
-	
 
 	public ImporterImpl() {
 		gson = new Gson();
 		try {
 			wikiProperty = SMProperties.getInstance("WIKI");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,7 +47,7 @@ public final class ImporterImpl implements Importer {
 	public void storeAllCompanies() {
 		List<Object> masterList = companyDao.getMasterList();
 
-		List<Object> list = masterList.subList(0, 1);
+		List<Object> list = masterList.subList(0, 5);
 
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> crunchbaseDoc = null;
@@ -80,14 +79,9 @@ public final class ImporterImpl implements Importer {
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
 					crunchbaseDoc, wikipediaDoc);
-			wikipediaDoc = null;		
+			wikipediaDoc = null;
 		}
 		System.out.println(count);
-	}
-
-	public List<Company> retrieveAllCompanies() {
-		List<Company> list = companyDao.findAllCompanies();
-		return list;
 	}
 
 	public Company retrieveCompanyByName(String companyName) {
@@ -152,6 +146,11 @@ public final class ImporterImpl implements Importer {
 		List<Company> paginatedList = companyDao.findSortedCompaniesInPage(
 				pageIndex, numberOfElementsPerPage, sortByField, isDescending);
 		return paginatedList;
+	}
+
+	public Company searchCompanyByName(String companyName) {
+		Company company = companyDao.findCompanyByName(companyName);
+		return company;
 	}
 
 }

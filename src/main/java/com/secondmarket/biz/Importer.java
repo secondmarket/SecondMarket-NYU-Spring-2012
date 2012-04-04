@@ -7,13 +7,11 @@ import com.secondmarket.model.Company;
 /**
  * 
  * @author Ming Li
- *
+ * 
  */
 public interface Importer {
 
 	void storeAllCompanies();
-
-	List<Company> retrieveAllCompanies();
 
 	Company retrieveCompanyByName(String companyName);
 
@@ -29,4 +27,6 @@ public interface Importer {
 	String getPaginatedDataInJson(List<Company> paginatedList);
 
 	String getExistingPageAmount(int companiesPerPage);
+
+	Company searchCompanyByName(String companyName);
 }

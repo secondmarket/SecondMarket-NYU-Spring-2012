@@ -30,7 +30,7 @@ import com.secondmarket.utility.WikipediaUtils;
 
 /**
  * 
- * @author
+ * @author Ming Li & Danjuan Ye
  * 
  */
 public class WikipediaFilter {

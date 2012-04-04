@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.google.code.morphia.annotations.Embedded;
 
+/**
+ * 
+ * @author Ming Li
+ *
+ */
 @Embedded
 public class FundingRound {
 

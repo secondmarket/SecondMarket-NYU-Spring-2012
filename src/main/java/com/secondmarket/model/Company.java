@@ -8,7 +8,6 @@ import org.bson.types.ObjectId;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.Transient;
 
 /**
  * 
@@ -34,6 +33,10 @@ public class Company {
 
 	private String industry;
 
+	private String overview;
+
+	private byte[] logo;
+
 	private Map<String, String> crunchbaseDoc;
 
 	private Map<String, String> wikipediaDoc;
@@ -46,9 +49,6 @@ public class Company {
 
 	@Embedded
 	private List<Relationship> relationships;
-
-	@Transient
-	private String overview;
 
 	public Company() {
 
@@ -132,6 +132,14 @@ public class Company {
 
 	public void setIndustry(String industry) {
 		this.industry = industry;
+	}
+
+	public byte[] getLogo() {
+		return logo;
+	}
+
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
 	}
 
 	public String getOverview() {

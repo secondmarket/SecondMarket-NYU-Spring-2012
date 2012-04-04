@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/SecondMarket/include.jsp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page language="java" import="com.secondmarket.model.Company"%>
 <html>
 <body>
 	<h2 align="center">SecondMarket Data Aggregation Project</h2>
@@ -12,6 +13,17 @@
 		<tr>
 			<th style="text-align: center">Company</th>
 			<td style="text-align: center">${company.companyName}</td>
+		</tr>
+
+		<tr>
+			<th style="text-align: center">Logo</th>
+			<td style="text-align: center">
+				<%
+					Company company = (Company)request.getAttribute("company");
+					out.print("<img src=\"/SecondMarket/getLogo.htm?companyName="
+							+ company.getCompanyName() + "\">");
+				%>
+			</td>
 		</tr>
 
 		<tr>

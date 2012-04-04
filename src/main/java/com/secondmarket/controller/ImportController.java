@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -68,7 +72,7 @@ public class ImportController {
 
 		// First store the master list from CruchBase
 		// TODO Master company list generated, includes 13862 companies
-//		generator.storeMasterList();
+		// generator.storeMasterList();
 
 		// Then import CrunchBase data
 		dataImporter.storeAllCompanies();
@@ -261,5 +265,22 @@ public class ImportController {
 						Boolean.parseBoolean(isDescending));
 		String result = dataImporter.getPaginatedDataInJson(paginatedList);
 		return result;
+	}
+
+	/**
+	 * Handles the request from html "<img>" tag loading company logo
+	 * @param companyName
+	 * @return
+	 */
+	@RequestMapping(value = "/SecondMarket/getLogo.htm", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getCompanyLogo(
+			@RequestParam("companyName") String companyName) {
+		Company company = dataImporter.searchCompanyByName(companyName);
+		byte[] companyLogo = company.getLogo();
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setContentType(MediaType.IMAGE_PNG);
+		responseHeaders.setContentLength(companyLogo.length);
+		return new ResponseEntity<byte[]>(companyLogo, responseHeaders,
+				HttpStatus.OK);
 	}
 }
