@@ -35,6 +35,10 @@ public class Company {
 
 	private String overview;
 
+	private int employees;
+
+	private String foundedDate;
+
 	private byte[] logo;
 
 	private Map<String, String> crunchbaseDoc;
@@ -148,6 +152,22 @@ public class Company {
 
 	public void setOverview(String overview) {
 		this.overview = overview;
+	}
+
+	public int getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(int employees) {
+		this.employees = employees;
+	}
+
+	public String getFoundedDate() {
+		return foundedDate;
+	}
+
+	public void setFoundedDate(String foundedDate) {
+		this.foundedDate = foundedDate;
 	}
 
 	public List<FundingRound> getFundings() {

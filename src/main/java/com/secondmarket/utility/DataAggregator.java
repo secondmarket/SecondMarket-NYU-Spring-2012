@@ -38,6 +38,8 @@ public class DataAggregator {
 		String country;
 		String industry;
 		String overview;
+		int employees;
+		String foundedDate;
 		List<FundingRound> fundings;
 		List<Office> offices;
 		List<Relationship> relationships;
@@ -53,6 +55,8 @@ public class DataAggregator {
 		String aggregatedOverview = this.appendWikipediaContent(overview,
 				wikiBasicDBObject, company);
 
+		employees = cbFilter.getNumberOfEmployees(cbBasicDBObject);
+		foundedDate = cbFilter.getFoundedDate(cbBasicDBObject);
 		fundings = cbFilter.getFundings(cbBasicDBObject);
 		offices = cbFilter.getOffices(cbBasicDBObject);
 		relationships = cbFilter.getRelationships(cbBasicDBObject);
@@ -68,6 +72,8 @@ public class DataAggregator {
 		company.setIndustry(industry);
 		// company.setOverview(overview);
 		company.setOverview(aggregatedOverview);
+		company.setEmployees(employees);
+		company.setFoundedDate(foundedDate);
 		company.setFundings(fundings);
 		company.setOffices(offices);
 		company.setRelationships(relationships);

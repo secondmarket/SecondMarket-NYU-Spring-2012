@@ -546,4 +546,30 @@ public final class CrunchBaseFilter {
 
 		return companyURL;
 	}
+
+	public int getNumberOfEmployees(BasicDBObject basicDBObject) {
+		if (basicDBObject.containsField("number_of_employees")
+				&& basicDBObject.get("number_of_employees") != null) {
+			return basicDBObject.getInt("number_of_employees");
+		} else {
+			return 0;
+		}
+	}
+
+	public String getFoundedDate(BasicDBObject basicDBObject) {
+		String foundedYear = "";
+		String foundedMonth = "";
+		if (basicDBObject.containsField("founded_year")
+				&& basicDBObject.get("founded_year") != null) {
+			foundedYear = basicDBObject.get("founded_year").toString().trim();
+		}
+		if (basicDBObject.containsField("founded_month")
+				&& basicDBObject.get("founded_month") != null) {
+			int monthNumber = basicDBObject.getInt("founded_month");
+			if (monthNumber <= 12 && monthNumber >= 1) {
+				foundedMonth = months[monthNumber - 1];
+			}
+		}
+		return foundedMonth + " " + foundedYear;
+	}
 }
