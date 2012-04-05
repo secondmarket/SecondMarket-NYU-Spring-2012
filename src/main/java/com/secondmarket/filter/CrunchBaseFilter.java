@@ -581,7 +581,7 @@ public final class CrunchBaseFilter {
 					.getString("video_embeds"));
 			Iterator<Object> it = videoCodeList.iterator();
 			while (it.hasNext()) {
-				String embedVideoSrc = "";
+				String embedVideoSrc = "No available video";
 				BasicDBObject embedCodeObj = (BasicDBObject) it.next();
 				if (embedCodeObj.containsField("embed_code")
 						&& embedCodeObj.get("embed_code") != null) {
