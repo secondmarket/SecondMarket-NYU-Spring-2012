@@ -1,6 +1,6 @@
 package com.secondmarket.model.edgar;
 
-public class CompanyList {
+public class EdgarCompanyTitle {
 	
 	private String companyLink;
 	private String companyName;
@@ -9,7 +9,7 @@ public class CompanyList {
 	private String location;
 	private String locationLink;
 	
-	public CompanyList(){
+	public EdgarCompanyTitle(){
 		
 	}
 	public void setCompanyLink(String link){

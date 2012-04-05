@@ -1,6 +1,9 @@
 package com.secondmarket.model.edgar;
 
-public class DetailList {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EdgarCompanyDetail {
 
 	private String filings;
 	private String format;
@@ -9,9 +12,22 @@ public class DetailList {
 	private String filingDate;
 	private String fileNum;
 	private String fileNumLink;
+	private List<EdgarDoc> docList;
 	
-	public DetailList(){
-		
+	public EdgarCompanyDetail(){
+		docList = new ArrayList<EdgarDoc>();
+	}
+	
+	public void addDocToList(EdgarDoc doc){
+		docList.add(doc);
+	}
+	
+	public void addDocsToList(List<EdgarDoc> list){
+		docList.addAll(list);
+	}
+	
+	public List<EdgarDoc> getDocList(){
+		return docList;
 	}
 	
 	public void setFilings(String filings){
@@ -33,7 +49,7 @@ public class DetailList {
 		this.formatLink = link;
 	}
 	
-	public String getFormatLinke(){
+	public String getFormatLink(){
 		return this.formatLink;
 	}
 	
