@@ -417,7 +417,7 @@ public class WikipediaFilter {
 	 */
 	public Map<String, String> getFilteredWikipediaDoc(
 			BasicDBObject basicDBObject, Company company) {
-//		Map<String, List<String>> map = extractText(basicDBObject, company);
+
 		Map<String, String> map = extractText(basicDBObject, company);
 		List<Pattern> patternList = p.getValues("CLEAN", "OPTIONS");
 		Iterator<String> iter = map.keySet().iterator();

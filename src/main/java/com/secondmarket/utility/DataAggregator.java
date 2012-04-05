@@ -90,14 +90,11 @@ public class DataAggregator {
 			BasicDBObject wikiBasicDBObject, Company company) {
 		StringBuffer wikipediaContentStringBuffer = new StringBuffer();
 		if (wikiBasicDBObject != null) {
-			// Map<String, List<String>> contentMap = wikiFilter.extractText(
-			// wikiBasicDBObject, company);
-			/*
-			 * Map<String, List<String>> contentMap = wikiFilter
-			 * .getFilteredWikipediaDoc(wikiBasicDBObject, company);
-			 */
-			Map<String, String> contentMap = wikiFilter.extractText(
-					wikiBasicDBObject, company);
+
+			Map<String, String> contentMap = wikiFilter.getFilteredWikipediaDoc(wikiBasicDBObject, company);
+
+//			Map<String, String> contentMap = wikiFilter.extractText(
+//					wikiBasicDBObject, company);
 
 			// TODO append all the extracted sentences for testing
 			Set<String> keySet = contentMap.keySet();
