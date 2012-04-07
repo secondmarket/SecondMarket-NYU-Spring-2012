@@ -16,8 +16,10 @@ import com.secondmarket.biz.Importer;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.model.Company;
+import com.secondmarket.model.EdgarCompanyDetail;
 import com.secondmarket.properties.SMProperties;
 import com.secondmarket.utility.DataMapper;
+import com.secondmarket.utility.EdgarUtils;
 import com.secondmarket.utility.WikipediaUtils;
 
 /**
@@ -30,6 +32,7 @@ public final class ImporterImpl implements Importer {
 	private CompanyDAO companyDao;
 	private Gson gson;
 	private WikipediaUtils wikiUtils;
+	private EdgarUtils edgarUtils;
 	private SMProperties wikiProperty;
 
 	public ImporterImpl() {
@@ -41,20 +44,24 @@ public final class ImporterImpl implements Importer {
 			e.printStackTrace();
 		}
 		wikiUtils = new WikipediaUtils(wikiProperty);
+		edgarUtils = new EdgarUtils();
 		companyDao = new CompanyDAOImpl(wikiProperty);
 	}
 
 	public void storeAllCompanies() {
 		List<Object> masterList = companyDao.getMasterList();
+	
 
 		List<Object> list = masterList.subList(0, 111);
 
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> crunchbaseDoc = null;
 		Map<String, String> wikipediaDoc = null;
+		Map<String, EdgarCompanyDetail> edgarDoc = null;
 		String url_CrunchBase = null;
 		String url_Wikipedia = null;
 		String companyName = null;
+		String state = null;
 
 		String title = null;
 		int count = 0;
@@ -75,11 +82,14 @@ public final class ImporterImpl implements Importer {
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 			}
+			state = companyDao.findCompanyByName(companyName).getLocation();
+			edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
 
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
-					crunchbaseDoc, wikipediaDoc);
+					crunchbaseDoc, wikipediaDoc, edgarDoc);
 			wikipediaDoc = null;
+			edgarDoc = null;
 		}
 		System.out.println(count);
 	}

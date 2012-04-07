@@ -17,6 +17,7 @@ import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.model.Company;
+import com.secondmarket.model.EdgarCompanyDetail;
 import com.secondmarket.model.FundingRound;
 import com.secondmarket.properties.SMProperties;
 import com.secondmarket.utility.DataAggregator;
@@ -90,7 +91,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	}
 
 	public void saveCompany(String companyName,
-			Map<String, String> crunchbaseDoc, Map<String, String> wikipediaDoc) {
+			Map<String, String> crunchbaseDoc, Map<String, String> wikipediaDoc,
+			Map<String, EdgarCompanyDetail> edgarDoc) {
 		Company company = new Company();
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(crunchbaseDoc));
@@ -100,6 +102,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 				company);
 		company.setCrunchbaseDoc(crunchbaseDoc);
 		company.setWikipediaDoc(wikipediaDoc);
+		company.setEdgarDoc(edgarDoc);
 		ds.save(company);
 	}
 
