@@ -1,6 +1,9 @@
-package com.secondmarket.model.edgar;
+package com.secondmarket.model;
 
-public class EdgarDoc {
+import com.google.code.morphia.annotations.Embedded;
+
+@Embedded
+public class EdgarFilingDetail {
 
 	private String seq;
 	private String description;
@@ -9,7 +12,7 @@ public class EdgarDoc {
 	private String type;
 	private String size;
 	
-	public EdgarDoc(){
+	public EdgarFilingDetail(){
 		
 	}
 	

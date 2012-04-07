@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.secondmarket.model.Company;
+import com.secondmarket.model.EdgarCompanyDetail;
 
 /**
  * 
@@ -13,7 +14,7 @@ import com.secondmarket.model.Company;
 public interface CompanyDAO {
 
 	void saveCompany(String companyName, Map<String, String> map,
-			Map<String, String> wikiMap);
+			Map<String, String> wikiMap, Map<String, EdgarCompanyDetail> edgarMap);
 
 	Company findCompanyByName(String companyName);
 

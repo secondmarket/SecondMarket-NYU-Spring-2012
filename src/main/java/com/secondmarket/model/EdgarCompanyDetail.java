@@ -1,6 +1,12 @@
-package com.secondmarket.model.edgar;
+package com.secondmarket.model;
 
-public class EdgarCompanyTitle {
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.code.morphia.annotations.Embedded;
+
+@Embedded
+public class EdgarCompanyDetail {
 	
 	private String companyLink;
 	private String companyName;
@@ -8,10 +14,28 @@ public class EdgarCompanyTitle {
 	private String SICLink;
 	private String location;
 	private String locationLink;
+	private List<EdgarDocDetail> detail;
 	
-	public EdgarCompanyTitle(){
-		
+	public EdgarCompanyDetail(){
+		detail = new ArrayList<EdgarDocDetail>();
 	}
+	
+	public void addDetail(EdgarDocDetail d){
+		detail.add(d);
+	}
+	
+	public List<EdgarDocDetail> getDetailList(){
+		return detail;
+	}
+	
+	public void addDetailList(List<EdgarDocDetail> list){
+		detail.addAll(list);
+	}
+	
+	public List<EdgarDocDetail> geEdgarDocDetail(){
+		return this.detail;
+	}
+	
 	public void setCompanyLink(String link){
 		this.companyLink = link;
 	}

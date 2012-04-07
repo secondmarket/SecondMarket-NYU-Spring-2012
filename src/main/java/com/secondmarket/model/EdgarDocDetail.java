@@ -1,9 +1,12 @@
-package com.secondmarket.model.edgar;
+package com.secondmarket.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EdgarCompanyDetail {
+import com.google.code.morphia.annotations.Embedded;
+
+@Embedded
+public class EdgarDocDetail {
 
 	private String filings;
 	private String format;
@@ -12,21 +15,21 @@ public class EdgarCompanyDetail {
 	private String filingDate;
 	private String fileNum;
 	private String fileNumLink;
-	private List<EdgarDoc> docList;
+	private List<EdgarFilingDetail> docList;
 	
-	public EdgarCompanyDetail(){
-		docList = new ArrayList<EdgarDoc>();
+	public EdgarDocDetail(){
+		docList = new ArrayList<EdgarFilingDetail>();
 	}
 	
-	public void addDocToList(EdgarDoc doc){
+	public void addDocToList(EdgarFilingDetail doc){
 		docList.add(doc);
 	}
 	
-	public void addDocsToList(List<EdgarDoc> list){
+	public void addDocsToList(List<EdgarFilingDetail> list){
 		docList.addAll(list);
 	}
 	
-	public List<EdgarDoc> getDocList(){
+	public List<EdgarFilingDetail> getDocList(){
 		return docList;
 	}
 	

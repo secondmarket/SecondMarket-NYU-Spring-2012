@@ -46,6 +46,9 @@ public class Company {
 	private Map<String, String> crunchbaseDoc;
 
 	private Map<String, String> wikipediaDoc;
+	
+	@Embedded
+	private Map<String, EdgarCompanyDetail> edgarDoc;
 
 	@Embedded
 	private List<FundingRound> fundings;
@@ -91,6 +94,10 @@ public class Company {
 	public Map<String, String> getWikipediaDoc() {
 		return wikipediaDoc;
 	}
+	
+	public Map<String, EdgarCompanyDetail> getEdgarDoc(){
+		return this.edgarDoc;
+	}
 
 	public void setWikipediaDoc(Map<String, String> wikipediaDoc) {
 		this.wikipediaDoc = wikipediaDoc;
@@ -98,6 +105,10 @@ public class Company {
 
 	public void setCrunchbaseDoc(Map<String, String> crunchbaseDoc) {
 		this.crunchbaseDoc = crunchbaseDoc;
+	}
+	
+	public void setEdgarDoc(Map<String, EdgarCompanyDetail> edgarDoc){
+		this.edgarDoc = edgarDoc;
 	}
 
 	public String getLocation() {

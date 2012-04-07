@@ -2,16 +2,20 @@ package com.secondmarket.utility;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.secondmarket.model.edgar.EdgarCompanyTitle;
-import com.secondmarket.model.edgar.EdgarCompanyDetail;
-import com.secondmarket.model.edgar.EdgarDoc;
+import com.secondmarket.model.EdgarCompanyDetail;
+import com.secondmarket.model.EdgarDocDetail;
+import com.secondmarket.model.EdgarFilingDetail;
 
 /***
  * 
@@ -25,11 +29,20 @@ public class EdgarUtils {
 	public EdgarUtils() {
 	}
 
-	private List<EdgarCompanyDetail> getDocumentList(String companyName, String state) {
+	/**
+	 * Get the Edgar Doc according the crunchbase CompanyName and State
+	 * 
+	 * @param companyName
+	 * @param state
+	 * @return
+	 */
+	public Map<String, EdgarCompanyDetail> getEdgarDoc(String companyName,
+			String state) {
 
 		// get company link first
-		List<EdgarCompanyTitle> tmpList = new ArrayList<EdgarCompanyTitle>();
-		List<EdgarCompanyDetail> detailList = new ArrayList<EdgarCompanyDetail>();
+		List<EdgarDocDetail> detailList = new ArrayList<EdgarDocDetail>();
+		List<EdgarCompanyDetail> nameList = new ArrayList<EdgarCompanyDetail>();
+
 		String url = "http://www.sec.gov/cgi-bin/browse-edgar?company="
 				+ companyName
 				+ "&match=&CIK=&filenum=&State="
@@ -38,101 +51,135 @@ public class EdgarUtils {
 		Document doc;
 		try {
 			doc = Jsoup.connect(url).get();
-			String title = doc.title();
-			System.out.println("Title: " + title);
-			boolean flag = false;
+
 			for (Element table : doc.select("table.tableFile2")) {
 				for (Element row : table.select("tr")) {
 					Elements tds = row.select("td");
 					if (tds.size() == 3) {
-						EdgarCompanyTitle item = getCompanyTitlebySearch(tds);
-						flag = true;
+						EdgarCompanyDetail item = getCompanyTitlebySearch(tds);
 						if (item != null)
-							tmpList.add(item);
+							nameList.add(item);
 					} else if (tds.size() == 5) {
 						detailList.add(getCompanyDetailDocListbySearch(tds));
 					}
 				}
 			}
-			if (flag && tmpList.size() > 0) {
-				EdgarCompanyTitle firstItem = tmpList.get(0);
-				String url2 = preUrl + firstItem.getCompanyLink();
-				System.out.println(url2);
-				Document doc2;
-				doc2 = Jsoup.connect(url2).get();
-				for (Element table : doc2.select("table.tableFile2")) {
-					for (Element row : table.select("tr")) {
-						Elements tds = row.select("td");
-						if (tds.size() == 5) {
-							detailList.add(getCompanyDetailDocListbySearch(tds));
+			if (nameList.size() > 0) {
+				for (EdgarCompanyDetail name : nameList) {
+					String url2 = preUrl + name.getCompanyLink();
+					System.out.println(url2);
+					Document doc2;
+					doc2 = Jsoup.connect(url2).get();
+					for (Element table : doc2.select("table.tableFile2")) {
+						for (Element row : table.select("tr")) {
+							Elements tds = row.select("td");
+							if (tds.size() == 5) {
+								name.addDetail(getCompanyDetailDocListbySearch(tds));
+							}
 						}
 					}
 				}
-
+			} else {
+				if (detailList.size() > 0) {
+					EdgarCompanyDetail item = new EdgarCompanyDetail();
+					item.setCompanyName(companyName);
+					item.setCompanyLink(url);
+					item.setLocation(state);
+					item.addDetailList(detailList);
+					nameList.add(item);
+				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		setEdgarDoc(detailList);
-		return detailList;
+		return setEdgarFilingDetail(nameList);
 	}
-	
-	public void setEdgarDoc(List<EdgarCompanyDetail> list){
-		for(EdgarCompanyDetail entry : list){
-			String url = preUrl + entry.getFormatLink();
-			System.out.println(url);
-			Document doc;
-			try {
-				doc = Jsoup.connect(url).get();
-				System.out.println("Title: " + doc.title());
-				for (Element table : doc.select("table.tableFile")) {
-					for (Element row : table.select("tr")) {
-						Elements tds = row.select("td");
-						if (tds.size() == 5) {
-							entry.addDocToList(getDocsbyCompany(tds));
+
+	/***
+	 * Set the filing detail info for the specified the doc type.
+	 * @param nameList
+	 * @return
+	 */
+	public Map<String, EdgarCompanyDetail> setEdgarFilingDetail(
+			List<EdgarCompanyDetail> nameList) {
+		Map<String, EdgarCompanyDetail> map = new TreeMap<String, EdgarCompanyDetail>();
+		for (EdgarCompanyDetail name : nameList) {
+			for (EdgarDocDetail entry : name.getDetailList()) {
+				String url = preUrl + entry.getFormatLink();
+				System.out.println(url);
+				Document doc;
+				try {
+					doc = Jsoup.connect(url).get();
+					
+					for (Element table : doc.select("table.tableFile")) {
+						for (Element row : table.select("tr")) {
+							Elements tds = row.select("td");
+							if (tds.size() == 5) {
+								entry.addDocToList(getDocsbyCompany(tds));
+							}
 						}
 					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
+			}
+			if (!map.containsKey(name.getCompanyName())) {
+				map.put(name.getCompanyName(), name);
 			}
 		}
+		return map;
 	}
-	
-	private EdgarDoc getDocsbyCompany(Elements tds) {
 
-		EdgarDoc item = null;
-		item = new EdgarDoc();
-		
-		System.out.println(tds.get(0).ownText());
-		System.out.println(tds.get(1).ownText());
-		System.out.println(tds.get(2).getElementsByTag("a").get(0).ownText());
-		System.out.println(tds.get(2).getElementsByTag("a").get(0).attr("href"));
-		System.out.println(tds.get(3).ownText());
-		System.out.println(tds.get(4).ownText());
-		
-		item.setSeq(tds.get(0).ownText());
-		item.setDescr(tds.get(1).ownText());
-		item.setDocName(tds.get(2).getElementsByTag("a").get(0).ownText());
-		item.setDocLink(tds.get(2).getElementsByTag("a").get(0).attr("href"));
-		item.setType(tds.get(3).ownText());
-		item.setSize(tds.get(4).ownText());
+	/***
+	 * Get the filing detail info for the specified the doc type.
+	 * @param tds
+	 * @return
+	 */
+	private EdgarFilingDetail getDocsbyCompany(Elements tds) {
+
+		EdgarFilingDetail item = null;
+
+		if (tds.get(2).getElementsByTag("a").get(0).ownText().toLowerCase()
+				.endsWith(".html")) { // only get the html files
+			item = new EdgarFilingDetail();
+
+			System.out.println(tds.get(0).ownText());
+			System.out.println(tds.get(1).ownText());
+			System.out.println(tds.get(2).getElementsByTag("a").get(0)
+					.ownText());
+			System.out.println(tds.get(2).getElementsByTag("a").get(0)
+					.attr("href"));
+			System.out.println(tds.get(3).ownText());
+			System.out.println(tds.get(4).ownText());
+
+			item.setSeq(tds.get(0).ownText());
+			item.setDescr(tds.get(1).ownText());
+			item.setDocName(tds.get(2).getElementsByTag("a").get(0).ownText());
+			item.setDocLink(tds.get(2).getElementsByTag("a").get(0)
+					.attr("href"));
+			item.setType(tds.get(3).ownText());
+			item.setSize(tds.get(4).ownText());
+		}
 		return item;
 	}
 
-	private EdgarCompanyDetail getCompanyDetailDocListbySearch(Elements tds) {
+	/***
+	 * 
+	 * @param tds
+	 * @return
+	 */
+	private EdgarDocDetail getCompanyDetailDocListbySearch(Elements tds) {
 
-		EdgarCompanyDetail item = null;
-		item = new EdgarCompanyDetail();
-//		System.out.println(tds.get(0).ownText());
-//		System.out.println(tds.get(1).getElementsByTag("a").get(0).attr("href")
-//				+ ":   " + tds.get(1).getElementsByTag("a").get(0).ownText());
-//		System.out.println(tds.get(2).text());
-//		System.out.println(tds.get(3).text());
+		EdgarDocDetail item = null;
+		item = new EdgarDocDetail();
+		System.out.println(tds.get(0).ownText());
+		System.out.println(tds.get(1).getElementsByTag("a").get(0).attr("href")
+				+ ":   " + tds.get(1).getElementsByTag("a").get(0).ownText());
+		System.out.println(tds.get(2).text());
+		System.out.println(tds.get(3).text());
 		if (tds.get(4).hasText()) {
-//			System.out.println(tds.get(4).text() + ":"
-//					+ tds.get(4).getElementsByTag("a").get(0).attr("href"));
+			System.out.println(tds.get(4).text() + ":"
+					+ tds.get(4).getElementsByTag("a").get(0).attr("href"));
 			item.setFileNum(tds.get(4).text());
 			item.setFileNumLink(tds.get(4).getElementsByTag("a").get(0)
 					.attr("href"));
@@ -147,26 +194,28 @@ public class EdgarUtils {
 		return item;
 	}
 
-	private EdgarCompanyTitle getCompanyTitlebySearch(Elements tds) {
+	/***
+	 * 
+	 */
+	private EdgarCompanyDetail getCompanyTitlebySearch(Elements tds) {
 
-		EdgarCompanyTitle item = null;
-		if (tds.get(1).getElementsByTag("a").size() != 0) {
-			// filter the company do not have a SIC
-//			System.out.println(tds.get(0).text() + ":"
-//					+ tds.get(0).getElementsByTag("a").get(0).attr("href"));
-//			System.out.println(tds.get(1).ownText() + ":"
-//					+ tds.get(1).getElementsByTag("a").get(0).attr("href")
-//					+ ":   "
-//					+ tds.get(1).getElementsByTag("a").get(0).ownText());
-//			System.out.println(tds.get(2).text());
+		EdgarCompanyDetail item = null;
+		if (tds.get(1).getElementsByTag("a").size() == 0) {
+			// looking for the company do not have a SIC (private company)
+			System.out.println(tds.get(0).text() + ":"
+					+ tds.get(0).getElementsByTag("a").get(0).attr("href"));
+			System.out.println(tds.get(1).ownText());
 
-			item = new EdgarCompanyTitle();
-			item.setCompanyLink(tds.get(0).getElementsByTag("a").get(0).attr("href"));
+			item = new EdgarCompanyDetail();
+			item.setCompanyLink(tds.get(0).getElementsByTag("a").get(0)
+					.attr("href"));
 			item.setCompanyName(tds.get(1).ownText());
-			item.setSICNum(tds.get(1).getElementsByTag("a").get(0).ownText());
-			item.setSICLink(tds.get(1).getElementsByTag("a").get(0).attr("href"));
+			// item.setSICNum(tds.get(1).getElementsByTag("a").get(0).ownText());
+			// item.setSICLink(tds.get(1).getElementsByTag("a").get(0)
+			// .attr("href"));
 			item.setLocation(tds.get(2).text());
-			item.setLocationLink(tds.get(2).getElementsByTag("a").get(0).attr("href"));
+			item.setLocationLink(tds.get(2).getElementsByTag("a").get(0)
+					.attr("href"));
 		}
 		return item;
 	}
@@ -207,30 +256,14 @@ public class EdgarUtils {
 	// }
 
 	/**
-	 * Get the Edgar Doc according the crunchbase CompanyName and State 
-	 * 
-	 * @param companyName
-	 * @param state
-	 * @return
-	 */
-//	 public String findEdgarDoc(String companyName, String state) {
-//	
-//	 // Get the possible page titles by search
-//	 // System.out.println(companyName);
-//	 List<DetailList> titleList = getDocumentList(companyName, state);
-//	 // String title = getCompanyTitle(titleList);
-//	
-//	 return title;
-//	 }
-
-	/**
 	 * @param args
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
 
+		// foursquare, secondMarket
 		EdgarUtils dataImporter = new EdgarUtils();
-		List<EdgarCompanyDetail> titleList = dataImporter.getDocumentList("google",
-				"CA");
+		Map<String, EdgarCompanyDetail> titleList = dataImporter
+				.getEdgarDoc("SecondMarket", "NY");
 	}
 }
