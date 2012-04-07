@@ -65,9 +65,9 @@ public class EdgarUtils {
 				}
 			}
 			if (nameList.size() > 0) {
+				System.out.println("--------Multiple Company Names --------");
 				for (EdgarCompanyDetail name : nameList) {
 					String url2 = preUrl + name.getCompanyLink();
-					System.out.println(url2);
 					Document doc2;
 					doc2 = Jsoup.connect(url2).get();
 					for (Element table : doc2.select("table.tableFile2")) {
@@ -80,6 +80,7 @@ public class EdgarUtils {
 					}
 				}
 			} else {
+				System.out.println("--------One Company Names --------");
 				if (detailList.size() > 0) {
 					EdgarCompanyDetail item = new EdgarCompanyDetail();
 					item.setCompanyName(companyName);
@@ -103,10 +104,14 @@ public class EdgarUtils {
 	public Map<String, EdgarCompanyDetail> setEdgarFilingDetail(
 			List<EdgarCompanyDetail> nameList) {
 		Map<String, EdgarCompanyDetail> map = new TreeMap<String, EdgarCompanyDetail>();
+		int companyNum = 1;
+		int docNum = 1;
 		for (EdgarCompanyDetail name : nameList) {
+			System.out.println("COMPANY "+(companyNum++) +" -> " + name.getCompanyName() + " -- " + name.getLocation());
+			docNum = 1;
 			for (EdgarDocDetail entry : name.getDetailList()) {
+				System.out.println("DOC " +(docNum++) + " " + entry.getFilings() + " " + entry.getFileDate());
 				String url = preUrl + entry.getFormatLink();
-				System.out.println(url);
 				Document doc;
 				try {
 					doc = Jsoup.connect(url).get();
@@ -139,18 +144,9 @@ public class EdgarUtils {
 
 		EdgarFilingDetail item = null;
 
-		if (tds.get(2).getElementsByTag("a").get(0).ownText().toLowerCase()
-				.endsWith(".html")) { // only get the html files
+		String filingName = tds.get(2).getElementsByTag("a").get(0).ownText().toLowerCase();
+		if (filingName.endsWith(".html") || filingName.endsWith(".pdf")) { // only get the html files
 			item = new EdgarFilingDetail();
-
-			System.out.println(tds.get(0).ownText());
-			System.out.println(tds.get(1).ownText());
-			System.out.println(tds.get(2).getElementsByTag("a").get(0)
-					.ownText());
-			System.out.println(tds.get(2).getElementsByTag("a").get(0)
-					.attr("href"));
-			System.out.println(tds.get(3).ownText());
-			System.out.println(tds.get(4).ownText());
 
 			item.setSeq(tds.get(0).ownText());
 			item.setDescr(tds.get(1).ownText());
@@ -159,7 +155,10 @@ public class EdgarUtils {
 					.attr("href"));
 			item.setType(tds.get(3).ownText());
 			item.setSize(tds.get(4).ownText());
+			//for test
+			System.out.println("SEQ " + tds.get(0).ownText() +" -> "+tds.get(2).getElementsByTag("a").get(0).ownText());
 		}
+		System.out.println("----SEQ " + tds.get(0).ownText() +" -> "+tds.get(2).getElementsByTag("a").get(0).ownText());
 		return item;
 	}
 
@@ -172,14 +171,8 @@ public class EdgarUtils {
 
 		EdgarDocDetail item = null;
 		item = new EdgarDocDetail();
-		System.out.println(tds.get(0).ownText());
-		System.out.println(tds.get(1).getElementsByTag("a").get(0).attr("href")
-				+ ":   " + tds.get(1).getElementsByTag("a").get(0).ownText());
-		System.out.println(tds.get(2).text());
-		System.out.println(tds.get(3).text());
+		
 		if (tds.get(4).hasText()) {
-			System.out.println(tds.get(4).text() + ":"
-					+ tds.get(4).getElementsByTag("a").get(0).attr("href"));
 			item.setFileNum(tds.get(4).text());
 			item.setFileNumLink(tds.get(4).getElementsByTag("a").get(0)
 					.attr("href"));
@@ -190,7 +183,7 @@ public class EdgarUtils {
 		item.setFormatLink(tds.get(1).getElementsByTag("a").get(0).attr("href"));
 		item.setDescr(tds.get(2).text());
 		item.setFileDate(tds.get(3).text());
-
+		
 		return item;
 	}
 
@@ -201,11 +194,8 @@ public class EdgarUtils {
 
 		EdgarCompanyDetail item = null;
 		if (tds.get(1).getElementsByTag("a").size() == 0) {
+			
 			// looking for the company do not have a SIC (private company)
-			System.out.println(tds.get(0).text() + ":"
-					+ tds.get(0).getElementsByTag("a").get(0).attr("href"));
-			System.out.println(tds.get(1).ownText());
-
 			item = new EdgarCompanyDetail();
 			item.setCompanyLink(tds.get(0).getElementsByTag("a").get(0)
 					.attr("href"));

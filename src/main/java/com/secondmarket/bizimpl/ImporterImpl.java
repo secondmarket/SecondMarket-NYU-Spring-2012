@@ -69,7 +69,6 @@ public final class ImporterImpl implements Importer {
 		for (int i = 0; i < list.size(); i++) {
 			nameAndPermalinkMap = (Map<String, String>) list.get(i);
 			companyName = nameAndPermalinkMap.get("permalink");
-			state = companyDao.findCompanyByName(companyName).getLocation();
 			url_CrunchBase = "http://api.crunchbase.com/v/1/company/"
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
@@ -83,13 +82,14 @@ public final class ImporterImpl implements Importer {
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 			}
-			
+			state = companyDao.findCompanyByName(companyName).getLocation();
 			edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
 
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
 					crunchbaseDoc, wikipediaDoc, edgarDoc);
 			wikipediaDoc = null;
+			edgarDoc = null;
 		}
 		System.out.println(count);
 	}
