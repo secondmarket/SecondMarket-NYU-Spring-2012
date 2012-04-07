@@ -1,7 +1,24 @@
 <%@ include file="/WEB-INF/SecondMarket/include.jsp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page language="java" import="com.secondmarket.model.Company"%>
+<%@ page language="java" import="java.util.*"%>
 <html>
+<head>
+<script type="text/javascript" src="/js/CeeBoxjs/ceeboxjquery.js"></script>
+<script type="text/javascript" src="/js/CeeBoxjs/jquery.ceebox-min.js"></script>
+<script type="text/javascript" src="/js/CeeBoxjs/jquery.swfobject.js"></script>
+<script type="text/javascript">
+ jQuery(document).ready(function(){
+	$(".ceebox").ceebox({
+		borderColor:'#666',
+		boxColor: "#000",
+		titles: false,
+	});
+		});
+</script>
+
+<link rel="stylesheet" type="text/css" href="/css/ceebox-min.css" />
+</head>
 <body>
 	<h2 align="center">SecondMarket Data Aggregation Project</h2>
 
@@ -50,7 +67,19 @@
 			<th style="text-align: center">Video</th>
 			<td style="text-align: center">
 				<%
-					out.print(company.getVideos().get(0));
+					List<String> videoSrcUrl = company.getVideos();
+					int number = 1;
+					for (String url : videoSrcUrl) {
+						if (url != null && url.length() == 0) {
+							out.println("No available video");
+						} else {
+							out.println("<a href=\""
+									+ url
+									+ "\" class=\"ceebox\" rel=\"width:420 height:380\" style=\"text-decoration: none\">Video["
+									+ number + "]</a>");
+							number++;
+						}
+					}
 				%>
 			</td>
 		</tr>

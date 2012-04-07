@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang.WordUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import com.mongodb.BasicDBList;
@@ -137,7 +140,9 @@ public final class CrunchBaseFilter {
 	public String getIndustry(BasicDBObject basicDBObject) {
 		if (basicDBObject.containsField("category_code")
 				&& basicDBObject.get("category_code") != null) {
-			return basicDBObject.get("category_code").toString().trim();
+			String category = basicDBObject.get("category_code").toString()
+					.trim();
+			return category;
 		} else {
 			return "undefined";
 		}
@@ -574,14 +579,14 @@ public final class CrunchBaseFilter {
 	}
 
 	public List<String> getEmbedVideoSrcs(BasicDBObject basicDBObject) {
-		List<String> embedsVideoSrcList = new ArrayList<String>();
+		List<String> embedsVideoUrlList = new ArrayList<String>();
 		if (basicDBObject.containsField("video_embeds")
 				&& basicDBObject.get("video_embeds") != null) {
 			BasicDBList videoCodeList = (BasicDBList) JSON.parse(basicDBObject
 					.getString("video_embeds"));
 			Iterator<Object> it = videoCodeList.iterator();
 			while (it.hasNext()) {
-				String embedVideoSrc = "No available video";
+				String embedVideoUrl = "";
 				BasicDBObject embedCodeObj = (BasicDBObject) it.next();
 				if (embedCodeObj.containsField("embed_code")
 						&& embedCodeObj.get("embed_code") != null) {
@@ -592,24 +597,58 @@ public final class CrunchBaseFilter {
 					// System.out
 					// .println("From " + beginIndex + " to " + endIndex);
 					if (beginIndex != -1 && endIndex != -1) {
-						embedVideoSrc = embedCode.substring(beginIndex,
+						String embedVideoSrc = embedCode.substring(beginIndex,
 								endIndex + 8);
 						// System.out.println(embedCode.substring(beginIndex,
 						// endIndex + 8));
+						if (embedVideoSrc.contains("src")) {
+							String subEmbedVideoSrc = embedVideoSrc
+									.substring(embedVideoSrc.indexOf("src"));
+							Pattern pattern = Pattern
+									.compile("\"(\\s*?.*?)*?\"");
+							Matcher srcUrlMatcher = pattern
+									.matcher(subEmbedVideoSrc);
+							// Look for the src url
+							if (srcUrlMatcher.find()) {
+								embedVideoUrl = srcUrlMatcher.group(0).replace(
+										"\"", "");
+							}
+
+							// if the video src ends with "swf" (flash video),
+							// need "FashVars" for the src url parameters
+							if (embedVideoUrl.endsWith(".swf")) {
+								String flashVarsStr = embedVideoSrc
+										.substring(embedVideoSrc
+												.indexOf("FlashVars"));
+								Matcher varMatcher = pattern
+										.matcher(flashVarsStr);
+								if (varMatcher.find()) {
+									embedVideoUrl = embedVideoUrl
+											+ "?"
+											+ varMatcher.group(0).replace("\"",
+													"");
+									// System.out.println(embedVideoUrl);
+								}
+							}
+
+						} else {
+							continue;
+						}
+
 					} else {
 						continue;
 					}
 
 				}
-				embedsVideoSrcList.add(embedVideoSrc);
+				embedsVideoUrlList.add(embedVideoUrl);
 			}
 
 		}
 
-		if (embedsVideoSrcList.size() == 0) {
-			embedsVideoSrcList.add("No available video");
+		if (embedsVideoUrlList.size() == 0) {
+			embedsVideoUrlList.add("");
 		}
 
-		return embedsVideoSrcList;
+		return embedsVideoUrlList;
 	}
 }

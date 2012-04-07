@@ -111,6 +111,14 @@ public class ImportController {
 		model.addAttribute("company", company);
 		return "main";
 	}
+	
+	@RequestMapping(value = "/SecondMarket/CompanyMain.htm", method = RequestMethod.GET)
+	public String initCompanyMain(Model model) {
+		logger.info("Returning main page");
+		Company company = new Company();
+		model.addAttribute("company", company);
+		return "CompanyMain";
+	}
 
 	/**
 	 * Handles the AJAX request from front end page ("main.jsp"), loading the

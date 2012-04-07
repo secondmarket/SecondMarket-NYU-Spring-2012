@@ -60,7 +60,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
 			dbCollection = db.getCollection("company");
-			// dbCollection.drop();
+			dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -107,31 +107,27 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		Company company = ds.find(Company.class).field("companyName")
 				.equal(companyName).get();
 
-		/*System.out.println("*************");
-		System.out.println(company.getCountry());
-		System.out.println(company.getFunding());
-		System.out.println(company.getFundingAmount());
-		System.out.println(company.getIndustry());
-		System.out.println(company.getLocation());
-		System.out.println(company.getOverview());
-		List<FundingRound> list = company.getFundings();
-		for (FundingRound round : list) {
-			System.out.println("==========");
-			System.out.println(round.getRoundCode());
-			System.out.println(round.getRaisedAmount());
-			System.out.println(round.getRaisedCurrencyCode());
-			System.out.println(round.getFundedDate());
-			List<String> investorList = round.getInvestorList();
-			if (investorList != null) {
-				for (String investorName : investorList) {
-					System.out.println(investorName);
-				}
-			}
-
-			System.out.println("==========");
-		}
-
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");*/
+		/*
+		 * System.out.println("*************");
+		 * System.out.println(company.getCountry());
+		 * System.out.println(company.getFunding());
+		 * System.out.println(company.getFundingAmount());
+		 * System.out.println(company.getIndustry());
+		 * System.out.println(company.getLocation());
+		 * System.out.println(company.getOverview()); List<FundingRound> list =
+		 * company.getFundings(); for (FundingRound round : list) {
+		 * System.out.println("==========");
+		 * System.out.println(round.getRoundCode());
+		 * System.out.println(round.getRaisedAmount());
+		 * System.out.println(round.getRaisedCurrencyCode());
+		 * System.out.println(round.getFundedDate()); List<String> investorList
+		 * = round.getInvestorList(); if (investorList != null) { for (String
+		 * investorName : investorList) { System.out.println(investorName); } }
+		 * 
+		 * System.out.println("=========="); }
+		 * 
+		 * System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+		 */
 
 		return company;
 	}
