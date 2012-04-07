@@ -1,6 +1,13 @@
 package com.secondmarket.utility;
 
+import java.util.Iterator;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.util.JSON;
+import com.secondmarket.model.Office;
 
 /**
  * 
@@ -8,6 +15,11 @@ import com.mongodb.BasicDBObject;
  * 
  */
 public final class CrunchBaseUtils {
+	private Gson gson;
+
+	public CrunchBaseUtils() {
+		this.gson = new Gson();
+	}
 
 	/**
 	 * Checks if the company has funding by comparing the value of
@@ -62,6 +74,38 @@ public final class CrunchBaseUtils {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Need to get state information for filtering EDGAR records
+	 * 
+	 * @param crunchbaseDoc
+	 * @return
+	 */
+	public String getCompanyLocationState(Map<String, String> crunchbaseDoc) {
+		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
+				.toJson(crunchbaseDoc));
+		if (cbBasicDBObject.containsField("offices")
+				&& cbBasicDBObject.get("offices") != null) {
+			BasicDBList officeList = (BasicDBList) JSON.parse(cbBasicDBObject
+					.get("offices").toString().trim());
+			Iterator<Object> officeListIterator = officeList.iterator();
+			while (officeListIterator.hasNext()) {
+				BasicDBObject officeObj = (BasicDBObject) officeListIterator
+						.next();
+				// Get state_code
+				if (officeObj.containsField("state_code")
+						&& officeObj.get("state_code") != null) {
+					return officeObj.get("state_code").toString().trim();
+				} else {
+					continue;
+				}
+			}
+		} else {
+			return "undefined";
+		}
+		
+		return "undefined";
 	}
 
 }
