@@ -12,10 +12,6 @@ public class EdgarFilingDetail {
 	private String type;
 	private String size;
 	
-	public EdgarFilingDetail(){
-		
-	}
-	
 	public void setSeq(String seq){
 		this.seq = seq;
 	}

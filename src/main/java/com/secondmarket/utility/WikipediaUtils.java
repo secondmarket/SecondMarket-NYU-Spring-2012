@@ -120,7 +120,7 @@ public class WikipediaUtils {
 
 		if (titleList.size() == 1){
 			String trueTitle = percentEncodeReservedCharacters(titleList.get(0));
-			System.out.println("Wiki -> " + trueTitle);
+	//		System.out.println("Wiki -> " + trueTitle);
 			return 	trueTitle;
 		}
 	//	List<String> patternList = getInfoboxPattern();
