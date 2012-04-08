@@ -25,6 +25,8 @@ public interface Importer {
 			boolean isDescending);
 
 	String getPaginatedDataInJson(List<Company> paginatedList);
+	
+	String jsonizeDataForCompanyMainPage(List<Company> paginatedList);
 
 	String getExistingPageAmount(int companiesPerPage);
 

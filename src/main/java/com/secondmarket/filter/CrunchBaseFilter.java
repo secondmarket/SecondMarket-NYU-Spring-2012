@@ -142,7 +142,7 @@ public final class CrunchBaseFilter {
 				&& basicDBObject.get("category_code") != null) {
 			String category = basicDBObject.get("category_code").toString()
 					.trim();
-			return category;
+			return WordUtils.capitalize(category);
 		} else {
 			return "undefined";
 		}
@@ -415,17 +415,6 @@ public final class CrunchBaseFilter {
 				offices.add(office);
 			}
 
-		} else {
-			Office office = new Office();
-			office.setAddress1("N/A");
-			office.setAddress2("N/A");
-			office.setCity("N/A");
-			office.setCountrycode("N/A");
-			office.setStatecode("N/A");
-			office.setZipcode("N/A");
-			office.setLatitude(0.0);
-			office.setLongitude(0.0);
-			offices.add(office);
 		}
 
 		return offices;

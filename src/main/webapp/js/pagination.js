@@ -1,0 +1,10 @@
+
+aHash=location.hash.substring(2);if(aHash.length>0){document.writeln('<style type="text/css">.page1, .sm-pg-full{display:none;}</style>');}
+var jsonReturn;$(function(){entryHash=(getParam('page'))?'page'+getParam('page'):'page1';var cache={entryHash:$('.'+entryHash)};var pagination={entryHash:$('.sm-pagination')}
+$(window).bind('hashchange',function(e){var urlToCall=decodeURI($.param.fragment()).substring(1);var currentHash=urlToCall.replace('=','');if(currentHash==''){currentHash=entryHash;}
+$('BODY').css('min-height',$('BODY').height());window.scroll(0,0);if(currentHash!=""){if(cache[currentHash]){clearCurrentPane()
+cache[currentHash].show();pagination[currentHash].show();$('BODY').css('min-height','0px');}else{if($('.bbq-loading').hasId('smLoading')){$('.bbq-loading').css('height',$('#companyDirectory').height()+10);}
+$('.bbq-loading').fadeIn('fast');req=getContextualAjaxUrl(location.pathname+"?"+urlToCall);$.getJSON(req,function(data,textStatus,xhr){content=data.html[0];paginationContent=$(data.html[1].replace(/\?/gi,"#!")).html();clearCurrentPane();$('.bbq-loading').fadeOut('fast');$('.current A, .inactive A').click(function(el){el.preventDefault();});cache[currentHash]=$('<div class="bbq-item">'+content+"</div>").appendTo('.bbq-content');pagination[currentHash]=$(paginationContent).appendTo('#smPagination');jsonReturn=data.json;if(data.scripts){for(i=0;i<data.scripts.length;i++){$.include(data.scripts[i]);}}
+attachCardClicks();$('BODY').css('min-height','0px');trackAjaxPage(req);});}
+currentHash&&$('a[href="'+location.pathname+'#!'+currentHash+'"]').addClass('bbq-current');}})
+if($.param.fragment().length>1){$(window).trigger('hashchange');}});function clearCurrentPane(){$('a.bbq-current').removeClass('bbq-current');$('.bbq-content').children(':visible').hide();$('#smPagination').children(':visible').hide();}

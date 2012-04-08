@@ -17,6 +17,7 @@ import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.model.Company;
 import com.secondmarket.model.EdgarCompanyDetail;
+import com.secondmarket.model.Office;
 import com.secondmarket.properties.SMProperties;
 import com.secondmarket.utility.DataMapper;
 import com.secondmarket.utility.EdgarUtils;
@@ -50,7 +51,6 @@ public final class ImporterImpl implements Importer {
 
 	public void storeAllCompanies() {
 		List<Object> masterList = companyDao.getMasterList();
-	
 
 		List<Object> list = masterList.subList(0, 111);
 
@@ -82,8 +82,8 @@ public final class ImporterImpl implements Importer {
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 			}
-			state = companyDao.findCompanyByName(companyName).getLocation();
-			edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
+//			state = companyDao.findCompanyByName(companyName).getLocation();
+//			edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
 
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
@@ -161,6 +161,70 @@ public final class ImporterImpl implements Importer {
 	public Company searchCompanyByName(String companyName) {
 		Company company = companyDao.findCompanyByName(companyName);
 		return company;
+	}
+
+	public String jsonizeDataForCompanyMainPage(List<Company> paginatedList) {
+		// Notice: use LinkedHashMap instead of HashMap
+		// To maintain the order of JSON data
+		Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
+
+		// Loop through the list and generate JSON string
+		Iterator<Company> companyIterator = paginatedList.iterator();
+		while (companyIterator.hasNext()) {
+			Company company = companyIterator.next();
+			Map<String, Object> companyJson = new HashMap<String, Object>();
+			// Jsonize company name
+			companyJson.put("name", company.getCompanyName());
+
+			// Jsonize company address
+			Office office = company.getOffices().get(0);
+			if (office != null) {
+				String address = "";
+				if (!"undefined".equals(office.getCity())) {
+					address = address + office.getCity();
+				}
+				if (!"undefined".equals(office.getStatecode())) {
+					address = address + ", " + office.getStatecode();
+				}
+				if (!"undefined".equals(office.getZipcode())) {
+					address = address + " " + office.getZipcode();
+				}
+				if (!"undefined".equals(office.getCountrycode())) {
+					address = address + ", " + office.getCountrycode();
+				}
+				companyJson.put("address", address);
+			} else {
+				companyJson.put("address", "Unknown");
+			}
+
+			// Jsonize company total funding
+			companyJson.put("funding", company.getFunding());
+
+			// Jsonize company category (industry)
+			companyJson.put("industry", company.getIndustry());
+
+			// Jsonize company employees
+			companyJson.put("employees", company.getEmployees());
+
+			// Jsonize company founded date
+			companyJson.put("foundedDate", company.getFoundedDate());
+
+			jsonMap.put(company.getCompanyName(), companyJson);
+		}
+
+		String jsonMapString = "";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			jsonMapString = mapper.writeValueAsString(jsonMap);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// Using GSON to format the data
+		return gson.toJson(jsonMapString);
 	}
 
 }

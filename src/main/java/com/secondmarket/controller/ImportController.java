@@ -112,14 +112,6 @@ public class ImportController {
 		return "main";
 	}
 	
-	@RequestMapping(value = "/SecondMarket/CompanyMain.htm", method = RequestMethod.GET)
-	public String initCompanyMain(Model model) {
-		logger.info("Returning main page");
-		Company company = new Company();
-		model.addAttribute("company", company);
-		return "CompanyMain";
-	}
-
 	/**
 	 * Handles the AJAX request from front end page ("main.jsp"), loading the
 	 * paginated companies as 10 records per page based on the page index
@@ -249,6 +241,12 @@ public class ImportController {
 
 		return String.valueOf(numberOfPages);
 	}
+	
+	@RequestMapping(value = "/SecondMarket/CompanyMain.htm", method = RequestMethod.GET)
+	public String initCompanyMain() {
+		logger.info("Returning main page");
+		return "CompanyMain";
+	}
 
 	/**
 	 * Handles the AJAX request from front end page ("main.jsp"), loading the
@@ -272,6 +270,8 @@ public class ImportController {
 				.retrieveSortedCompaniesInPage(pageIndex, 10, sortByField,
 						Boolean.parseBoolean(isDescending));
 		String result = dataImporter.getPaginatedDataInJson(paginatedList);
+//		String result = dataImporter.jsonizeDataForCompanyMainPage(paginatedList);
+		System.out.println("here");
 		return result;
 	}
 
