@@ -15,18 +15,11 @@ public class EdgarDocDetail {
 	private String filingDate;
 	private String fileNum;
 	private String fileNumLink;
+	@Embedded
 	private List<EdgarFilingDetail> docList;
 	
-	public EdgarDocDetail(){
-		docList = new ArrayList<EdgarFilingDetail>();
-	}
-	
-	public void addDocToList(EdgarFilingDetail doc){
-		docList.add(doc);
-	}
-	
-	public void addDocsToList(List<EdgarFilingDetail> list){
-		docList.addAll(list);
+	public void setDocList(List<EdgarFilingDetail> list){
+		docList = list;
 	}
 	
 	public List<EdgarFilingDetail> getDocList(){
