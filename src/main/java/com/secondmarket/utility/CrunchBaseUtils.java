@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
-import com.secondmarket.model.Office;
 
 /**
  * 
@@ -104,7 +103,7 @@ public final class CrunchBaseUtils {
 		} else {
 			return "undefined";
 		}
-		
+
 		return "undefined";
 	}
 

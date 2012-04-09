@@ -65,6 +65,7 @@ public class DataAggregator {
 		offices = cbFilter.getOffices(cbBasicDBObject);
 		relationships = cbFilter.getRelationships(cbBasicDBObject);
 		byte[] imagebyte = cbFilter.getCompanyLogo(cbBasicDBObject);
+
 		embedsVideoUrlList = cbFilter.getEmbedVideoSrcs(cbBasicDBObject);
 
 		company.setCompanyName(companyName);
@@ -91,10 +92,11 @@ public class DataAggregator {
 		StringBuffer wikipediaContentStringBuffer = new StringBuffer();
 		if (wikiBasicDBObject != null) {
 
-			Map<String, String> contentMap = wikiFilter.getFilteredWikipediaDoc(wikiBasicDBObject, company);
+			Map<String, String> contentMap = wikiFilter
+					.getFilteredWikipediaDoc(wikiBasicDBObject, company);
 
-//			Map<String, String> contentMap = wikiFilter.extractText(
-//					wikiBasicDBObject, company);
+			// Map<String, String> contentMap = wikiFilter.extractText(
+			// wikiBasicDBObject, company);
 
 			// TODO append all the extracted sentences for testing
 			Set<String> keySet = contentMap.keySet();

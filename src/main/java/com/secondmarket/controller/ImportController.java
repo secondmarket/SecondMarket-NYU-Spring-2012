@@ -269,9 +269,8 @@ public class ImportController {
 		List<Company> paginatedList = dataImporter
 				.retrieveSortedCompaniesInPage(pageIndex, 10, sortByField,
 						Boolean.parseBoolean(isDescending));
-		String result = dataImporter.getPaginatedDataInJson(paginatedList);
-//		String result = dataImporter.jsonizeDataForCompanyMainPage(paginatedList);
-		System.out.println("here");
+//		String result = dataImporter.getPaginatedDataInJson(paginatedList);
+		String result = dataImporter.jsonizeDataForCompanyMainPage(paginatedList);
 		return result;
 	}
 
@@ -291,4 +290,5 @@ public class ImportController {
 		return new ResponseEntity<byte[]>(companyLogo, responseHeaders,
 				HttpStatus.OK);
 	}
+	
 }

@@ -492,7 +492,7 @@ public final class CrunchBaseFilter {
 			imageURL = "https://dbr2dggbe4ycd.cloudfront.net/company/default_150.png";
 		}
 
-		ByteArrayOutputStream bais = new ByteArrayOutputStream();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		InputStream is = null;
 		try {
 			URL url = new URL(imageURL);
@@ -500,7 +500,7 @@ public final class CrunchBaseFilter {
 			byte[] byteChunk = new byte[8192];
 			int n;
 			while ((n = is.read(byteChunk)) > 0) {
-				bais.write(byteChunk, 0, n);
+				baos.write(byteChunk, 0, n);
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -516,7 +516,7 @@ public final class CrunchBaseFilter {
 			}
 		}
 
-		return bais.toByteArray();
+		return baos.toByteArray();
 	}
 
 	public String getCompanyImageUrl(BasicDBObject basicDBObject) {
