@@ -84,7 +84,6 @@ public class DataAggregator {
 		company.setRelationships(relationships);
 		company.setLogo(imagebyte);
 		company.setVideos(embedsVideoUrlList);
-
 	}
 
 	private String appendWikipediaContent(String cbOverview,

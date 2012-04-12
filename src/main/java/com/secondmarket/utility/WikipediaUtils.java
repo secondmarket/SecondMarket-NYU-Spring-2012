@@ -42,7 +42,7 @@ public class WikipediaUtils {
 
 		List<String> tmpList = new ArrayList<String>();
 		String url = "http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch="
-				+ companyName + "&srprop=timestamp&format=json";
+				+ this.percentEncodeReservedCharacters(companyName) + "&srprop=timestamp&format=json";
 
 		Map<String, String> titlesMap = DataMapper.getDataInMapFromAPI(url);
 
@@ -120,7 +120,7 @@ public class WikipediaUtils {
 
 		if (titleList.size() == 1){
 			String trueTitle = percentEncodeReservedCharacters(titleList.get(0));
-	//		System.out.println("Wiki -> " + trueTitle);
+//			System.out.println("Wiki -> " + trueTitle);
 			return 	trueTitle;
 		}
 	//	List<String> patternList = getInfoboxPattern();
@@ -208,7 +208,7 @@ public class WikipediaUtils {
 		}
 
 		WikipediaUtils dataImporter = new WikipediaUtils(wikiProperty);
-		List<String> titleList = dataImporter.getPossibleTitlesbySearch("facebook");
+		List<String> titleList = dataImporter.getPossibleTitlesbySearch("Strands Labs");
 		String title = dataImporter.getCompanyTitle(titleList);
 
 		if (title != null) {

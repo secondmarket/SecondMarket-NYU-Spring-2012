@@ -67,6 +67,7 @@ public final class ImporterImpl implements Importer {
 		String state = null;
 
 		String title = null;
+		String name = null;
 		int count = 0;
 
 		for (int i = 0; i < list.size(); i++) {
@@ -75,8 +76,20 @@ public final class ImporterImpl implements Importer {
 			url_CrunchBase = "http://api.crunchbase.com/v/1/company/"
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
-
-			title = wikiUtils.findCompanyUrl(companyName);
+			
+			state = crunchbaseUtils.getCompanyLocationState(crunchbaseDoc)[0];
+			name = crunchbaseUtils.getCompanyLocationState(crunchbaseDoc)[1];
+			
+			if(name == null || name.length() == 0 ){
+				title = wikiUtils.findCompanyUrl(companyName);
+				edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
+//				System.out.println("OLD::" + companyName + "****************"+state);
+			}else{
+				title = wikiUtils.findCompanyUrl(name);
+				edgarDoc = edgarUtils.getEdgarDoc(name, state);
+//				System.out.println("NEW::" + name + "+****************+"+ companyName+ "***"+state);
+			}
+			
 			if (title == null) {
 				count++;
 			} else {
@@ -85,8 +98,6 @@ public final class ImporterImpl implements Importer {
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 			}
-			state = crunchbaseUtils.getCompanyLocationState(crunchbaseDoc);
-			edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
 
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
@@ -94,7 +105,7 @@ public final class ImporterImpl implements Importer {
 			wikipediaDoc = null;
 			edgarDoc = null;
 		}
-	//	System.out.println(count);
+//		System.out.println(count);
 	}
 
 	public Company retrieveCompanyByName(String companyName) {

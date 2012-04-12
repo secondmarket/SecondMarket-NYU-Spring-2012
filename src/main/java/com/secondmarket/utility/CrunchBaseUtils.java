@@ -81,7 +81,8 @@ public final class CrunchBaseUtils {
 	 * @param crunchbaseDoc
 	 * @return
 	 */
-	public String getCompanyLocationState(Map<String, String> crunchbaseDoc) {
+	public String[] getCompanyLocationState(Map<String, String> crunchbaseDoc) {
+    	String[] strs = new String[2];
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(crunchbaseDoc));
 		if (cbBasicDBObject.containsField("offices")
@@ -95,16 +96,18 @@ public final class CrunchBaseUtils {
 				// Get state_code
 				if (officeObj.containsField("state_code")
 						&& officeObj.get("state_code") != null) {
-					return officeObj.get("state_code").toString().trim();
-				} else {
-					continue;
-				}
+					strs[0] = officeObj.get("state_code").toString().trim();
+					break;
+				} 
 			}
-		} else {
-			return "undefined";
-		}
-
-		return "undefined";
+		} 
+		if (cbBasicDBObject.containsField("name")
+				&& cbBasicDBObject.get("name") != null) {
+			strs[1] = cbBasicDBObject.get("name").toString().trim();
+		} 
+		return strs;
 	}
+	
+	
 
 }

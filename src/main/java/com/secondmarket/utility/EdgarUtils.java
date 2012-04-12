@@ -28,6 +28,16 @@ public class EdgarUtils {
 
 	public EdgarUtils() {
 	}
+	
+	private String percentEncodeReservedCharacters(String title) {
+		char[] chars = title.toCharArray();
+		for(int i=0; i<chars.length;i++){
+			if(!Character.isDigit(chars[i])&&!Character.isLetter(chars[i])){
+				chars[i]='-';
+			}
+		}
+		return new String(chars);
+	}
 
 	/**
 	 * Get the Edgar Doc according the crunchbase CompanyName and State
@@ -40,6 +50,7 @@ public class EdgarUtils {
 			String state) {
 
 		if(companyName.length() < 2){
+//			System.out.println("---- "+ companyName + " --- "+state);
 			return null;
 		}
 		// get company link first
@@ -50,12 +61,14 @@ public class EdgarUtils {
 		EdgarDocDetail temp;
 		String url2;
 		Elements tds;
-
+		String urlName = this.percentEncodeReservedCharacters(companyName.trim());
+//        System.out.println(urlName+" 9999999");
 		String url = "http://www.sec.gov/cgi-bin/browse-edgar?company="
-				+ companyName
+				+ urlName
 				+ "&match=contains&CIK=&filenum=&State="
 				+ state
 				+ "&Country=&SIC=&owner=exclude&Find=Find+Companies&action=getcompany";
+		
 	//	System.out.println(url);
 		Document doc;
 		try {
@@ -76,7 +89,7 @@ public class EdgarUtils {
 				}
 			}
 			if (nameList.size() > 0) {
-			//	System.out.println("--------Multiple Company Names --------");
+//				System.out.println("--------Multiple Company Names --------");
 				for (EdgarCompanyDetail name : nameList) {
 					url2 = preUrl + name.getCompanyLink();
 					Document doc2;
@@ -177,7 +190,7 @@ public class EdgarUtils {
 			}
 			removedList.clear();
 			if (!map.containsKey(name.getCompanyName())&&name.getDetailList().size()>0 && flag) {
-	//			System.out.println("PUT INTO MAP : "+name.getCompanyName().replace('.', '#'));
+//				System.out.println("PUT INTO MAP : "+name.getCompanyName().replace('.', '#'));
 				map.put(name.getCompanyName().replace('.', '#'), name);
 			}
 		}
@@ -313,6 +326,6 @@ public class EdgarUtils {
 		// foursquare, secondMarket
 		EdgarUtils dataImporter = new EdgarUtils();
 		Map<String, EdgarCompanyDetail> titleList = dataImporter.getEdgarDoc(
-				"Geni", "CA");
+				"Facebook.com", "CA");
 	}
 }

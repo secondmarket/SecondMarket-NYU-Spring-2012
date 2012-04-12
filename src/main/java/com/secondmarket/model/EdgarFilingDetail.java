@@ -2,6 +2,11 @@ package com.secondmarket.model;
 
 import com.google.code.morphia.annotations.Embedded;
 
+/***
+ * 
+ * @author Danjuan
+ *
+ */
 @Embedded
 public class EdgarFilingDetail {
 

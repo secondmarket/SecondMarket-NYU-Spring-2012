@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.google.code.morphia.annotations.Embedded;
 
+/***
+ * 
+ * @author Danjuan
+ *
+ */
 @Embedded
 public class EdgarCompanyDetail {
 	
