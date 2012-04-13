@@ -45,6 +45,22 @@
 		<h2 align="center">SecondMarket Data Aggregation Project</h2>
 	</div>
 
+	<!--  
+	<div id="searchform" align="center">
+		<form:form method="GET" commandName="company"
+			action="/SecondMarket/searchcompany.htm" target="_blank">
+			<table>
+				<tr>
+					<td><form:label path="companyName">Company Name</form:label></td>
+					<td><form:input path="companyName" /></td>
+					<td colspan="2"><input type="submit" value="Search"
+						class="button" /></td>
+				</tr>
+			</table>
+		</form:form>
+	</div>
+	-->
+
 	<div id="searchform" align="center">
 		<form:form method="POST" commandName="company"
 			action="/SecondMarket/search.htm" target="_blank">
@@ -73,12 +89,11 @@
 		width="70%" align="center"
 		style="background-color: #E6E6E6; border: 1px dashed black;">
 
-	</table><br>
+	</table>
+	<br>
 
 
-	<div id="paginator" class="paginatorclass">
-	
-	</div>
+	<div id="paginator" class="paginatorclass"></div>
 	<input type="hidden" name="page_count" id="page_count" />
 
 	<div align="center">

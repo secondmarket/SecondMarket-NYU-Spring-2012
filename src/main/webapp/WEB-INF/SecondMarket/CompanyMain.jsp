@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/SecondMarket/include.jsp"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html lang="en" xmlns:fb="http://www.facebook.com/2008/fbml"
@@ -10,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="description"
 	content="Private Company Search on SecondMarket" />
-	
+
 <title>Private Company Search - SecondMarket</title>
 <link rel="image_src"
 	href="http://www.secondmarket.com/static/images/sm-logo-big.png" />
@@ -25,31 +24,20 @@
 <!--[if IE 7]><link rel="stylesheet" href="/static/css/ie-7.css" type="text/css" media="screen, projection" /><![endif]-->
 <!--[if IE 8]><link rel="stylesheet" href="/static/css/ie-8.css" type="text/css" media="screen, projection" /><![endif]-->
 
+
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/paging.js"></script>
 
 <script type="text/javascript">
-
     var contextPath = "/";
-
     var avatarUrl = "https://d36z0f16h51j2.cloudfront.net/";
-
     var companyLogoUrl = "https://dbr2dggbe4ycd.cloudfront.net/company/";
-
 </script>
 <script type="text/javascript">
 document.write('<style type="text/css">.js-hide{display:none;}</style>');
 </script>
 <script type="text/javascript">
 var http = ('https:' == document.location.protocol) ? 'https' : 'http';
-</script>
-<script type="text/javascript">
-document.write(unescape('%3Cscript src="' + http + '://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" type="text/javascript"%3E%3C/script%3E'));
-</script>
-<script type="text/javascript">
-if (typeof jQuery == 'undefined') {
-document.write(unescape('%3Cscript src="/static/javascript/jquery-1.5.min.js" type="text/javascript"%3E%3C/script%3E'));
-}
 </script>
 <script type="text/javascript">
 document.write(unescape('%3Cscript src="' + http + '://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"%3E%3C/script%3E'));
@@ -63,89 +51,15 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 <script type="text/javascript" src="/js/organizations.js"></script>
 <script type="text/javascript" src="/js/often.js"></script>
 <script type="text/javascript" src="/js/pagination.js"></script>
-<script type="text/javascript">
 
-    var _gaq = _gaq || [];
-
-    _gaq.push(['_setAccount', 'UA-5817994-1']);
-
-    //		  _gaq.push(['_setDomainName', '.secondmarket.com']);
-
-    _gaq.push(['_trackPageview']);
-
-    _gaq.push(['_trackPageLoadTime']);
-
-
-
-    (function() {
-
-        var ga = document.createElement('script');
-
-        ga.type = 'text/javascript';
-
-        ga.async = true;
-
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-
-        var s = document.getElementsByTagName('script')[0];
-
-        s.parentNode.insertBefore(ga, s);
-
-    })();
-
-
-
-    _gaq.push(function() {
-
-        var pageTracker = _gat._getTrackerByName();
-
-            var gsmid = pageTracker._getVisitorCustomVar(1);
-
-        if (typeof gsmid == 'undefined' || gsmid != 'AU000001F626') {
-
-            _gaq.push(['_setCustomVar', 1, 'SMID', 'AU000001F626', 1]);
-
-        }
-
-        var gtype = pageTracker._getVisitorCustomVar(3);
-
-        if (typeof gtype == 'undefined' || gtype != 'INDIVIDUAL') {
-
-            _gaq.push(['_setCustomVar', 3, 'RepType', 'INDIVIDUAL', 1]);
-
-        }
-
-        var gstatus = pageTracker._getVisitorCustomVar(2);
-
-        if (typeof gstatus == 'undefined' || gstatus != 'U') {
-
-            _gaq.push(['_setCustomVar', 2, 'Status', 'U', 2]);
-
-        }
-
-    });
-
-</script>
-<script type="text/javascript">
-
-    
-
-</script>
-<script type="text/javascript">
-
-    var _sf_startpt = (new Date()).getTime();
-
-</script>
-<script type="text/javascript"
-	src="https://apis.google.com/js/plusone.js"></script>
 </head>
 <body>
 	<div id="wrap">
 		<div id="header">
 			<div class="container">
 				<div id="sm-header-logo" class="span-6 append-1 sm-mts">
-					<a href="/?t=lg"><img src="/images/sm-logo-small.png"
-						alt="SecondMarket" /></a>
+					<a href="https://www.secondmarket.com/?t=lg"><img
+						src="/images/sm-logo-small.png" alt="SecondMarket" /></a>
 				</div>
 				<div class="span-5">
 					<div class="sm-l sm-member-of">
@@ -159,56 +73,19 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 					<div class="span-24">
 						<div class="sm-nav-bar">
 							<div class="span-16">
-								<ul id="sm-navigation">
-									<!--navigator          <li id="nav_homeMenu"><a href="/?t=hli"  >Dashboard</a>
-                    <ul class="children">
-                            <li id="nav_updatesAll"><a href="/?t=hli">Activity</a></li>
-                            <li id="nav_myWatchlist"><a href="/watchlist?t=hli">My Watchlist</a></li>
-                            <li id="nav_userHoldings"><a href="/holdings?t=hli">Portfolio</a></li>
-                            <li id="nav_userOrders"><a href="/orders?t=hli">Orders</a></li>
-                            <li id="nav_userTransactions"><a href="/transactions?t=hli">Transactions</a></li>
-                    </ul>
-            </li>
-            <li id="nav_marketsMenu"><a href="/private-company-market?t=hli"   class="selected">Markets</a>
-                    <ul class="children">
-                            <li id="nav_privateCompanyMarket"><a href="/private-company-market?t=hli">Private Company Stock</a></li>
-                            <li id="nav_communityBankMarket"><a href="/community-bank-market">Community Bank Stock</a></li>
-                            <li id="nav_fixedIncomeMarket"><a href="/fixed-income-market?t=hli">Fixed Income</a></li>
-                            <li id="nav_bankruptcyClaims"><a href="/bankruptcy-claims-market?t=hli">Bankruptcy Claims</a></li>
-                            <li id="nav_restrictedSecurities"><a href="/restricted-public-equity-market?t=hli">Restricted Public Equity</a></li>
-                    </ul>
-            </li>
-            <li id="nav_networkMenu"><a href="/connections?t=hli"  >Connections</a>
-                    <ul class="children">
-                            <li id="nav_myConnections"><a href="/connections?t=hli">My Connections</a></li>
-                            <li id="nav_inviteLanding"><a href="/connections/import?t=hli">Add Connections</a></li>
-                    </ul>
-            </li>
-            <li id="nav_organizations"><a href="/organizations?t=hli"  >Organizations</a>
-                    <ul class="children">
-                    </ul>
-            </li>
-            <li id="nav_discoverMenu"><a href="http://www.secondmarket.com/discover?t=hli" target="_blank" >Resources</a>
-                    <ul class="children">
-                            <li id="nav_discoverNews"><a href="/discover/news?t=hli">Press</a></li>
-                            <li id="nav_discoverEvents"><a href="/discover/events?t=hli">Events</a></li>
-                            <li id="nav_discoverAlchemy"><a href="http://alchemy.secondmarket.com?t=hli" target="_blank">Alchemy Magazine</a></li>
-                            <li id="nav_discoverLegalLearning"><a href="/discover/learn/legal-learning-center?t=hli">Legal Learning Center</a></li>
-                            <li id="nav_discoverPrivateCompanyLearning"><a href="/discover/learn/pc-learning-center?t=hli">Private Company Learning Center</a></li>
-                    </ul>
-            </li> -->
-								</ul>
+								<ul id="sm-navigation"></ul>
 							</div>
+							<!--  
 							<div class="span-8 last">
 								<form class="sm-search" action="/search" method="get">
 									<fieldset>
-										<!--     <input type="text" name="search" id="searchBar"/>
-           search bar -->
+										<input type="text" name="search" id="searchBar"/>search bar
 										<input type="submit" value="Search" id="searchbtn"
 											class="sm-allow-double-submit" />
 									</fieldset>
 								</form>
 							</div>
+							-->
 						</div>
 					</div>
 					<hr class="space" />
@@ -217,30 +94,30 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 		</div>
 		<div id="main">
 			<div class="container">
+				<!--
 				<div class="span-19">
-					<!--<ul class="tabs">
-        <li><a href="/private-company-market">Overview</a></li>
-        <li><a href="/private-company-search" class="current">Search</a></li>
-    </ul> -->
+					<ul class="tabs">
+						<li><a href="/private-company-market">Overview</a></li>
+						<li><a href="/private-company-search" class="current">Search</a></li>
+					</ul>
 				</div>
+				-->
 				<hr />
 				<div class="pane">
 					<div id="sm-main-content" class="span-24">
 						<div class="clear"></div>
 						<div class="span-7 append-1">
-						
-						
-							<form method="get" id="companyFilterForm"
-								action="/private-company-search">
+							<form method="get" id="companyFilterForm" action="">
 								<div class="sm-span-7">
 									<fieldset id="filter" class="sm-search-box">
 										<legend>Search Companies</legend>
-										<input type="text" class="text sm-mb" name="search"
+										<input name="search" type="text" class="text sm-mb"
 											id="companyFilterSearchString" />
 										<button type="submit" id="companyFilterSearch"
-											class="sm-allow-double-submit">Search</button>
-										<a href="/private-company-market" id="companyFilterClear"
-											class="filterClear">Clear</a>
+											class="sm-allow-double-submit"
+											onclick="Javascript: searchByCompanyName(companyFilterSearchString.value);">Search</button>
+										<a href="#" onclick="Javascript: clearAll();"
+											id="companyFilterClea" class="filterClear">Clear</a>
 									</fieldset>
 								</div>
 								<hr class="space" />
@@ -251,7 +128,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											<a class="sm-link sm-expand-menu sm-b">Country</a>
 										</div>
 										<ul class="sm-clear-ul">
-											<li><select name="country" id="country" class="sm-mt">
+											<li><select name="country" id="country" class="sm-mt"
+												onchange="Javascript: filterByCountry();">
 													<option value="all">All Countries</option>
 													<option value="USA">United States</option>
 													<option value="ARG">Argentina</option>
@@ -330,82 +208,9 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											</select></li>
 										</ul>
 									</fieldset>
-									<div id="stateFilterWrapper" style="display: none">
-										<fieldset id="stateFilter" class="sm-expand-menu">
-											<div class="open">
-												<a class="sm-link sm-expand-menu sm-b">State</a>
-											</div>
-											<ul class="sm-clear-ul">
-												<li><select name="state" id="state" class="sm-mt">
-														<option value="all">All States</option>
-														<option value="AL">Alabama</option>
-														<option value="AK">Alaska</option>
-														<option value="AS">American Samoa</option>
-														<option value="AZ">Arizona</option>
-														<option value="AR">Arkansas</option>
-														<option value="AA">Armed Forces Americas</option>
-														<option value="AE">Armed Forces Europe, Middle
-															East, & Canada</option>
-														<option value="AP">Armed Forces Pacific</option>
-														<option value="CA">California</option>
-														<option value="CO">Colorado</option>
-														<option value="CT">Connecticut</option>
-														<option value="DE">Delaware</option>
-														<option value="DC">District of Columbia</option>
-														<option value="FM">Federated States of Micronesia</option>
-														<option value="FL">Florida</option>
-														<option value="GA">Georgia</option>
-														<option value="GU">Guam</option>
-														<option value="HI">Hawaii</option>
-														<option value="ID">Idaho</option>
-														<option value="IL">Illinois</option>
-														<option value="IN">Indiana</option>
-														<option value="IA">Iowa</option>
-														<option value="KS">Kansas</option>
-														<option value="KY">Kentucky</option>
-														<option value="LA">Louisiana</option>
-														<option value="ME">Maine</option>
-														<option value="MH">Marshall Islands</option>
-														<option value="MD">Maryland</option>
-														<option value="MA">Massachusetts</option>
-														<option value="MI">Michigan</option>
-														<option value="MN">Minnesota</option>
-														<option value="MS">Mississippi</option>
-														<option value="MO">Missouri</option>
-														<option value="MT">Montana</option>
-														<option value="NE">Nebraska</option>
-														<option value="NV">Nevada</option>
-														<option value="NH">New Hampshire</option>
-														<option value="NJ">New Jersey</option>
-														<option value="NM">New Mexico</option>
-														<option value="NY">New York</option>
-														<option value="NC">North Carolina</option>
-														<option value="ND">North Dakota</option>
-														<option value="MP">Northern Mariana Islands</option>
-														<option value="OH">Ohio</option>
-														<option value="OK">Oklahoma</option>
-														<option value="OR">Oregon</option>
-														<option value="PW">Palau</option>
-														<option value="PA">Pennsylvania</option>
-														<option value="PR">Puerto Rico</option>
-														<option value="RI">Rhode Island</option>
-														<option value="SC">South Carolina</option>
-														<option value="SD">South Dakota</option>
-														<option value="TN">Tennessee</option>
-														<option value="TX">Texas</option>
-														<option value="UT">Utah</option>
-														<option value="VT">Vermont</option>
-														<option value="VI">Virgin Islands</option>
-														<option value="VA">Virginia</option>
-														<option value="WA">Washington</option>
-														<option value="WV">West Virginia</option>
-														<option value="WI">Wisconsin</option>
-														<option value="WY">Wyoming</option>
-												</select></li>
-											</ul>
-										</fieldset>
-									</div>
-									<fieldset id="industry" class="sm-expand-menu">
+								
+									<fieldset id="industry" class="sm-expand-menu"
+										onclick="Javascript: filterByIndustry();">
 										<div class="open">
 											<a class="sm-link sm-expand-menu sm-b">Industry</a>
 										</div>
@@ -510,15 +315,16 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											</label></li>
 										</ul>
 									</fieldset>
-									<fieldset id="funding" class="sm-expand-menu">
+
+									<fieldset id="fundings" class="sm-expand-menu">
 										<div class="open">
 											<a class="sm-link sm-expand-menu sm-b">Total Funding</a>
 										</div>
+
 										<ul class="sm-clear-ul">
-											<li id="funding-container"><label for="minFunding"
-												class="js-hide">Min Funding</label> <select
-												name="minFunding" id="minFunding" class="js-hide">
-													<option value="0" selected="selected"><$50,000</option>
+											<li id="funding-container"><select name="minFunding"
+												id="minFunding" class="js-hide">
+													<option value="0" selected="selected">&lt;$50,000</option>
 													<option value="50000">$50,000</option>
 													<option value="100000">$100,000</option>
 													<option value="250000">$250,000</option>
@@ -528,10 +334,9 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 													<option value="25000000">$25M</option>
 													<option value="50000000">$50M</option>
 													<option value="100000000">$100M</option>
-													<option value="100000001">$100M+</option>
-											</select> <label for="maxFunding" class="js-hide">Max Funding</label>
-												<select name="maxFunding" id="maxFunding" class="js-hide">
-													<option value="0"><$50,000</option>
+													<option value="100000001">&gt;$100M</option>
+											</select> <select name="maxFunding" id="maxFunding" class="js-hide">
+													<option value="0">&lt;$50,000</option>
 													<option value="50000">$50,000</option>
 													<option value="100000">$100,000</option>
 													<option value="250000">$250,000</option>
@@ -541,54 +346,76 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 													<option value="25000000">$25M</option>
 													<option value="50000000">$50M</option>
 													<option value="100000000">$100M</option>
-													<option value="100000001" selected="selected">$100M+</option>
+													<option value="100000001" selected="selected">&gt;$100M</option>
 											</select></li>
+											<li>
+											<button type="submit" id="companyFilterSearch"
+											class="sm-allow-double-submit"
+											onclick="Javascript: filterByFundingRange()">Apply Range</button>
+											<br>
+											<br>
+											</li>
 										</ul>
 									</fieldset>
+
 									<fieldset id="minWatchers"
-										class="sm-expand-menu sm-expand-menu-last">
+										class="sm-expand-menu sm-expand-menu-last" onclick="Javascript: filterByEmployee();">
 										<div class="open">
-											<a class="sm-link sm-expand-menu sm-b">Number of Watchers</a>
+											<a class="sm-link sm-expand-menu sm-b">Number of
+												Employees</a>
 										</div>
 										<ul class="sm-clear-ul">
 											<li class="sm-mt"><input type="radio" value="all"
-												class="sm-checkbox" name="minWatchers"
+												class="sm-checkbox" name="employee"
 												id="filter_number_of_watchers_all" checked="checked">
 												<label for="filter_number_of_watchers_all" class="sm-b">All</label>
 											</li>
 											<li><input type="radio" value="10" class="sm-checkbox"
-												name="minWatchers" id="filter_10"> <label
+												name="employee" id="filter_10"> <label
 												for="filter_10">10+</label></li>
 											<li><input type="radio" value="50" class="sm-checkbox"
-												name="minWatchers" id="filter_50"> <label
+												name="employee" id="filter_50"> <label
 												for="filter_50">50+</label></li>
 											<li><input type="radio" value="100" class="sm-checkbox"
-												name="minWatchers" id="filter_100"> <label
+												name="employee" id="filter_100"> <label
 												for="filter_100">100+</label></li>
 											<li class="sm-mb"><input type="radio" value="500"
-												class="sm-checkbox" name="minWatchers" id="filter_500">
+												class="sm-checkbox" name="employee" id="filter_500">
 												<label for="filter_500">500+</label></li>
 										</ul>
 									</fieldset>
+
 								</div>
 							</form>
 							<hr class="space" />
 
-							<!-- search a company<h3>Suggest a Company</h3>
+							<!--  
+							search a company
+							<h3>Suggest a Company</h3>
 
-<div class="sm-shadow-box sm-watch-list-widget">
-	<p>
-		Can't find the company you're looking for?
-	</p>
-	<a class="sm-button sm-request-company" rel="requestAddCompanyOverlay" href="/company/request-new">Request a company to be added</a>
-</div> -->
+							<div class="sm-shadow-box sm-watch-list-widget">
+								<p>Can't find the company you're looking for?</p>
+								<a class="sm-button sm-request-company"
+									rel="requestAddCompanyOverlay" href="/company/request-new">Request
+									a company to be added</a>
+							</div>
+							-->
 							<hr class="space" />
 						</div>
 						<div id="companyDirectory" class="span-16 last">
+
+							<div id="loadingdiv" class="sm-r bbq-loading"
+								style="display: none">
+								<div id="loadingscreen">
+									<h2>Updating results</h2>
+									<img src="/images/sm-loading.gif" />
+								</div>
+							</div>
+
 							<div class="bbq-content">
 								<div class="page1" id="CompanyMainTable">
-								
-								<!--  
+
+									<!--  
 									<div class="sm-card sm-span-16 sm-unhide last sm-mb">
 										<div class="span-2 last">
 											<a href="/company/facebook"><img class="sm-badge"
@@ -622,16 +449,16 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 										</table>
 									</div>
 									-->
-									
-									
+
+
 								</div>
 							</div>
-							
+
 							<hr class="space" />
-							
+
 							<div id="paginator" class="paginatorclass"></div>
-							<input type="hidden" name="page_count" id="page_count" />
-							
+							<input id="page_count" type="hidden" name="page_count" />
+
 							<!--  
 							<div id="smPagination">
 								<ul id="sm-pagination" class="sm-pagination hashlink sm-pg-full">
@@ -659,10 +486,12 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 								</ul>
 							</div>
 							-->
-							
+
+
 						</div>
 					</div>
 				</div>
+
 				<div class="pane"></div>
 			</div>
 		</div>
@@ -672,8 +501,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 		<hr class="space" />
 		<div class="container">
 			<div class="span-6 small">
-				<a href="/?t=lgf"><img src="/images/sm-footer.png"
-					alt="SecondMarket" /></a>
+				<a href="https://www.secondmarket.com/?t=lgf"><img
+					src="/images/sm-footer.png" alt="SecondMarket" /></a>
 				<p>
 					Member&nbsp<a class="footer_link"
 						href="http://www.finra.org/index.htm?t=fl" target="_blank">FINRA</a>
@@ -691,13 +520,17 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 					href="https://www.secondmarket.com/discover/reports/sec-606-info?t=fl"
 					target="_blank">SEC 606 Info</a>
 				<p>
-					<a class="footer_link" href="/business-plan?t=fl">Business
+					<a class="footer_link"
+						href="https://www.secondmarket.com/business-plan?t=fl">Business
 						Continuity Plan</a>
 				</p>
 				<p>
 					Usage of this site constitutes your consent to our <a
-						class="footer_link" href="/privacy-policy?t=fl">Privacy Policy</a>
-					and <a class="footer_link" href="/terms?t=fl">Terms of Service</a>
+						class="footer_link"
+						href="https://www.secondmarket.com/privacy-policy?t=fl">Privacy
+						Policy</a> and <a class="footer_link"
+						href="https://www.secondmarket.com/terms?t=fl">Terms of
+						Service</a>
 				</p>
 				<div>
 					&copy; 2012 SecondMarket Holdings, Inc.<br /> All Rights Reserved.
@@ -707,15 +540,20 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 				<h1>Our Markets</h1>
 				<ul class="sm-clear-ul sm-pbb sm-line-bottom">
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/private-company?t=fl">Private Company Stock</a></li>
+						href="https://www.secondmarket.com/private-company?t=fl">Private
+							Company Stock</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/community-banks?t=fl">Community Bank Stock</a></li>
+						href="https://www.secondmarket.com/community-banks?t=fl">Community
+							Bank Stock</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/fixed-income?t=fl">Fixed Income</a></li>
+						href="https://www.secondmarket.com/fixed-income?t=fl">Fixed
+							Income</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/bankruptcy-claims?t=fl">Bankruptcy Claims</a></li>
+						href="https://www.secondmarket.com/bankruptcy-claims?t=fl">Bankruptcy
+							Claims</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/public-equity?t=fl">Restricted Public Equity</a></li>
+						href="https://www.secondmarket.com/public-equity?t=fl">Restricted
+							Public Equity</a></li>
 				</ul>
 				<ul class="sm-clear-ul sm-line-top">
 					<li class="small sm-mts"><a class="footer_link"
@@ -727,33 +565,35 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 				<h1>Resources</h1>
 				<ul class="sm-clear-ul">
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/discover/news?t=fl">Press</a></li>
+						href="https://www.secondmarket.com/discover/news?t=fl">Press</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/discover/events?t=fl">Events</a></li>
+						href="https://www.secondmarket.com/discover/events?t=fl">Events</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
 						href="http://alchemy.secondmarket.com?t=fl" target="_blank">Alchemy
 							Magazine</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/labs?t=fl">SecondMarket Labs</a></li>
+						href="https://www.secondmarket.com/labs?t=fl">SecondMarket
+							Labs</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/discover/learn/legal-learning-center?t=fl">Legal
+						href="https://www.secondmarket.com/discover/learn/legal-learning-center?t=fl">Legal
 							Learning Center</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/discover/learn/pc-learning-center?t=fl">Private Company
-							Learning Center</a></li>
+						href="https://www.secondmarket.com/discover/learn/pc-learning-center?t=fl">Private
+							Company Learning Center</a></li>
 				</ul>
 			</div>
 			<div class="footer_box">
 				<h1>About Us</h1>
 				<ul class="sm-clear-ul">
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/about-us?t=fl">Company Overview</a></li>
+						href="https://www.secondmarket.com/about-us?t=fl">Company
+							Overview</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/management?t=fl">Management</a></li>
+						href="https://www.secondmarket.com/management?t=fl">Management</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/careers?t=fl">Careers</a></li>
+						href="https://www.secondmarket.com/careers?t=fl">Careers</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/internships?t=fl">Internships</a></li>
+						href="https://www.secondmarket.com/internships?t=fl">Internships</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
 						href="http://blog.secondmarket.com?t=fl" target="_blank">Blog</a>
 					</li>
@@ -761,9 +601,10 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 						href="http://engineering.secondmarket.com?t=fl" target="_blank">Engineering
 							Blog</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/impact?t=fl">SecondMarket Impact</a></li>
+						href="https://www.secondmarket.com/impact?t=fl">SecondMarket
+							Impact</a></li>
 					<li class="small sm-mbs"><a class="footer_link"
-						href="/contact?t=fl">Contact us</a></li>
+						href="https://www.secondmarket.com/contact?t=fl">Contact us</a></li>
 				</ul>
 			</div>
 			<div class="footer_box">
