@@ -182,4 +182,12 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return companyList;
 	}
 
+	public List<Company> findCompaniesByPage(int numberOfElementsPerPage,
+			int pageIndex, String sortByField, String isDescending,
+			String selectedCountry, String companyName, String industry,
+			int minFunding, int maxFunding, int employees) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

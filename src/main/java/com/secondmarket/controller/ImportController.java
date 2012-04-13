@@ -338,18 +338,23 @@ public class ImportController {
 			@RequestParam("minFunding") int minFunding,
 			@RequestParam("maxFunding") int maxFunding,
 			@RequestParam("employees") int employees) {
-		
+
 		System.out.println("pageIndex: " + pageIndex);
 		System.out.println("selectedCountry: " + selectedCountry);
-		System.out.println("companyName: " + companyName.length());
+		System.out.println("companyName: " + companyName);
 		System.out.println("industry: " + industry);
 		System.out.println("minFunding: " + minFunding);
 		System.out.println("maxFunding: " + maxFunding);
 		System.out.println("employees: " + employees);
 
-		List<Company> paginatedList = dataImporter
-				.retrieveSortedCompaniesInPage(pageIndex, 10, sortByField,
-						Boolean.parseBoolean(isDescending));
+		List<Company> paginatedList = dataImporter.retrieveCompaniesByPage(10,
+				pageIndex, sortByField, isDescending, selectedCountry,
+				companyName, industry, minFunding, maxFunding, employees);
+
+//		List<Company> paginatedList = dataImporter
+//				.retrieveSortedCompaniesInPage(pageIndex, 10, sortByField,
+//						Boolean.parseBoolean(isDescending));
+
 		// String result = dataImporter.getPaginatedDataInJson(paginatedList);
 		String result = dataImporter
 				.jsonizeDataForCompanyMainPage(paginatedList);

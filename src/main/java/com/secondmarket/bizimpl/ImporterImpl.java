@@ -76,20 +76,22 @@ public final class ImporterImpl implements Importer {
 			url_CrunchBase = "http://api.crunchbase.com/v/1/company/"
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
-			
+
 			state = crunchbaseUtils.getCompanyLocationState(crunchbaseDoc)[0];
 			name = crunchbaseUtils.getCompanyLocationState(crunchbaseDoc)[1];
-			
-			if(name == null || name.length() == 0 ){
+
+			if (name == null || name.length() == 0) {
 				title = wikiUtils.findCompanyUrl(companyName);
 				edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
-//				System.out.println("OLD::" + companyName + "****************"+state);
-			}else{
+				// System.out.println("OLD::" + companyName +
+				// "****************"+state);
+			} else {
 				title = wikiUtils.findCompanyUrl(name);
 				edgarDoc = edgarUtils.getEdgarDoc(name, state);
-//				System.out.println("NEW::" + name + "+****************+"+ companyName+ "***"+state);
+				// System.out.println("NEW::" + name + "+****************+"+
+				// companyName+ "***"+state);
 			}
-			
+
 			if (title == null) {
 				count++;
 			} else {
@@ -105,7 +107,7 @@ public final class ImporterImpl implements Importer {
 			wikipediaDoc = null;
 			edgarDoc = null;
 		}
-//		System.out.println(count);
+		// System.out.println(count);
 	}
 
 	public Company retrieveCompanyByName(String companyName) {
@@ -239,6 +241,17 @@ public final class ImporterImpl implements Importer {
 		}
 		// Using GSON to format the data
 		return gson.toJson(jsonMapString);
+	}
+
+	public List<Company> retrieveCompaniesByPage(int numberOfElementsPerPage,
+			int pageIndex, String sortByField, String isDescending,
+			String selectedCountry, String companyName, String industry,
+			int minFunding, int maxFunding, int employees) {
+		List<Company> paginatedList = companyDao.findCompaniesByPage(
+				numberOfElementsPerPage, pageIndex, sortByField, isDescending,
+				selectedCountry, companyName, industry, minFunding, maxFunding,
+				employees);
+		return paginatedList;
 	}
 
 }

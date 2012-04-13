@@ -14,13 +14,19 @@ import com.secondmarket.model.EdgarCompanyDetail;
 public interface CompanyDAO {
 
 	void saveCompany(String companyName, Map<String, String> map,
-			Map<String, String> wikiMap, Map<String, EdgarCompanyDetail> edgarMap);
+			Map<String, String> wikiMap,
+			Map<String, EdgarCompanyDetail> edgarMap);
 
 	Company findCompanyByName(String companyName);
 
 	List<Company> findCompaniesByImpreciseName(String companyName);
 
 	List<Company> findCompaniesInPage(int pageIndex, int numberOfElementsPerPage);
+
+	List<Company> findCompaniesByPage(int numberOfElementsPerPage,
+			int pageIndex, String sortByField, String isDescending,
+			String selectedCountry, String companyName, String industry,
+			int minFunding, int maxFunding, int employees);
 
 	List<Company> findSortedCompaniesInPage(int pageIndex,
 			int numberOfElementsPerPage, String sortByField,
