@@ -331,7 +331,7 @@ public class ImportController {
 	public @ResponseBody
 	String load(@RequestParam("pageIndex") int pageIndex,
 			@RequestParam("sortByField") String sortByField,
-			@RequestParam("isDescending") String isDescending,
+			@RequestParam("isDescending") boolean isDescending,
 			@RequestParam("selectedCountry") String selectedCountry,
 			@RequestParam("companyName") String companyName,
 			@RequestParam("industry") String industry,
@@ -340,12 +340,15 @@ public class ImportController {
 			@RequestParam("employees") int employees) {
 
 		System.out.println("pageIndex: " + pageIndex);
+		System.out.println("sortByField: " + sortByField);
+		System.out.println("isDescending: " + isDescending);
 		System.out.println("selectedCountry: " + selectedCountry);
 		System.out.println("companyName: " + companyName);
 		System.out.println("industry: " + industry);
 		System.out.println("minFunding: " + minFunding);
 		System.out.println("maxFunding: " + maxFunding);
 		System.out.println("employees: " + employees);
+		System.out.println("=================================");
 
 		List<Company> paginatedList = dataImporter.retrieveCompaniesByPage(10,
 				pageIndex, sortByField, isDescending, selectedCountry,

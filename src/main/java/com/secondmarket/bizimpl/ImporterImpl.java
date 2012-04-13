@@ -244,7 +244,7 @@ public final class ImporterImpl implements Importer {
 	}
 
 	public List<Company> retrieveCompaniesByPage(int numberOfElementsPerPage,
-			int pageIndex, String sortByField, String isDescending,
+			int pageIndex, String sortByField, boolean isDescending,
 			String selectedCountry, String companyName, String industry,
 			int minFunding, int maxFunding, int employees) {
 		List<Company> paginatedList = companyDao.findCompaniesByPage(

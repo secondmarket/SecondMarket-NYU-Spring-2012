@@ -23,7 +23,7 @@ public interface Importer {
 			int numberOfElementsPerPage);
 
 	List<Company> retrieveCompaniesByPage(int numberOfElementsPerPage,
-			int pageIndex, String sortByField, String isDescending,
+			int pageIndex, String sortByField, boolean isDescending,
 			String selectedCountry, String companyName, String industry,
 			int minFunding, int maxFunding, int employees);
 
