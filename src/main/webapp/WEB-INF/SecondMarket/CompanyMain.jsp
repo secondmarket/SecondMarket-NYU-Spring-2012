@@ -30,8 +30,6 @@
 
 <script type="text/javascript">
     var contextPath = "/";
-    var avatarUrl = "https://d36z0f16h51j2.cloudfront.net/";
-    var companyLogoUrl = "https://dbr2dggbe4ycd.cloudfront.net/company/";
 </script>
 <script type="text/javascript">
 document.write('<style type="text/css">.js-hide{display:none;}</style>');
@@ -208,9 +206,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											</select></li>
 										</ul>
 									</fieldset>
-								
-									<fieldset id="industry" class="sm-expand-menu"
-										onclick="Javascript: filterByIndustry();">
+
+									<fieldset id="industry" class="sm-expand-menu">
 										<div class="open">
 											<a class="sm-link sm-expand-menu sm-b">Industry</a>
 										</div>
@@ -220,98 +217,115 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											</li>
 											<li><input type="checkbox" value="Advertising"
 												class="sm-checkbox" name="industry" id="Advertising"
-												checked="checked"> <label for="Advertising">Advertising
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Advertising">Advertising <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Biotech"
 												class="sm-checkbox" name="industry" id="Biotech"
-												checked="checked"> <label for="Biotech">Bio
-													Tech <a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Biotech">Bio Tech <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Cleantech"
 												class="sm-checkbox" name="industry" id="Cleantech"
-												checked="checked"> <label for="Cleantech">Clean
-													Tech <a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Cleantech">Clean Tech <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Hardware"
 												class="sm-checkbox" name="industry" id="Hardware"
-												checked="checked"> <label for="Hardware">Consumer
-													Electronics/ Devices <a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Hardware">Consumer Electronics/ Devices
+													<a class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Web"
 												class="sm-checkbox" name="industry" id="Web"
-												checked="checked"> <label for="Web">Consumer
-													Web <a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Web">Consumer Web <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Ecommerce"
 												class="sm-checkbox" name="industry" id="Ecommerce"
-												checked="checked"> <label for="Ecommerce">eCommerce
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Ecommerce">eCommerce <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Education"
 												class="sm-checkbox" name="industry" id="Education"
-												checked="checked"> <label for="Education">Education
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Education">Education <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Enterprise"
 												class="sm-checkbox" name="industry" id="Enterprise"
-												checked="checked"> <label for="Enterprise">Enterprise
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Enterprise">Enterprise <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Games_video"
 												class="sm-checkbox" name="industry" id="Games_video"
-												checked="checked"> <label for="Games_video">Game,Video
-													and Entertainment <a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Games_video">Game,Video and
+													Entertainment <a class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Legal"
 												class="sm-checkbox" name="industry" id="Legal"
-												checked="checked"> <label for="Legal">Legal
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Legal">Legal <a class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Mobile"
 												class="sm-checkbox" name="industry" id="Mobile"
-												checked="checked"> <label for="Mobile">Mobile/Wireless
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Mobile">Mobile/Wireless <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Network-hosting"
 												class="sm-checkbox" name="industry" id="Network-hosting"
-												checked="checked"> <label for="Network-hosting">Network/Hosting
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Network-hosting">Network/Hosting <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Consulting"
 												class="sm-checkbox" name="industry" id="Consulting"
-												checked="checked"> <label for="Consulting">Consulting
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Consulting">Consulting <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Public_relations"
 												class="sm-checkbox" name="industry" id="Public_relations"
-												checked="checked"> <label for="Public_relations">Communications
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Public_relations">Communications <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Search"
 												class="sm-checkbox" name="industry" id="Search"
-												checked="checked"> <label for="Search">Search
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Search">Search <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Security"
 												class="sm-checkbox" name="industry" id="Security"
-												checked="checked"> <label for="Security">Security
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Security">Security <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Semiconductor"
 												class="sm-checkbox" name="industry" id="Semiconductor"
-												checked="checked"> <label for="Semiconductor">Semiconductor
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Semiconductor">Semiconductor <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Software"
 												class="sm-checkbox" name="industry" id="Software"
-												checked="checked"> <label for="Software">Software
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Software">Software <a
+													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Other"
 												class="sm-checkbox" name="industry" id="Other"
-												checked="checked"> <label for="Other">Other
-													<a class="sm-link sm-only">only</a>
+												checked="checked" onchange="Javascript: filterByIndustry();">
+												<label for="Other">Other <a class="sm-link sm-only">only</a>
 											</label></li>
 										</ul>
 									</fieldset>
@@ -349,39 +363,54 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 													<option value="100000001" selected="selected">&gt;$100M</option>
 											</select></li>
 											<li>
-											<button type="submit" id="companyFilterSearch"
-											class="sm-allow-double-submit"
-											onclick="Javascript: filterByFundingRange()">Apply Range</button>
-											<br>
-											<br>
+												<button type="submit" id="companyFilterSearch"
+													class="sm-allow-double-submit"
+													onclick="Javascript: filterByFundingRange()">Apply
+													Range</button> <br> <br>
 											</li>
 										</ul>
 									</fieldset>
 
 									<fieldset id="minWatchers"
-										class="sm-expand-menu sm-expand-menu-last" onclick="Javascript: filterByEmployee();">
+										class="sm-expand-menu sm-expand-menu-last">
 										<div class="open">
 											<a class="sm-link sm-expand-menu sm-b">Number of
 												Employees</a>
 										</div>
 										<ul class="sm-clear-ul">
-											<li class="sm-mt"><input type="radio" value="all"
-												class="sm-checkbox" name="employee"
-												id="filter_number_of_watchers_all" checked="checked">
-												<label for="filter_number_of_watchers_all" class="sm-b">All</label>
-											</li>
+											<li class="sm-mt"><input type="radio" value="-1"
+												class="sm-checkbox" name="employee" checked="checked"
+												onclick="Javascript: filterByEmployee();"><label
+												class="sm-b">All</label></li>
 											<li><input type="radio" value="10" class="sm-checkbox"
-												name="employee" id="filter_10"> <label
-												for="filter_10">10+</label></li>
+												name="employee" onclick="Javascript: filterByEmployee();">
+												<label>10+</label></li>
 											<li><input type="radio" value="50" class="sm-checkbox"
-												name="employee" id="filter_50"> <label
-												for="filter_50">50+</label></li>
+												name="employee" onclick="Javascript: filterByEmployee();">
+												<label>50+</label></li>
 											<li><input type="radio" value="100" class="sm-checkbox"
-												name="employee" id="filter_100"> <label
-												for="filter_100">100+</label></li>
+												name="employee" onclick="Javascript: filterByEmployee();">
+												<label>100+</label></li>
 											<li class="sm-mb"><input type="radio" value="500"
-												class="sm-checkbox" name="employee" id="filter_500">
-												<label for="filter_500">500+</label></li>
+												class="sm-checkbox" name="employee"
+												onclick="Javascript: filterByEmployee();"> <label>500+</label></li>
+										</ul>
+									</fieldset>
+
+									<fieldset id="filter" class="sm-expand-menu">
+										<div class="open">
+											<a class="sm-link sm-expand-menu sm-b">Sorting Order By
+												Funding</a>
+										</div>
+										<ul class="sm-clear-ul">
+											<li class="sm-mt"><input type="radio" value="Descending"
+												class="sm-checkbox" name="sortingorder" checked="checked"
+												onclick="Javascript: filterBySortingOrder();"> <label
+												class="sm-b">Descending</label></li>
+											<li><input type="radio" value="Ascending"
+												class="sm-checkbox" name="sortingorder"
+												onclick="Javascript: filterBySortingOrder();"> <label>Ascending
+											</label></li>
 										</ul>
 									</fieldset>
 

@@ -341,7 +341,7 @@ public class ImportController {
 		
 		System.out.println("pageIndex: " + pageIndex);
 		System.out.println("selectedCountry: " + selectedCountry);
-		System.out.println("companyName: " + companyName);
+		System.out.println("companyName: " + companyName.length());
 		System.out.println("industry: " + industry);
 		System.out.println("minFunding: " + minFunding);
 		System.out.println("maxFunding: " + maxFunding);

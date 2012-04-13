@@ -59,15 +59,13 @@ function clearAll(){
 
 
 function searchByCompanyName(value){
-    companyName = value;
-    //alert(companyName);
+    companyName = $.trim(value);
     loadContent(0);
 }
 
 
 function filterByCountry(){
     selectedCountry = $("#country").val();
-    //alert(selectedCountry);
     loadContent(0);
 }
 
@@ -78,7 +76,6 @@ function filterByIndustry(){
     {
         industryArray.push(this.value);
     });
-    //alert(industryArray);
     loadContent(0);
 }
 
@@ -91,12 +88,17 @@ function filterByFundingRange(){
 
 
 function filterByEmployee(){
-    $("input[name='employee']:checked").each(function ()
-    {
-        employees = this.value;
-    });
+    employees = $("input[name='employee']:checked").val();
     loadContent(0);
+}
 
+function filterBySortingOrder(){
+    if ($("input[name='sortingorder']:checked").val() == "Descending"){
+        isDescending = true;
+    } else {
+        isDescending = false;
+    }
+    loadContent(0);
 }
 
 
@@ -180,9 +182,9 @@ function generatePages(selected){
 		var pagers = "<ul>";
 		for (i = 1; i <= Number(pages); i++) {
 			if (i == 1){
-				pagers += "<li><a href='#' class='pagor selected'>" + i + "</a></li>";
+				pagers += "<li><a class='pagor selected' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 			} else {
-				pagers += "<li><a href='#' class='pagor'>" + i + "</a></li>";
+				pagers += "<li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 			}
 		}
 		pagers += "<li><div style='clear:both;'></div></li></ul>";
@@ -201,12 +203,12 @@ function generatePages(selected){
 			var pagers = "<ul>";
 			for (i = 1; i <= 5; i++) {
 				if (i == selected) {
-					pagers += "<li><a href='#' class='pagor selected'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor selected' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				} else {
-					pagers += "<li><a href='#' class='pagor'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				}				
 			}
-			pagers += "<li><a class='dot'>...</a></li><li><a href='#' class='pagor'>" + Number(pages) + "</a></li><li><div style='clear:both;'></div></li></ul>";
+			pagers += "<li><a class='dot'>...</a></li><li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + Number(pages) + "</a></li><li><div style='clear:both;'></div></li></ul>";
 			
 			$("#paginator").empty();
 			$('#paginator').html(pagers);
@@ -215,12 +217,12 @@ function generatePages(selected){
 			});
 		} else if (selected > (Number(pages) - 4)) {
 			// Draw ... link to first then have the last 5
-			var pagers = "<ul><li><a href='#' class='pagor'>1</a></li><li><a class='dot'>...</a></li>";
+			var pagers = "<ul><li><a class='pagor' style='cursor:pointer;text-decoration:none'>1</a></li><li><a class='dot'>...</a></li>";
 			for (i = (Number(pages) - 4); i <= Number(pages); i++) {
 				if (i == selected) {
-					pagers += "<li><a href='#' class='pagor selected'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor selected' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				} else {
-					pagers += "<li><a href='#' class='pagor'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				}				
 			}			
 			pagers += "<li><div style='clear:both;'></div></li></ul>";
@@ -232,15 +234,15 @@ function generatePages(selected){
 			});		
 		} else {
 			// Draw the number 1 element, then draw ... 2 before and two after and ... link to last
-			var pagers = "<ul><li><a href='#' class='pagor'>1</a></li><li><a class='dot'>...</a></li>";
+			var pagers = "<ul><li><a class='pagor' style='cursor:pointer;text-decoration:none'>1</a></li><li><a class='dot'>...</a></li>";
 			for (i = (Number(selected) - 2); i <= (Number(selected) + 2); i++) {
 				if (i == selected) {
-					pagers += "<li><a href='#' class='pagor selected'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor selected' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				} else {
-					pagers += "<li><a href='#' class='pagor'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				}
 			}
-			pagers += "<li><a class='dot'>...</a></li><li><a href='#' class='pagor'>" + pages + "</a></li><li><div style='clear:both;'></div></li></ul>";
+			pagers += "<li><a class='dot' style='cursor:pointer;text-decoration:none'>...</a></li><li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + pages + "</a></li><li><div style='clear:both;'></div></li></ul>";
 			
 			$("#paginator").empty();
 			$('#paginator').html(pagers);
