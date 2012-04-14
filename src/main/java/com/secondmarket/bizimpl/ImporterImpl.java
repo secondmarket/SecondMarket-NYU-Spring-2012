@@ -37,18 +37,20 @@ public final class ImporterImpl implements Importer {
 	private WikipediaUtils wikiUtils;
 	private EdgarUtils edgarUtils;
 	private SMProperties wikiProperty;
+	private SMProperties edgarProperty;
 
 	public ImporterImpl() {
 		gson = new Gson();
 		try {
 			wikiProperty = SMProperties.getInstance("WIKI");
+			edgarProperty = SMProperties.getInstance("EDGAR");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		wikiUtils = new WikipediaUtils(wikiProperty);
 		crunchbaseUtils = new CrunchBaseUtils();
-		edgarUtils = new EdgarUtils();
+		edgarUtils = new EdgarUtils(edgarProperty);
 		companyDao = new CompanyDAOImpl(wikiProperty);
 	}
 
@@ -77,8 +79,8 @@ public final class ImporterImpl implements Importer {
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
 			
-			state = crunchbaseUtils.getCompanyLocationState(crunchbaseDoc)[0];
-			name = crunchbaseUtils.getCompanyLocationState(crunchbaseDoc)[1];
+			state = crunchbaseUtils.getCompanyNameAndState(crunchbaseDoc)[0];
+			name = crunchbaseUtils.getCompanyNameAndState(crunchbaseDoc)[1];
 			
 			if(name == null || name.length() == 0 ){
 				title = wikiUtils.findCompanyUrl(companyName);

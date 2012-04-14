@@ -76,12 +76,12 @@ public final class CrunchBaseUtils {
 	}
 
 	/**
-	 * Need to get state information for filtering EDGAR records
-	 * 
+	 * Get name and state information for Wikipedia and EDGAR records
+	 * Modify by Danjuan
 	 * @param crunchbaseDoc
 	 * @return
 	 */
-	public String[] getCompanyLocationState(Map<String, String> crunchbaseDoc) {
+	public String[] getCompanyNameAndState(Map<String, String> crunchbaseDoc) {
     	String[] strs = new String[2];
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(crunchbaseDoc));

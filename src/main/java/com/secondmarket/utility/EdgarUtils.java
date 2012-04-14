@@ -2,11 +2,10 @@ package com.secondmarket.utility;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,6 +15,7 @@ import org.jsoup.select.Elements;
 import com.secondmarket.model.EdgarCompanyDetail;
 import com.secondmarket.model.EdgarDocDetail;
 import com.secondmarket.model.EdgarFilingDetail;
+import com.secondmarket.properties.SMProperties;
 
 /***
  * 
@@ -25,10 +25,17 @@ import com.secondmarket.model.EdgarFilingDetail;
 public class EdgarUtils {
 
 	public static final String preUrl = "http://www.sec.gov";
+	private SMProperties p;
 
-	public EdgarUtils() {
+	public EdgarUtils(SMProperties p) {
+		this.p = p;
 	}
 	
+	/***
+	 * Replace the percent Encode Reserved Characters.
+	 * @param title
+	 * @return
+	 */
 	private String percentEncodeReservedCharacters(String title) {
 		char[] chars = title.toCharArray();
 		for(int i=0; i<chars.length;i++){
@@ -61,8 +68,8 @@ public class EdgarUtils {
 		EdgarDocDetail temp;
 		String url2;
 		Elements tds;
+		
 		String urlName = this.percentEncodeReservedCharacters(companyName.trim());
-//        System.out.println(urlName+" 9999999");
 		String url = "http://www.sec.gov/cgi-bin/browse-edgar?company="
 				+ urlName
 				+ "&match=contains&CIK=&filenum=&State="
@@ -109,7 +116,7 @@ public class EdgarUtils {
 					name.setDetailList(multiDocList);
 				}
 			} else {
-				//System.out.println("--------One Company Names --------");
+//				System.out.println("--------One Company Names --------");
 				if (detailList.size() > 0) {
 					item = new EdgarCompanyDetail();
 					item.setCompanyName(companyName);
@@ -137,18 +144,19 @@ public class EdgarUtils {
 		Map<String, EdgarCompanyDetail> map = new TreeMap<String, EdgarCompanyDetail>();
 		List<EdgarFilingDetail> filingList;
 		List<EdgarDocDetail> removedList = new ArrayList<EdgarDocDetail>();
-		int companyNum = 1;
-		int docNum = 1;
-		int rmNum = 1;
+//		int companyNum = 1;
+//		int docNum = 1;
+//		int rmNum = 1;
 		String url;
 		boolean flag;
 		EdgarFilingDetail item;
 		Elements tds;
+		List<Pattern> patternList = getInfoboxPattern();
 		
 		for (EdgarCompanyDetail name : nameList) {
 //			System.out.println("COMPANY " + (companyNum++) + " -> "
 //					+ name.getCompanyName() + " -- " + name.getLocation());
-			docNum = 1;
+//			docNum = 1;
 			flag = false;
 			for (EdgarDocDetail entry : name.getDetailList()) {
 //				System.out.println("DOC " + (docNum++) + " "
@@ -162,7 +170,7 @@ public class EdgarUtils {
 						for (Element row : table.select("tr")) {
 							tds = row.select("td");
 							if (tds.size() == 5) {
-								item = getDocsbyCompany(tds);
+								item = getDocsbyCompany(tds, patternList);
 								if (item != null) {
 									filingList.add(item);
 									flag = true;
@@ -180,7 +188,7 @@ public class EdgarUtils {
 			}
 			
 			if(removedList.size()>0){
-				rmNum = 1;
+//				rmNum = 1;
 				//removed the EdgarDocs do not have filing details
 				for(EdgarDocDetail rmItem: removedList){
 					name.getDetailList().remove(rmItem);
@@ -204,13 +212,20 @@ public class EdgarUtils {
 	 * @param tds
 	 * @return
 	 */
-	private EdgarFilingDetail getDocsbyCompany(Elements tds) {
+	private EdgarFilingDetail getDocsbyCompany(Elements tds, List<Pattern> pList) {
 
 		EdgarFilingDetail item = null;
 
 		String filingName = tds.get(2).getElementsByTag("a").get(0).ownText()
 				.toLowerCase();
-		if (filingName.endsWith(".html") || filingName.endsWith(".pdf") || filingName.endsWith(".htm")) { 
+		boolean flag = false;
+		for(Pattern pattern: pList){
+			if(checkPatternMatch(pattern, filingName)){
+				flag = true;
+				break;
+			}
+		}
+		if (flag) { 
 			
 			item = new EdgarFilingDetail();
 
@@ -280,42 +295,27 @@ public class EdgarUtils {
 		}
 		return item;
 	}
-
-	//web crawler
-	// URL resource = null;
-	// try {
-	// resource = new URL(url);
-	// } catch (MalformedURLException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// InputStream input = null;
-	//
-	// try {
-	// input = resource.openStream();
-	// InputStreamReader isr;
-	// try {
-	// isr = new InputStreamReader(input, "UTF-8");
-	// BufferedReader br = new BufferedReader(isr);
-	// String strTemp = "";
-	// while(null != (strTemp = br.readLine())){
-	// System.out.println(strTemp);
-	// }
-	//
-	// } catch (UnsupportedEncodingException e) {
-	// e.printStackTrace();
-	// }
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// } finally {
-	// if (input != null) {
-	// try {
-	// input.close();
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
+	
+	///////////////////////////////////////////////////////////////////////////
+	//PATTERN MATCH
+	///////////////////////////////////////////////////////////////////////////
+	public List<Pattern> getInfoboxPattern(){
+		return p.getValues("DOCTYPE", "OPTIONS");
+	}
+	
+	public Pattern getInfoboxSpecifiedPattern(){
+		Pattern myPattern = null;
+		try {
+			myPattern = p.getValue("DOCTYPE", "OPTIONS", "OPTION");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return myPattern;
+	}
+	
+	public static boolean checkPatternMatch(Pattern myPattern, String text){
+		return myPattern.matcher(text).matches();
+	}
 
 	/**
 	 * @param args
@@ -323,9 +323,17 @@ public class EdgarUtils {
 	 */
 	public static void main(String[] args) throws IOException {
 
+		SMProperties property = null;
+		try {
+			property = SMProperties.getInstance("EDGAR");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// foursquare, secondMarket
-		EdgarUtils dataImporter = new EdgarUtils();
+		EdgarUtils dataImporter = new EdgarUtils(property);
 		Map<String, EdgarCompanyDetail> titleList = dataImporter.getEdgarDoc(
-				"Facebook.com", "CA");
+				"Facebook", "CA");
+	    System.out.println(titleList.toString());
 	}
 }
