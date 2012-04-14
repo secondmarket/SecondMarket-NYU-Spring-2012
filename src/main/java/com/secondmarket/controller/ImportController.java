@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -111,7 +112,7 @@ public class ImportController {
 		model.addAttribute("company", company);
 		return "main";
 	}
-	
+
 	/**
 	 * Handles the AJAX request from front end page ("main.jsp"), loading the
 	 * paginated companies as 10 records per page based on the page index
@@ -241,12 +242,6 @@ public class ImportController {
 
 		return String.valueOf(numberOfPages);
 	}
-	
-	@RequestMapping(value = "/SecondMarket/CompanyMain.htm", method = RequestMethod.GET)
-	public String initCompanyMain() {
-		logger.info("Returning main page");
-		return "CompanyMain";
-	}
 
 	/**
 	 * Handles the AJAX request from front end page ("main.jsp"), loading the
@@ -269,13 +264,15 @@ public class ImportController {
 		List<Company> paginatedList = dataImporter
 				.retrieveSortedCompaniesInPage(pageIndex, 10, sortByField,
 						Boolean.parseBoolean(isDescending));
-//		String result = dataImporter.getPaginatedDataInJson(paginatedList);
-		String result = dataImporter.jsonizeDataForCompanyMainPage(paginatedList);
+		// String result = dataImporter.getPaginatedDataInJson(paginatedList);
+		String result = dataImporter
+				.jsonizeDataForCompanyMainPage(paginatedList);
 		return result;
 	}
 
 	/**
 	 * Handles the request from html "<img>" tag loading company logo
+	 * 
 	 * @param companyName
 	 * @return
 	 */
@@ -290,5 +287,81 @@ public class ImportController {
 		return new ResponseEntity<byte[]>(companyLogo, responseHeaders,
 				HttpStatus.OK);
 	}
-	
+
+	@RequestMapping(value = "/SecondMarket/CompanyMain.htm", method = RequestMethod.GET)
+	public String initCompanyMain(Model model) {
+		logger.info("Returning main page");
+		Company company = new Company();
+		model.addAttribute("company", company);
+		return "CompanyMain";
+	}
+
+	/*
+	 * @RequestMapping(value = "/SecondMarket/searchcompany.htm", method =
+	 * RequestMethod.GET) public @ResponseBody String
+	 * searchCompany(@RequestParam("companyName") String companyName,
+	 * 
+	 * @RequestParam("country") String country,
+	 * 
+	 * @RequestParam("industry") String industry) { //
+	 * System.out.println(companyName); // System.out.println(country); //
+	 * System.out.println(industry);
+	 * 
+	 * 
+	 * List<Company> paginatedList = dataImporter
+	 * .retrieveCompaniesByImpreciseName(companyName);
+	 * 
+	 * List<Company> subPaginatedList = null; int pageIndex = 0;
+	 * 
+	 * int numberOfPages = (int) Math .ceil(((double) paginatedList.size()) /
+	 * 10); if (pageIndex < numberOfPages) { if (paginatedList.size() < 10) {
+	 * subPaginatedList = paginatedList.subList(0, paginatedList.size()); } else
+	 * { if ((pageIndex * 10 + 10) < paginatedList.size()) { subPaginatedList =
+	 * paginatedList.subList(pageIndex * 10, pageIndex * 10 + 10); } else {
+	 * subPaginatedList = paginatedList.subList(pageIndex * 10,
+	 * paginatedList.size()); } }
+	 * 
+	 * String result = dataImporter .getPaginatedDataInJson(subPaginatedList);
+	 * System.out.println(result); return result; } else { return null; }
+	 * 
+	 * }
+	 */
+
+	@RequestMapping(value = "/SecondMarket/loadcompany.htm", method = RequestMethod.GET)
+	public @ResponseBody
+	String load(@RequestParam("pageIndex") int pageIndex,
+			@RequestParam("sortByField") String sortByField,
+			@RequestParam("isDescending") boolean isDescending,
+			@RequestParam("selectedCountry") String selectedCountry,
+			@RequestParam("companyName") String companyName,
+			@RequestParam("industry") String industry,
+			@RequestParam("minFunding") int minFunding,
+			@RequestParam("maxFunding") int maxFunding,
+			@RequestParam("employees") int employees) {
+
+		System.out.println("pageIndex: " + pageIndex);
+		System.out.println("sortByField: " + sortByField);
+		System.out.println("isDescending: " + isDescending);
+		System.out.println("selectedCountry: " + selectedCountry);
+		System.out.println("companyName: " + companyName);
+		System.out.println("industry: " + industry);
+		System.out.println("minFunding: " + minFunding);
+		System.out.println("maxFunding: " + maxFunding);
+		System.out.println("employees: " + employees);
+		System.out.println("=================================");
+
+		List<Company> paginatedList = dataImporter.retrieveCompaniesByPage(10,
+				pageIndex, sortByField, isDescending, selectedCountry,
+				companyName, industry, minFunding, maxFunding, employees);
+
+//		List<Company> paginatedList = dataImporter
+//				.retrieveSortedCompaniesInPage(pageIndex, 10, sortByField,
+//						Boolean.parseBoolean(isDescending));
+
+		// String result = dataImporter.getPaginatedDataInJson(paginatedList);
+		String result = dataImporter
+				.jsonizeDataForCompanyMainPage(paginatedList);
+		return result;
+	}
+
 }

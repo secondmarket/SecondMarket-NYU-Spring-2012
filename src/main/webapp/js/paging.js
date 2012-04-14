@@ -1,16 +1,23 @@
 var isDescending = true;
 var sortByField = "fundingAmount";
+var companyName = "";
+var selectedCountry = "all";
+var industryArray = [];
+var minFunding = 0;
+var maxFunding = 100000001;
+var employees = -1;
 
 //load the initial contents
 $("document").ready(function() {
-	loadSortedContent(0, sortByField);
-	countSortedPages(sortByField);
+	loadContent(0);
+	countPages();
+    
 });
 
 
 /*
 //load the company data in a table
-function loadSortedContent(pageIndex, sortByField){
+function loadContent(pageIndex, sortByField){
 	$.ajax({
       		type: "GET",
       		url: "/SecondMarket/loadsortedcompanies.htm?pageIndex=" + pageIndex + "&sortByField=" + sortByField + "&isDescending=" + isDescending,
@@ -38,10 +45,96 @@ function loadSortedContent(pageIndex, sortByField){
 */
 
 
-function loadSortedContent(pageIndex, sortByField){
+function clearAll(){
+    isDescending = true;
+    sortByField = "fundingAmount";
+    companyName = "";
+    selectedCountry = "all";
+    industryArray = [];
+    minFunding = 0;
+    maxFunding = 100000001;
+    employees = -1;
+    loadContent(0);
+}
+
+
+function searchByCompanyName(value){
+    companyName = $.trim(value);
+    loadContent(0);
+}
+
+
+function filterByCountry(){
+    selectedCountry = $("#country").val();
+    loadContent(0);
+}
+
+
+function filterByIndustry(){
+    industryArray = [];
+    $("input[name='industry']:checked").each(function ()
+    {
+        industryArray.push(this.value);
+    });
+    loadContent(0);
+}
+
+
+function filterByFundingRange(){
+    minFunding = $("#minFunding").val();
+    maxFunding = $("#maxFunding").val();
+    loadContent(0);
+}
+
+
+function filterByEmployee(){
+    employees = $("input[name='employee']:checked").val();
+    loadContent(0);
+}
+
+function filterBySortingOrder(){
+    if ($("input[name='sortingorder']:checked").val() == "Descending"){
+        isDescending = true;
+    } else {
+        isDescending = false;
+    }
+    loadContent(0);
+}
+
+
+function showLoading() {
+    $('#CompanyMainTable').hide();
+    $('#paginator').hide();
+    $("#loadingdiv").show();
+}
+
+
+function delayAnimation(){
+    setTimeout('hideLoading()',500)
+}
+
+
+function hideLoading() {
+    $("#loadingdiv").hide();
+    $('#CompanyMainTable').fadeIn();
+    $('#paginator').fadeIn();
+}
+
+
+function loadContent(pageIndex){
+    showLoading();
 	$.ajax({
       		type: "GET",
-      		url: "/SecondMarket/loadsortedcompanies.htm?pageIndex=" + pageIndex + "&sortByField=" + sortByField + "&isDescending=" + isDescending,
+      		url: "/SecondMarket/loadcompany.htm",
+            data: "pageIndex=" + pageIndex + 
+                  "&sortByField=" + sortByField + 
+                  "&isDescending=" + isDescending + 
+                  "&selectedCountry=" + selectedCountry + 
+                  "&companyName=" + companyName + 
+                  "&industry=" + industryArray +
+                  "&minFunding=" + minFunding +
+                  "&maxFunding=" + maxFunding +
+                  "&employees=" + employees,
       		dataType: "json",
       		success: function(data) {
                 //alert(data);
@@ -50,49 +143,48 @@ function loadSortedContent(pageIndex, sortByField){
                 
       			$.each(jsonData, function(key, val){
                     tablebody += 
-                    '<div class="sm-card sm-span-16 sm-unhide last sm-mb sm-click-card" onClick="location.href=\'' + '/SecondMarket/viewcompanyinfo.htm?companyName=' + val.name + '\'"><div class="span-4 last"><a href="#"><img class="sm-badge" alt="' + val.name + 
-                    '" src="/SecondMarket/getLogo.htm?companyName=' + val.name + '"></a></div><table border="0" cellspacing="0" cellpadding="0"><tr><td class="sm-b sm-card-name" width="410"><a href="#" class="sm-card-link">' + val.name + '</a></td><td width="130" class="sm-tar"><div>Since ' + val.foundedDate + '</div></td></tr><tr><td>' + val.industry + ' Industry</td><td class="sm-tar">' + val.employees + ' Employees</td></tr><tr><td width="300">' + val.address + '</td><td rowspan="2" class="sm-r"><form action="#" method="post" class="sm-watch-unwatch-form sm-mts"><input type="hidden" class="sm-watch-slug" name="slug" value="twitter" /><button type="submit" rel="twitter" class="span-4 sm-watch-toggle sm-watch-button sm-button sm-mbs" hoveralt="' + val.funding + '" clickalt="' + val.funding + '" changealt="' + val.funding + '"watchalt="' + val.funding + '">' + val.funding + '</button></form></td></tr></table></div>';
-                
-                    
+                    '<div class="sm-card sm-span-16 sm-unhide last sm-mb sm-click-card" onclick="location.href=\'' + '/SecondMarket/viewcompanyinfo.htm?companyName=' + val.name + '\'"><div class="span-4 last"><a href="#"><img class="sm-badge" alt="' + val.name + '" src="/SecondMarket/getLogo.htm?companyName=' + val.name + '"></a></div><table border="0" cellspacing="0" cellpadding="0"><tr><td class="sm-b sm-card-name" width="410"><a href="#" class="sm-card-link">' + val.name + '</a></td><td rowspan="2" class="sm-r"><button class="span-4 sm-watch-toggle sm-watch-button sm-button sm-mbs" >' + val.funding + '</button></td></tr><tr><td>' + val.industry + ' Industry</td><td class="sm-tar">' + val.employees + ' Employees</td></tr><tr><td width="300">' + val.address + '</td><td width="130" class="sm-tar"><div>Since ' + val.foundedDate + '</div></td></tr></table></div>';
       			});
       			
       			$('#CompanyMainTable').html(tablebody);
                 
+                delayAnimation();
 				
       		},
       		error: function(data){
-            	alert('loadSortedCompaniesError');
+            	alert('loadError');
 	 		}
     	});
+        
 }
 
 
 
 //count the amount of pages, same as counting unsorted pages amount
-function countSortedPages(sortByField){
+function countPages(){
 	$.ajax({
       		type: "GET",
       		url: "/SecondMarket/countpages.htm",
       		dataType: "text",
       		success: function(data) {
       			$("#page_count").val(data); 
-      			generateSortedPages(1, sortByField);
+      			generatePages(1);
       		},
     	});
 }
 
 
 //generate the clickable pagers
-function generateSortedPages(selected, sortByField){
+function generatePages(selected){
 	var pages = $("#page_count").val();
 	
-	if (pages <= 5) {
+	if (pages > 1 && pages <= 5) {
 		var pagers = "<ul>";
 		for (i = 1; i <= Number(pages); i++) {
 			if (i == 1){
-				pagers += "<li><a href='#' class='pagor selected'>" + i + "</a></li>";
+				pagers += "<li><a class='pagor selected' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 			} else {
-				pagers += "<li><a href='#' class='pagor'>" + i + "</a></li>";
+				pagers += "<li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 			}
 		}
 		pagers += "<li><div style='clear:both;'></div></li></ul>";
@@ -101,7 +193,7 @@ function generateSortedPages(selected, sortByField){
 		$("#paginator").html(pagers);
 		$(".pagor").click(function() {
 			var index = $(".pagor").index(this);
-			loadSortedContent(index, sortByField);
+			loadContent(index);
 			$(".pagor").removeClass("selected");
 			$(this).addClass("selected");
 		});		
@@ -111,26 +203,26 @@ function generateSortedPages(selected, sortByField){
 			var pagers = "<ul>";
 			for (i = 1; i <= 5; i++) {
 				if (i == selected) {
-					pagers += "<li><a href='#' class='pagor selected'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor selected' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				} else {
-					pagers += "<li><a href='#' class='pagor'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				}				
 			}
-			pagers += "<li><a class='dot'>...</a></li><li><a href='#' class='pagor'>" + Number(pages) + "</a></li><li><div style='clear:both;'></div></li></ul>";
+			pagers += "<li><a class='dot'>...</a></li><li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + Number(pages) + "</a></li><li><div style='clear:both;'></div></li></ul>";
 			
 			$("#paginator").empty();
 			$('#paginator').html(pagers);
 			$(".pagor").click(function() {
-				updateSortedPage(this, sortByField);
+				updateSortedPage(this);
 			});
 		} else if (selected > (Number(pages) - 4)) {
 			// Draw ... link to first then have the last 5
-			var pagers = "<ul><li><a href='#' class='pagor'>1</a></li><li><a class='dot'>...</a></li>";
+			var pagers = "<ul><li><a class='pagor' style='cursor:pointer;text-decoration:none'>1</a></li><li><a class='dot'>...</a></li>";
 			for (i = (Number(pages) - 4); i <= Number(pages); i++) {
 				if (i == selected) {
-					pagers += "<li><a href='#' class='pagor selected'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor selected' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				} else {
-					pagers += "<li><a href='#' class='pagor'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				}				
 			}			
 			pagers += "<li><div style='clear:both;'></div></li></ul>";
@@ -138,24 +230,24 @@ function generateSortedPages(selected, sortByField){
 			$("#paginator").empty();
 			$('#paginator').html(pagers);
 			$(".pagor").click(function() {
-				updateSortedPage(this, sortByField);
+				updateSortedPage(this);
 			});		
 		} else {
 			// Draw the number 1 element, then draw ... 2 before and two after and ... link to last
-			var pagers = "<ul><li><a href='#' class='pagor'>1</a></li><li><a class='dot'>...</a></li>";
+			var pagers = "<ul><li><a class='pagor' style='cursor:pointer;text-decoration:none'>1</a></li><li><a class='dot'>...</a></li>";
 			for (i = (Number(selected) - 2); i <= (Number(selected) + 2); i++) {
 				if (i == selected) {
-					pagers += "<li><a href='#' class='pagor selected'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor selected' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				} else {
-					pagers += "<li><a href='#' class='pagor'>" + i + "</a></li>";
+					pagers += "<li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + i + "</a></li>";
 				}
 			}
-			pagers += "<li><a class='dot'>...</a></li><li><a href='#' class='pagor'>" + pages + "</a></li><li><div style='clear:both;'></div></li></ul>";
+			pagers += "<li><a class='dot' style='cursor:pointer;text-decoration:none'>...</a></li><li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + pages + "</a></li><li><div style='clear:both;'></div></li></ul>";
 			
 			$("#paginator").empty();
 			$('#paginator').html(pagers);
 			$(".pagor").click(function() {
-				updateSortedPage(this, sortByField);
+				updateSortedPage(this);
 			});			
 		}
 	}
@@ -163,14 +255,14 @@ function generateSortedPages(selected, sortByField){
 
 
 //update the pagers
-function updateSortedPage(elem, sortByField) {
+function updateSortedPage(elem) {
 	// Retrieve the number stored and position elements based on that number
 	var selected = $(elem).text();
 
 	// First update content
-	loadSortedContent(selected - 1, sortByField);
+	loadContent(selected - 1);
 	
 	// Then update links
-	generateSortedPages(selected, sortByField);
+	generatePages(selected);
 }
 

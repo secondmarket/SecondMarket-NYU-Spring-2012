@@ -43,7 +43,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
 			dbCollection = db.getCollection("company");
-			dbCollection.drop();
+//			dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -61,7 +61,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
 			dbCollection = db.getCollection("company");
-			dbCollection.drop();
+//			dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -180,6 +180,26 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		}
 
 		return companyList;
+	}
+
+	public List<Company> findCompaniesByPage(int numberOfElementsPerPage,
+			int pageIndex, String sortByField, boolean isDescending,
+			String selectedCountry, String companyName, String industry,
+			int minFunding, int maxFunding, int employees) {
+		
+		// pageIndex: 0
+		// sortByField: fundingAmount
+		// isDescending: true;
+		// selectedCountry: all
+		// companyName:
+		// industry:
+		// minFunding: 500000
+		// maxFunding: 10000000
+		// employees: -1
+		
+		
+		
+		return null;
 	}
 
 }

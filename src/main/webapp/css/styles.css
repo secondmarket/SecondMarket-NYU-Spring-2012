@@ -49,3 +49,22 @@
 	font-weight: bold;
 	cursor: default;
 }
+
+#loadingdiv {
+	background:none;
+	z-index:99999;
+	display:block;
+	text-align:center;
+	position:absolute;
+	width:630px;
+	background-color:rgba(255, 255, 255, 0.8);
+}
+
+#loadingdiv DIV#loadingscreen {
+	background:#FFF;
+	width:400px;
+	border:4px solid #444;
+	height:225px;
+	margin:20px 0 0 110px;
+	padding-top:5px;
+}

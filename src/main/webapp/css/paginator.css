@@ -8,7 +8,7 @@
 	text-align: center;
 	/*Set to "center" to center align pagination interface, and use text-indent percentage to adjust the position*/
 	text-indent: 0%;
-	font-size: 16px;
+	font-size: 14px;
 }
 
 .paginatorclass li {
@@ -18,13 +18,21 @@
 }
 
 .paginatorclass a.pagor {
-	padding-left: 6px;
-	padding-right: 6px;
-	border: 1px solid #9aafe5;
-	color: #2e6ab1;
-	margin-right: 4px;
-	text-decoration: none;
-	text-align: center;
+	background:#047694;
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#11ADD9), to(#047694));
+	background-image:-webkit-linear-gradient(top, #11ADD9, #047694);
+	background-image:-moz-linear-gradient(top, #11ADD9, #047694);
+	background-image:-ms-linear-gradient(top, #11ADD9, #047694);
+	background-image:-o-linear-gradient(top, #11ADD9, #047694);
+	background-image:linear-gradient(top, #11ADD9, #047694);
+filter:progid:DXImageTransform.Microsoft.gradient(startColorStr='#11ADD9', EndColorStr='#047694');
+	color:#ffffff;
+	margin:0 2px;
+	padding:3px 8px;
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	border-radius:4px;
+	text-shadow:1px 1px 0 #047694;
 }
 
 .paginatorclass a.dot {
@@ -37,11 +45,55 @@
 }
 
 .paginatorclass a.pagor:hover {
+	text-decoration:none;
+	background:#668F23 !important;
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#BCCB33), to(#668F23)) !important;
+	background-image:-webkit-linear-gradient(top, #BCCB33, #668F23) !important;
+	background-image:-moz-linear-gradient(top, #BCCB33, #668F23) !important;
+	background-image:-ms-linear-gradient(top, #BCCB33, #668F23) !important;
+	background-image:-o-linear-gradient(top, #BCCB33, #668F23) !important;
+	background-image:linear-gradient(top, #BCCB33, #668F23) !important;
+filter:progid:DXImageTransform.Microsoft.gradient(startColorStr='#BCCB33', EndColorStr='#668F23') !important;
+	text-shadow:1px 1px 0 #7B8736 !important;
+}
+
+.paginatorclass a.selected {
+	background:#707070 !important;
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#A0A0A0), to(#707070)) !important;
+	background-image:-webkit-linear-gradient(top, #A0A0A0, #707070) !important;
+	background-image:-moz-linear-gradient(top, #A0A0A0, #707070) !important;
+	background-image:-ms-linear-gradient(top, #A0A0A0, #707070) !important;
+	background-image:-o-linear-gradient(top, #A0A0A0, #707070) !important;
+	background-image:linear-gradient(top, #A0A0A0, #707070) !important;
+filter:progid:DXImageTransform.Microsoft.gradient(startColorStr='#A0A0A0', EndColorStr='#707070') !important;
+	color:#ffffff;
+	text-shadow:none;
+	cursor:default;
+	opacity:.8;
+}
+
+
+/*
+.paginatorclass a.pagor {
+	padding-left: 6px;
+	padding-right: 6px;
+	border: 1px solid #9aafe5;
+	color: #2e6ab1;
+	margin-right: 4px;
+	text-decoration: none;
+	text-align: center;
+}
+*/
+
+/*
+.paginatorclass a.pagor:hover {
 	border: 1px solid #2b66a5;
 	color: #000;
 	background-color: #FF0;
 }
+*/
 
+/*
 .paginatorclass a.selected {
 	background-color: #2e6ab1;
 	color: #FFF !important;
@@ -49,3 +101,4 @@
 	font-weight: bold;
 	cursor: default;
 }
+*/
