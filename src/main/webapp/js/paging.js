@@ -2,10 +2,10 @@ var isDescending = true;
 var sortByField = "fundingAmount";
 var companyName = "";
 var selectedCountry = "all";
-var industryArray = [];
+var industryArray = ["Advertising","Biotech","Cleantech","Hardware","Web","Ecommerce","Education","Enterprise","Games_video","Legal","Mobile","Network_hosting","Consulting","Public_relations","Search","Security","Semiconductor","Software","Other"];
 var minFunding = 0;
-var maxFunding = 100000001;
-var employees = -1;
+var maxFunding = -1;
+var employees = 0;
 
 //load the initial contents
 $("document").ready(function() {
@@ -50,23 +50,24 @@ function clearAll(){
     sortByField = "fundingAmount";
     companyName = "";
     selectedCountry = "all";
-    industryArray = [];
-    minFunding = 0;
-    maxFunding = 100000001;
-    employees = -1;
+    industryArray = ["Advertising","Biotech","Cleantech","Hardware","Web","Ecommerce","Education","Enterprise","Games_video","Legal","Mobile","Network_hosting","Consulting","Public_relations","Search","Security","Semiconductor","Software","Other"];
+    employees = 0;
     loadContent(0);
+    countPages();
 }
 
 
 function searchByCompanyName(value){
     companyName = $.trim(value);
     loadContent(0);
+    countPages();
 }
 
 
 function filterByCountry(){
     selectedCountry = $("#country").val();
     loadContent(0);
+    countPages();
 }
 
 
@@ -77,6 +78,7 @@ function filterByIndustry(){
         industryArray.push(this.value);
     });
     loadContent(0);
+    countPages();
 }
 
 
@@ -84,12 +86,14 @@ function filterByFundingRange(){
     minFunding = $("#minFunding").val();
     maxFunding = $("#maxFunding").val();
     loadContent(0);
+    countPages();
 }
 
 
 function filterByEmployee(){
     employees = $("input[name='employee']:checked").val();
     loadContent(0);
+    countPages();
 }
 
 function filterBySortingOrder(){
@@ -99,6 +103,7 @@ function filterBySortingOrder(){
         isDescending = false;
     }
     loadContent(0);
+    countPages();
 }
 
 
@@ -137,18 +142,22 @@ function loadContent(pageIndex){
                   "&employees=" + employees,
       		dataType: "json",
       		success: function(data) {
-                //alert(data);
       			var jsonData = eval("("+data+")");
-      			var tablebody = '';
+                var tablebody = '';
                 
-      			$.each(jsonData, function(key, val){
+                if ($.isEmptyObject(jsonData)){
+                    tablebody ='<div class="sm-gray-box clearfix"><h2 class="sm-mb">There are no companies within the search criteria you specified.</h2><div class="sm-no-results sm-p clearfix"><img class="sm-l sm-mr" src="/images/sm-gen_company50x50.png"><div class=" span-7 sm-mts sm-l"><h4>No companies were found.</h4><span class="sm-b"></span></div><a class="sm-button sm-mt sm-l" id="companyFilterClea" href="#" onclick="Javascript: clearAll();">Clear filter</a></div></div>';
+                    $('#CompanyMainTable').html(tablebody);
+                    delayAnimation();
+                } else {
+                    $.each(jsonData, function(key, val){
                     tablebody += 
                     '<div class="sm-card sm-span-16 sm-unhide last sm-mb sm-click-card" onclick="location.href=\'' + '/SecondMarket/viewcompanyinfo.htm?companyName=' + val.name + '\'"><div class="span-4 last"><a href="#"><img class="sm-badge" alt="' + val.name + '" src="/SecondMarket/getLogo.htm?companyName=' + val.name + '"></a></div><table border="0" cellspacing="0" cellpadding="0"><tr><td class="sm-b sm-card-name" width="410"><a href="#" class="sm-card-link">' + val.name + '</a></td><td rowspan="2" class="sm-r"><button class="span-4 sm-watch-toggle sm-watch-button sm-button sm-mbs" >' + val.funding + '</button></td></tr><tr><td>' + val.industry + ' Industry</td><td class="sm-tar">' + val.employees + ' Employees</td></tr><tr><td width="300">' + val.address + '</td><td width="130" class="sm-tar"><div>Since ' + val.foundedDate + '</div></td></tr></table></div>';
       			});
       			
       			$('#CompanyMainTable').html(tablebody);
-                
                 delayAnimation();
+                }
 				
       		},
       		error: function(data){
@@ -164,7 +173,15 @@ function loadContent(pageIndex){
 function countPages(){
 	$.ajax({
       		type: "GET",
-      		url: "/SecondMarket/countpages.htm",
+      		url: "/SecondMarket/getPageAmount.htm",
+            data: "sortByField=" + sortByField + 
+                  "&isDescending=" + isDescending + 
+                  "&selectedCountry=" + selectedCountry + 
+                  "&companyName=" + companyName + 
+                  "&industry=" + industryArray +
+                  "&minFunding=" + minFunding +
+                  "&maxFunding=" + maxFunding +
+                  "&employees=" + employees,
       		dataType: "text",
       		success: function(data) {
       			$("#page_count").val(data); 
@@ -177,6 +194,7 @@ function countPages(){
 //generate the clickable pagers
 function generatePages(selected){
 	var pages = $("#page_count").val();
+    $("#paginator").empty();
 	
 	if (pages > 1 && pages <= 5) {
 		var pagers = "<ul>";
@@ -189,7 +207,6 @@ function generatePages(selected){
 		}
 		pagers += "<li><div style='clear:both;'></div></li></ul>";
 	
-		$("#paginator").empty();
 		$("#paginator").html(pagers);
 		$(".pagor").click(function() {
 			var index = $(".pagor").index(this);
@@ -197,7 +214,7 @@ function generatePages(selected){
 			$(".pagor").removeClass("selected");
 			$(this).addClass("selected");
 		});		
-	} else {
+	} else if (pages > 5) {
 		if (selected < 5) {
 			// Draw the first 5 then have ... link to last
 			var pagers = "<ul>";
@@ -210,7 +227,6 @@ function generatePages(selected){
 			}
 			pagers += "<li><a class='dot'>...</a></li><li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + Number(pages) + "</a></li><li><div style='clear:both;'></div></li></ul>";
 			
-			$("#paginator").empty();
 			$('#paginator').html(pagers);
 			$(".pagor").click(function() {
 				updateSortedPage(this);
@@ -227,7 +243,6 @@ function generatePages(selected){
 			}			
 			pagers += "<li><div style='clear:both;'></div></li></ul>";
 			
-			$("#paginator").empty();
 			$('#paginator').html(pagers);
 			$(".pagor").click(function() {
 				updateSortedPage(this);
@@ -244,7 +259,6 @@ function generatePages(selected){
 			}
 			pagers += "<li><a class='dot' style='cursor:pointer;text-decoration:none'>...</a></li><li><a class='pagor' style='cursor:pointer;text-decoration:none'>" + pages + "</a></li><li><div style='clear:both;'></div></li></ul>";
 			
-			$("#paginator").empty();
 			$('#paginator').html(pagers);
 			$(".pagor").click(function() {
 				updateSortedPage(this);

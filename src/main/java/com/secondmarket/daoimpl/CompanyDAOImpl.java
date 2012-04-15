@@ -43,7 +43,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
 			dbCollection = db.getCollection("company");
-//			dbCollection.drop();
+			// dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -61,7 +61,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
 			dbCollection = db.getCollection("company");
-//			dbCollection.drop();
+			// dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -91,7 +91,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	}
 
 	public void saveCompany(String companyName,
-			Map<String, String> crunchbaseDoc, Map<String, String> wikipediaDoc,
+			Map<String, String> crunchbaseDoc,
+			Map<String, String> wikipediaDoc,
 			Map<String, EdgarCompanyDetail> edgarDoc) {
 		Company company = new Company();
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
@@ -184,22 +185,189 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 	public List<Company> findCompaniesByPage(int numberOfElementsPerPage,
 			int pageIndex, String sortByField, boolean isDescending,
-			String selectedCountry, String companyName, String industry,
-			int minFunding, int maxFunding, int employees) {
-		
-		// pageIndex: 0
-		// sortByField: fundingAmount
-		// isDescending: true;
-		// selectedCountry: all
-		// companyName:
-		// industry:
-		// minFunding: 500000
-		// maxFunding: 10000000
-		// employees: -1
-		
-		
-		
-		return null;
+			String selectedCountry, String companyName,
+			List<String> industryList, int minFunding, int maxFunding,
+			int employees) {
+		List<Company> companyList = null;
+		String orderStr = (isDescending) ? ("-" + sortByField) : sortByField;
+		if (pageIndex != 0) {
+			if ("all".equals(selectedCountry)) {
+				if (maxFunding == -1) {
+					companyList = ds
+							.createQuery(Company.class)
+							.field("companyName")
+							.equal(Pattern.compile(companyName,
+									Pattern.CASE_INSENSITIVE))
+							.filter("industry in", industryList)
+							.filter("employees >=", employees)
+							.filter("fundingAmount >=", minFunding)
+							.order(orderStr)
+							.offset(pageIndex * numberOfElementsPerPage)
+							.limit(numberOfElementsPerPage).asList();
+				} else {
+					companyList = ds
+							.createQuery(Company.class)
+							.field("companyName")
+							.equal(Pattern.compile(companyName,
+									Pattern.CASE_INSENSITIVE))
+							.filter("industry in", industryList)
+							.filter("employees >=", employees)
+							.filter("fundingAmount >=", minFunding)
+							.filter("fundingAmount <=", maxFunding)
+							.order(orderStr)
+							.offset(pageIndex * numberOfElementsPerPage)
+							.limit(numberOfElementsPerPage).asList();
+				}
+			} else {
+				if (maxFunding == -1) {
+					companyList = ds
+							.createQuery(Company.class)
+							.field("companyName")
+							.equal(Pattern.compile(companyName,
+									Pattern.CASE_INSENSITIVE))
+							.filter("industry in", industryList)
+							.field("country").equal(selectedCountry)
+							.filter("employees >=", employees)
+							.filter("fundingAmount >=", minFunding)
+							.order(orderStr)
+							.offset(pageIndex * numberOfElementsPerPage)
+							.limit(numberOfElementsPerPage).asList();
+				} else {
+					companyList = ds
+							.createQuery(Company.class)
+							.field("companyName")
+							.equal(Pattern.compile(companyName,
+									Pattern.CASE_INSENSITIVE))
+							.filter("industry in", industryList)
+							.field("country").equal(selectedCountry)
+							.filter("employees >=", employees)
+							.filter("fundingAmount >=", minFunding)
+							.filter("fundingAmount <=", maxFunding)
+							.order(orderStr)
+							.offset(pageIndex * numberOfElementsPerPage)
+							.limit(numberOfElementsPerPage).asList();
+				}
+			}
+		} else {
+			if ("all".equals(selectedCountry)) {
+				if (maxFunding == -1) {
+					companyList = ds
+							.createQuery(Company.class)
+							.field("companyName")
+							.equal(Pattern.compile(companyName,
+									Pattern.CASE_INSENSITIVE))
+							.filter("industry in", industryList)
+							.filter("employees >=", employees)
+							.filter("fundingAmount >=", minFunding)
+							.order(orderStr).limit(numberOfElementsPerPage)
+							.asList();
+				} else {
+					companyList = ds
+							.createQuery(Company.class)
+							.field("companyName")
+							.equal(Pattern.compile(companyName,
+									Pattern.CASE_INSENSITIVE))
+							.filter("industry in", industryList)
+							.filter("employees >=", employees)
+							.filter("fundingAmount >=", minFunding)
+							.filter("fundingAmount <=", maxFunding)
+							.order(orderStr).limit(numberOfElementsPerPage)
+							.asList();
+				}
+			} else {
+				if (maxFunding == -1) {
+					companyList = ds
+							.createQuery(Company.class)
+							.field("companyName")
+							.equal(Pattern.compile(companyName,
+									Pattern.CASE_INSENSITIVE))
+							.filter("industry in", industryList)
+							.field("country").equal(selectedCountry)
+							.filter("employees >=", employees)
+							.filter("fundingAmount >=", minFunding)
+							.order(orderStr).limit(numberOfElementsPerPage)
+							.asList();
+				} else {
+					companyList = ds
+							.createQuery(Company.class)
+							.field("companyName")
+							.equal(Pattern.compile(companyName,
+									Pattern.CASE_INSENSITIVE))
+							.filter("industry in", industryList)
+							.field("country").equal(selectedCountry)
+							.filter("employees >=", employees)
+							.filter("fundingAmount >=", minFunding)
+							.filter("fundingAmount <=", maxFunding)
+							.order(orderStr).limit(numberOfElementsPerPage)
+							.asList();
+				}
+			}
+		}
+
+		return companyList;
+	}
+
+	public int countPages(int numberOfElementsPerPage, String sortByField,
+			boolean isDescending, String selectedCountry, String companyName,
+			List<String> industryList, int minFunding, int maxFunding,
+			int employees) {
+		// long numberOfCompanies = ds.createQuery(Company.class).countAll();
+		String orderStr = (isDescending) ? ("-" + sortByField) : sortByField;
+		long numberOfCompanies = 0L;
+		if ("all".equals(selectedCountry)) {
+			if (maxFunding == -1) {
+				numberOfCompanies = ds
+						.createQuery(Company.class)
+						.field("companyName")
+						.equal(Pattern.compile(companyName,
+								Pattern.CASE_INSENSITIVE))
+						.filter("industry in", industryList)
+						.filter("employees >=", employees)
+						.filter("fundingAmount >=", minFunding).order(orderStr)
+						.limit(numberOfElementsPerPage).countAll();
+			} else {
+				numberOfCompanies = ds
+						.createQuery(Company.class)
+						.field("companyName")
+						.equal(Pattern.compile(companyName,
+								Pattern.CASE_INSENSITIVE))
+						.filter("industry in", industryList)
+						.filter("employees >=", employees)
+						.filter("fundingAmount >=", minFunding)
+						.filter("fundingAmount <=", maxFunding).order(orderStr)
+						.limit(numberOfElementsPerPage).countAll();
+			}
+		} else {
+			if (maxFunding == -1) {
+				numberOfCompanies = ds
+						.createQuery(Company.class)
+						.field("companyName")
+						.equal(Pattern.compile(companyName,
+								Pattern.CASE_INSENSITIVE))
+						.filter("industry in", industryList).field("country")
+						.equal(selectedCountry)
+						.filter("employees >=", employees)
+						.filter("fundingAmount >=", minFunding).order(orderStr)
+						.limit(numberOfElementsPerPage).countAll();
+			} else {
+				numberOfCompanies = ds
+						.createQuery(Company.class)
+						.field("companyName")
+						.equal(Pattern.compile(companyName,
+								Pattern.CASE_INSENSITIVE))
+						.filter("industry in", industryList).field("country")
+						.equal(selectedCountry)
+						.filter("employees >=", employees)
+						.filter("fundingAmount >=", minFunding)
+						.filter("fundingAmount <=", maxFunding).order(orderStr)
+						.limit(numberOfElementsPerPage).countAll();
+			}
+		}
+
+		int numberOfPages = (int) Math.ceil(((double) numberOfCompanies)
+				/ numberOfElementsPerPage);
+
+		return numberOfPages;
 	}
 
 }

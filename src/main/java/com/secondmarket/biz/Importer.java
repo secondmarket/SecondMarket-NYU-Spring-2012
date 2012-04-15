@@ -24,8 +24,14 @@ public interface Importer {
 
 	List<Company> retrieveCompaniesByPage(int numberOfElementsPerPage,
 			int pageIndex, String sortByField, boolean isDescending,
-			String selectedCountry, String companyName, String industry,
-			int minFunding, int maxFunding, int employees);
+			String selectedCountry, String companyName,
+			List<String> industryList, int minFunding, int maxFunding,
+			int employees);
+
+	String getPageAmount(int numberOfElementsPerPage, String sortByField,
+			boolean isDescending, String selectedCountry, String companyName,
+			List<String> industryList, int minFunding, int maxFunding,
+			int employees);
 
 	List<Company> retrieveSortedCompaniesInPage(int pageIndex,
 			int numberOfElementsPerPage, String sortByField,

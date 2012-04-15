@@ -115,7 +115,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											class="sm-allow-double-submit"
 											onclick="Javascript: searchByCompanyName(companyFilterSearchString.value);">Search</button>
 										<a href="#" onclick="Javascript: clearAll();"
-											id="companyFilterClea" class="filterClear">Clear</a>
+											id="companyFilterClea" class="filterClear">Clear All</a>
 									</fieldset>
 								</div>
 								<hr class="space" />
@@ -133,37 +133,37 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 													<option value="ARG">Argentina</option>
 													<option value="AUS">Australia</option>
 													<option value="AUT">Austria</option>
-													<option value="BAH">Bahamas</option>
-													<option value="BAN">Bangladesh</option>
+													<option value="BHS">Bahamas</option>
+													<option value="BGD">Bangladesh</option>
 													<option value="BRB">Barbados</option>
 													<option value="BEL">Belgium</option>
-													<option value="BER">Bermuda</option>
+													<option value="BMU">Bermuda</option>
 													<option value="BRA">Brazil</option>
-													<option value="BUL">Bulgaria</option>
+													<option value="BGR">Bulgaria</option>
 													<option value="CMR">Cameroon</option>
 													<option value="CAN">Canada</option>
-													<option value="CAY">Cayman Islands</option>
+													<option value="CYM">Cayman Islands</option>
 													<option value="CHN">China</option>
-													<option value="CHI">Chile</option>
+													<option value="CHL">Chile</option>
 													<option value="COL">Colombia</option>
-													<option value="CRO">Croatia</option>
+													<option value="HRV">Croatia</option>
 													<option value="CYP">Cyprus</option>
 													<option value="CZE">Czech Republic</option>
-													<option value="DEN">Denmark</option>
+													<option value="DNK">Denmark</option>
 													<option value="DMA">Dominica</option>
 													<option value="EGY">Egypt</option>
 													<option value="EST">Estonia</option>
 													<option value="FIN">Finland</option>
 													<option value="FRA">France</option>
-													<option value="GER">Germany</option>
+													<option value="DEU">Germany</option>
 													<option value="GHA">Ghana</option>
 													<option value="GIB">Gibraltar</option>
-													<option value="GRE">Greece</option>
+													<option value="GRC">Greece</option>
 													<option value="HKG">Hong Kong</option>
 													<option value="HUN">Hungary</option>
 													<option value="ISL">Iceland</option>
 													<option value="IND">India</option>
-													<option value="IE">Ireland</option>
+													<option value="IRL">Ireland</option>
 													<option value="ISR">Israel</option>
 													<option value="ITA">Italy</option>
 													<option value="JPN">Japan</option>
@@ -171,36 +171,36 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 													<option value="KEN">Kenya</option>
 													<option value="KOR">South Korea</option>
 													<option value="LVA">Latvia</option>
-													<option value="LIB">Lebanon</option>
+													<option value="LBN">Lebanon</option>
 													<option value="LTU">Lithuania</option>
 													<option value="LUX">Luxembourg</option>
-													<option value="MAX">Malaysia</option>
+													<option value="MYS">Malaysia</option>
 													<option value="MLT">Malta</option>
 													<option value="MEX">Mexico</option>
-													<option value="MC">Monaco</option>
-													<option value="NED">Netherlands</option>
+													<option value="MCO">Monaco</option>
+													<option value="NLD">Netherlands</option>
 													<option value="NZL">New Zealand</option>
 													<option value="NGA">Nigeria</option>
 													<option value="NOR">Norway</option>
 													<option value="PAK">Pakistan</option>
-													<option value="PHI">Philippines</option>
+													<option value="PHL">Philippines</option>
 													<option value="POL">Poland</option>
-													<option value="POR">Portugal</option>
+													<option value="PRT">Portugal</option>
 													<option value="REU">Reunion</option>
-													<option value="RU">Russian Federation</option>
-													<option value="SIN">Singapore</option>
+													<option value="RUS">Russia</option>
+													<option value="SGP">Singapore</option>
 													<option value="SVK">Slovakia</option>
 													<option value="SVN">Slovenia</option>
-													<option value="RSA">South Africa</option>
+													<option value="ZAF">South Africa</option>
 													<option value="ESP">Spain</option>
 													<option value="SWE">Sweden</option>
-													<option value="SUI">Switzerland</option>
+													<option value="CHE">Switzerland</option>
 													<option value="TWN">Taiwan</option>
 													<option value="THA">Thailand</option>
 													<option value="TUN">Tunisia</option>
 													<option value="TUR">Turkey</option>
 													<option value="UKR">Ukraine</option>
-													<option value="UAE">United Arab Emirates</option>
+													<option value="ARE">United Arab Emirates</option>
 													<option value="GBR">United Kingdom</option>
 													<option value="UZB">Uzbekistan</option>
 											</select></li>
@@ -280,10 +280,10 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 												<label for="Mobile">Mobile/Wireless <a
 													class="sm-link sm-only">only</a>
 											</label></li>
-											<li><input type="checkbox" value="Network-hosting"
-												class="sm-checkbox" name="industry" id="Network-hosting"
+											<li><input type="checkbox" value="Network_hosting"
+												class="sm-checkbox" name="industry" id="Network_hosting"
 												checked="checked" onchange="Javascript: filterByIndustry();">
-												<label for="Network-hosting">Network/Hosting <a
+												<label for="Network_hosting">Network/Hosting <a
 													class="sm-link sm-only">only</a>
 											</label></li>
 											<li><input type="checkbox" value="Consulting"
@@ -339,28 +339,28 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											<li id="funding-container"><select name="minFunding"
 												id="minFunding" class="js-hide">
 													<option value="0" selected="selected">&lt;$50,000</option>
-													<option value="50000">$50,000</option>
-													<option value="100000">$100,000</option>
-													<option value="250000">$250,000</option>
-													<option value="500000">$500,000</option>
-													<option value="1000000">$1M</option>
-													<option value="10000000">$10M</option>
-													<option value="25000000">$25M</option>
-													<option value="50000000">$50M</option>
-													<option value="100000000">$100M</option>
-													<option value="100000001">&gt;$100M</option>
+													<option value="50">$50,000</option>
+													<option value="100">$100,000</option>
+													<option value="250">$250,000</option>
+													<option value="500">$500,000</option>
+													<option value="1000">$1M</option>
+													<option value="10000">$10M</option>
+													<option value="25000">$25M</option>
+													<option value="50000">$50M</option>
+													<option value="100000">$100M</option>
+													<option value="-1">&gt;$100M</option>
 											</select> <select name="maxFunding" id="maxFunding" class="js-hide">
 													<option value="0">&lt;$50,000</option>
-													<option value="50000">$50,000</option>
-													<option value="100000">$100,000</option>
-													<option value="250000">$250,000</option>
-													<option value="500000">$500,000</option>
-													<option value="1000000">$1M</option>
-													<option value="10000000">$10M</option>
-													<option value="25000000">$25M</option>
-													<option value="50000000">$50M</option>
-													<option value="100000000">$100M</option>
-													<option value="100000001" selected="selected">&gt;$100M</option>
+													<option value="50">$50,000</option>
+													<option value="100">$100,000</option>
+													<option value="250">$250,000</option>
+													<option value="500">$500,000</option>
+													<option value="1000">$1M</option>
+													<option value="10000">$10M</option>
+													<option value="25000">$25M</option>
+													<option value="50000">$50M</option>
+													<option value="100000">$100M</option>
+													<option value="-1" selected="selected">&gt;$100M</option>
 											</select></li>
 											<li>
 												<button type="submit" id="companyFilterSearch"
@@ -378,21 +378,21 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 												Employees</a>
 										</div>
 										<ul class="sm-clear-ul">
-											<li class="sm-mt"><input type="radio" value="-1"
-												class="sm-checkbox" name="employee" checked="checked"
+											<li class="sm-mt"><input type="radio" value="0"
+												class="sm-checkbox" name="employee" id="filter_number_of_watchers_all" checked="checked"
 												onclick="Javascript: filterByEmployee();"><label
 												class="sm-b">All</label></li>
 											<li><input type="radio" value="10" class="sm-checkbox"
-												name="employee" onclick="Javascript: filterByEmployee();">
+												name="employee" id="filter_10" onclick="Javascript: filterByEmployee();">
 												<label>10+</label></li>
 											<li><input type="radio" value="50" class="sm-checkbox"
-												name="employee" onclick="Javascript: filterByEmployee();">
+												name="employee" id="filter_50" onclick="Javascript: filterByEmployee();">
 												<label>50+</label></li>
 											<li><input type="radio" value="100" class="sm-checkbox"
-												name="employee" onclick="Javascript: filterByEmployee();">
+												name="employee" id="filter_100" onclick="Javascript: filterByEmployee();">
 												<label>100+</label></li>
 											<li class="sm-mb"><input type="radio" value="500"
-												class="sm-checkbox" name="employee"
+												class="sm-checkbox" name="employee" id="filter_500"
 												onclick="Javascript: filterByEmployee();"> <label>500+</label></li>
 										</ul>
 									</fieldset>
@@ -418,17 +418,6 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 							</form>
 							<hr class="space" />
 
-							<!--  
-							search a company
-							<h3>Suggest a Company</h3>
-
-							<div class="sm-shadow-box sm-watch-list-widget">
-								<p>Can't find the company you're looking for?</p>
-								<a class="sm-button sm-request-company"
-									rel="requestAddCompanyOverlay" href="/company/request-new">Request
-									a company to be added</a>
-							</div>
-							-->
 							<hr class="space" />
 						</div>
 						<div id="companyDirectory" class="span-16 last">

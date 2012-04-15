@@ -25,8 +25,14 @@ public interface CompanyDAO {
 
 	List<Company> findCompaniesByPage(int numberOfElementsPerPage,
 			int pageIndex, String sortByField, boolean isDescending,
-			String selectedCountry, String companyName, String industry,
-			int minFunding, int maxFunding, int employees);
+			String selectedCountry, String companyName,
+			List<String> industryList, int minFunding, int maxFunding,
+			int employees);
+
+	int countPages(int numberOfElementsPerPage, String sortByField,
+			boolean isDescending, String selectedCountry, String companyName,
+			List<String> industryList, int minFunding, int maxFunding,
+			int employees);
 
 	List<Company> findSortedCompaniesInPage(int pageIndex,
 			int numberOfElementsPerPage, String sortByField,

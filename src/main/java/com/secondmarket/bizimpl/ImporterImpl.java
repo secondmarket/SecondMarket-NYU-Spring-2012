@@ -200,13 +200,19 @@ public final class ImporterImpl implements Importer {
 					address = address + office.getCity();
 				}
 				if (!"undefined".equals(office.getStatecode())) {
-					address = address + ", " + office.getStatecode();
-				}
-				if (!"undefined".equals(office.getZipcode())) {
-					address = address + " " + office.getZipcode();
+					if ("".equals(address)) {
+						address = office.getStatecode();
+					} else {
+						address = address + ", " + office.getStatecode();
+					}
+
 				}
 				if (!"undefined".equals(office.getCountrycode())) {
-					address = address + ", " + office.getCountrycode();
+					if ("".equals(address)) {
+						address = office.getCountrycode();
+					} else {
+						address = address + ", " + office.getCountrycode();
+					}
 				}
 				companyJson.put("address", address);
 			} else {
@@ -245,13 +251,24 @@ public final class ImporterImpl implements Importer {
 
 	public List<Company> retrieveCompaniesByPage(int numberOfElementsPerPage,
 			int pageIndex, String sortByField, boolean isDescending,
-			String selectedCountry, String companyName, String industry,
-			int minFunding, int maxFunding, int employees) {
+			String selectedCountry, String companyName,
+			List<String> industryList, int minFunding, int maxFunding,
+			int employees) {
 		List<Company> paginatedList = companyDao.findCompaniesByPage(
 				numberOfElementsPerPage, pageIndex, sortByField, isDescending,
-				selectedCountry, companyName, industry, minFunding, maxFunding,
-				employees);
+				selectedCountry, companyName, industryList, minFunding,
+				maxFunding, employees);
 		return paginatedList;
+	}
+
+	public String getPageAmount(int numberOfElementsPerPage,
+			String sortByField, boolean isDescending, String selectedCountry,
+			String companyName, List<String> industryList, int minFunding,
+			int maxFunding, int employees) {
+		int pageAmount = companyDao.countPages(numberOfElementsPerPage,
+				sortByField, isDescending, selectedCountry, companyName,
+				industryList, minFunding, maxFunding, employees);
+		return String.valueOf(pageAmount);
 	}
 
 }

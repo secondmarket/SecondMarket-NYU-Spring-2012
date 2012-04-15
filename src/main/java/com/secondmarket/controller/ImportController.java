@@ -1,5 +1,7 @@
 package com.secondmarket.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -13,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -296,37 +297,6 @@ public class ImportController {
 		return "CompanyMain";
 	}
 
-	/*
-	 * @RequestMapping(value = "/SecondMarket/searchcompany.htm", method =
-	 * RequestMethod.GET) public @ResponseBody String
-	 * searchCompany(@RequestParam("companyName") String companyName,
-	 * 
-	 * @RequestParam("country") String country,
-	 * 
-	 * @RequestParam("industry") String industry) { //
-	 * System.out.println(companyName); // System.out.println(country); //
-	 * System.out.println(industry);
-	 * 
-	 * 
-	 * List<Company> paginatedList = dataImporter
-	 * .retrieveCompaniesByImpreciseName(companyName);
-	 * 
-	 * List<Company> subPaginatedList = null; int pageIndex = 0;
-	 * 
-	 * int numberOfPages = (int) Math .ceil(((double) paginatedList.size()) /
-	 * 10); if (pageIndex < numberOfPages) { if (paginatedList.size() < 10) {
-	 * subPaginatedList = paginatedList.subList(0, paginatedList.size()); } else
-	 * { if ((pageIndex * 10 + 10) < paginatedList.size()) { subPaginatedList =
-	 * paginatedList.subList(pageIndex * 10, pageIndex * 10 + 10); } else {
-	 * subPaginatedList = paginatedList.subList(pageIndex * 10,
-	 * paginatedList.size()); } }
-	 * 
-	 * String result = dataImporter .getPaginatedDataInJson(subPaginatedList);
-	 * System.out.println(result); return result; } else { return null; }
-	 * 
-	 * }
-	 */
-
 	@RequestMapping(value = "/SecondMarket/loadcompany.htm", method = RequestMethod.GET)
 	public @ResponseBody
 	String load(@RequestParam("pageIndex") int pageIndex,
@@ -350,18 +320,35 @@ public class ImportController {
 		System.out.println("employees: " + employees);
 		System.out.println("=================================");
 
+		String[] industryArray = industry.split("\\,");
+		List<String> industryList = new ArrayList<String>(
+				Arrays.asList(industryArray));
+
 		List<Company> paginatedList = dataImporter.retrieveCompaniesByPage(10,
 				pageIndex, sortByField, isDescending, selectedCountry,
-				companyName, industry, minFunding, maxFunding, employees);
+				companyName, industryList, minFunding, maxFunding, employees);
 
-//		List<Company> paginatedList = dataImporter
-//				.retrieveSortedCompaniesInPage(pageIndex, 10, sortByField,
-//						Boolean.parseBoolean(isDescending));
-
-		// String result = dataImporter.getPaginatedDataInJson(paginatedList);
 		String result = dataImporter
 				.jsonizeDataForCompanyMainPage(paginatedList);
 		return result;
 	}
 
+	@RequestMapping(value = "/SecondMarket/getPageAmount.htm", method = RequestMethod.GET)
+	public @ResponseBody
+	String getPageAmount(@RequestParam("sortByField") String sortByField,
+			@RequestParam("isDescending") boolean isDescending,
+			@RequestParam("selectedCountry") String selectedCountry,
+			@RequestParam("companyName") String companyName,
+			@RequestParam("industry") String industry,
+			@RequestParam("minFunding") int minFunding,
+			@RequestParam("maxFunding") int maxFunding,
+			@RequestParam("employees") int employees) {
+		String[] industryArray = industry.split("\\,");
+		List<String> industryList = new ArrayList<String>(
+				Arrays.asList(industryArray));
+		String result = dataImporter.getPageAmount(10, sortByField,
+				isDescending, selectedCountry, companyName, industryList,
+				minFunding, maxFunding, employees);
+		return result;
+	}
 }

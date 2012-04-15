@@ -142,7 +142,7 @@ public final class CrunchBaseFilter {
 				&& basicDBObject.get("category_code") != null) {
 			String category = basicDBObject.get("category_code").toString()
 					.trim();
-			return WordUtils.capitalize(category);
+			return WordUtils.capitalizeFully(category);
 		} else {
 			return "undefined";
 		}
