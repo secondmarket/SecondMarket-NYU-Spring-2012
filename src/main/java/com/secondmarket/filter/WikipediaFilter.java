@@ -140,6 +140,7 @@ public class WikipediaFilter {
 	public Map<String, String> extractText(BasicDBObject basicDBObject,
 			Company company) {
 		String jsonBody = basicDBObject.toString().trim();
+	//	System.out.println(jsonBody);
 		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
 
 		int beginIndex = oneWhiteSpaceBody.indexOf("'''");
