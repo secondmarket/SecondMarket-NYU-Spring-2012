@@ -291,7 +291,6 @@ public class ImportController {
 
 	@RequestMapping(value = "/SecondMarket/CompanyMain.htm", method = RequestMethod.GET)
 	public String initCompanyMain(Model model) {
-		logger.info("Returning main page");
 		Company company = new Company();
 		model.addAttribute("company", company);
 		return "CompanyMain";
@@ -308,17 +307,6 @@ public class ImportController {
 			@RequestParam("minFunding") int minFunding,
 			@RequestParam("maxFunding") int maxFunding,
 			@RequestParam("employees") int employees) {
-
-		System.out.println("pageIndex: " + pageIndex);
-		System.out.println("sortByField: " + sortByField);
-		System.out.println("isDescending: " + isDescending);
-		System.out.println("selectedCountry: " + selectedCountry);
-		System.out.println("companyName: " + companyName);
-		System.out.println("industry: " + industry);
-		System.out.println("minFunding: " + minFunding);
-		System.out.println("maxFunding: " + maxFunding);
-		System.out.println("employees: " + employees);
-		System.out.println("=================================");
 
 		String[] industryArray = industry.split("\\,");
 		List<String> industryList = new ArrayList<String>(
@@ -350,5 +338,15 @@ public class ImportController {
 				isDescending, selectedCountry, companyName, industryList,
 				minFunding, maxFunding, employees);
 		return result;
+	}
+
+	@RequestMapping(value = "/SecondMarket/viewcompanyprofile.htm", method = RequestMethod.GET)
+	public ModelAndView companyProfilePage(
+			@RequestParam("companyName") String companyName) {
+		Company company = dataImporter.retrieveCompanyByName(companyName);
+
+		ModelAndView modelAndView = new ModelAndView("CompanyProfile",
+				"company", company);
+		return modelAndView;
 	}
 }

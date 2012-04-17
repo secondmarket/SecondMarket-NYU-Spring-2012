@@ -379,18 +379,19 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 										</div>
 										<ul class="sm-clear-ul">
 											<li class="sm-mt"><input type="radio" value="0"
-												class="sm-checkbox" name="employee" id="filter_number_of_watchers_all" checked="checked"
+												class="sm-checkbox" name="employee"
+												id="filter_number_of_watchers_all" checked="checked"
 												onclick="Javascript: filterByEmployee();"><label
 												class="sm-b">All</label></li>
 											<li><input type="radio" value="10" class="sm-checkbox"
-												name="employee" id="filter_10" onclick="Javascript: filterByEmployee();">
-												<label>10+</label></li>
+												name="employee" id="filter_10"
+												onclick="Javascript: filterByEmployee();"> <label>10+</label></li>
 											<li><input type="radio" value="50" class="sm-checkbox"
-												name="employee" id="filter_50" onclick="Javascript: filterByEmployee();">
-												<label>50+</label></li>
+												name="employee" id="filter_50"
+												onclick="Javascript: filterByEmployee();"> <label>50+</label></li>
 											<li><input type="radio" value="100" class="sm-checkbox"
-												name="employee" id="filter_100" onclick="Javascript: filterByEmployee();">
-												<label>100+</label></li>
+												name="employee" id="filter_100"
+												onclick="Javascript: filterByEmployee();"> <label>100+</label></li>
 											<li class="sm-mb"><input type="radio" value="500"
 												class="sm-checkbox" name="employee" id="filter_500"
 												onclick="Javascript: filterByEmployee();"> <label>500+</label></li>
