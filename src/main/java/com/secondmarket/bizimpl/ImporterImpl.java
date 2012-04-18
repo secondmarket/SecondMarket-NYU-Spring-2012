@@ -96,6 +96,7 @@ public final class ImporterImpl implements Importer {
 			}
 
 			if (title == null) {
+				url_Wikipedia = null;
 				count++;
 			} else {
 				url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
@@ -106,7 +107,7 @@ public final class ImporterImpl implements Importer {
 
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
-					crunchbaseDoc, wikipediaDoc, edgarDoc);
+					crunchbaseDoc, wikipediaDoc, edgarDoc, url_Wikipedia);
 			wikipediaDoc = null;
 			edgarDoc = null;
 		}

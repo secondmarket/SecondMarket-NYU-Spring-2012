@@ -1,5 +1,6 @@
 package com.secondmarket.filter;
 
+import info.bliki.wiki.filter.PlainTextConverter;
 import info.bliki.wiki.model.WikiModel;
 
 import java.io.IOException;
@@ -137,20 +138,69 @@ public class WikipediaFilter {
 	 * @param basicDBObject
 	 * @return
 	 */
+//	public Map<String, String> extractText(BasicDBObject basicDBObject,
+//			Company company) {
+//		String jsonBody = basicDBObject.toString().trim();
+//	//	System.out.println(jsonBody);
+//		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
+//
+//		int beginIndex = oneWhiteSpaceBody.indexOf("'''");
+//		// Minus 2 to get rid of the ending quote
+//		int endIndex = oneWhiteSpaceBody.indexOf("}]") - 2;
+//		String allTopicsBody = oneWhiteSpaceBody
+//				.substring(beginIndex, endIndex);
+//
+//		// Map<String, List<String>> contentMap = new LinkedHashMap<String,
+//		// List<String>>();
+//		Map<String, String> contentMap = new LinkedHashMap<String, String>();
+//		int indexMarker = 0;
+//		int nextEndIndex = allTopicsBody.indexOf("\\n==");
+//		String topicBody = "";
+//		String tempBody = "";
+//		// int i = 0;
+//		while (nextEndIndex != -1) {
+//			topicBody = allTopicsBody.substring(indexMarker, indexMarker
+//					+ nextEndIndex);
+//			// System.out.println("topicBody: " + topicBody);
+//
+//			String topicName = this.getTopicName(topicBody);
+//			// System.out.println(topicName);
+//
+//			String cleanedString = this.cleanTextBody(topicBody);
+//
+//			/*
+//			 * List<String> sentenceList = this.extractEventSentences(
+//			 * cleanedString, company); String[] detectedSentences =
+//			 * this.sentenceAnalysis(cleanedString); List<String> sentenceList =
+//			 * new ArrayList<String>( Arrays.asList(detectedSentences));
+//			 * 
+//			 * if (sentenceList.size() != 0) { contentMap.put(topicName,
+//			 * sentenceList); }
+//			 */
+//			contentMap.put(topicName, cleanedString);
+//
+//			tempBody = allTopicsBody.substring(indexMarker + nextEndIndex + 1);
+//			indexMarker = indexMarker + nextEndIndex + 1;
+//			nextEndIndex = tempBody.indexOf("\\n==");
+//
+//			// i++;
+//		}
+//
+//		return contentMap;
+//	}
+	
 	public Map<String, String> extractText(BasicDBObject basicDBObject,
 			Company company) {
 		String jsonBody = basicDBObject.toString().trim();
 	//	System.out.println(jsonBody);
-		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
+	//	String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
 
-		int beginIndex = oneWhiteSpaceBody.indexOf("'''");
+		int beginIndex = jsonBody.indexOf("'''");
 		// Minus 2 to get rid of the ending quote
-		int endIndex = oneWhiteSpaceBody.indexOf("}]") - 2;
-		String allTopicsBody = oneWhiteSpaceBody
+		int endIndex = jsonBody.indexOf("}]") - 2;
+		String allTopicsBody = jsonBody
 				.substring(beginIndex, endIndex);
 
-		// Map<String, List<String>> contentMap = new LinkedHashMap<String,
-		// List<String>>();
 		Map<String, String> contentMap = new LinkedHashMap<String, String>();
 		int indexMarker = 0;
 		int nextEndIndex = allTopicsBody.indexOf("\\n==");
@@ -165,17 +215,9 @@ public class WikipediaFilter {
 			String topicName = this.getTopicName(topicBody);
 			// System.out.println(topicName);
 
-			String cleanedString = this.cleanTextBody(topicBody);
+			WikiModel wikiModel = new WikiModel("http://www.mywiki.com/wiki/${image}", "http://www.mywiki.com/wiki/${title}");
+            String cleanedString = wikiModel.render(new PlainTextConverter(), topicBody);
 
-			/*
-			 * List<String> sentenceList = this.extractEventSentences(
-			 * cleanedString, company); String[] detectedSentences =
-			 * this.sentenceAnalysis(cleanedString); List<String> sentenceList =
-			 * new ArrayList<String>( Arrays.asList(detectedSentences));
-			 * 
-			 * if (sentenceList.size() != 0) { contentMap.put(topicName,
-			 * sentenceList); }
-			 */
 			contentMap.put(topicName, cleanedString);
 
 			tempBody = allTopicsBody.substring(indexMarker + nextEndIndex + 1);
@@ -187,6 +229,7 @@ public class WikipediaFilter {
 
 		return contentMap;
 	}
+
 
 	public String getTopicName(String topicBody) {
 		String topicName = "";

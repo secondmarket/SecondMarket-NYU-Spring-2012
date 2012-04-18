@@ -15,7 +15,7 @@ public interface CompanyDAO {
 
 	void saveCompany(String companyName, Map<String, String> map,
 			Map<String, String> wikiMap,
-			Map<String, EdgarCompanyDetail> edgarMap);
+			Map<String, EdgarCompanyDetail> edgarMap, String wikiUrl);
 
 	Company findCompanyByName(String companyName);
 

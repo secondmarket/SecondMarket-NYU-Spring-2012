@@ -46,6 +46,8 @@ public class Company {
 	private Map<String, String> crunchbaseDoc;
 
 	private Map<String, String> wikipediaDoc;
+	
+	private String wikiUrl;
 
 	@Embedded
 	private Map<String, EdgarCompanyDetail> edgarDoc;
@@ -213,6 +215,14 @@ public class Company {
 
 	public void setVideos(List<String> videos) {
 		this.videos = videos;
+	}
+	
+	public String getWikiUrl(){
+		return wikiUrl;
+	}
+	
+	public void setWikiUrl(String url){		
+		this.wikiUrl = url;
 	}
 
 }
