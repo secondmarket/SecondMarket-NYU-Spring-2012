@@ -43,7 +43,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
 			dbCollection = db.getCollection("company");
-			// dbCollection.drop();
+			dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -61,7 +61,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
 			dbCollection = db.getCollection("company");
-			// dbCollection.drop();
+			dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {

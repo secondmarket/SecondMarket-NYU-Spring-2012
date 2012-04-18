@@ -523,7 +523,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 				<a href="https://www.secondmarket.com/?t=lgf"><img
 					src="/images/sm-footer.png" alt="SecondMarket" /></a>
 				<p>
-					Member&nbsp<a class="footer_link"
+					Member&nbsp;<a class="footer_link"
 						href="http://www.finra.org/index.htm?t=fl" target="_blank">FINRA</a>
 					| <a class="footer_link" href="http://www.msrb.org/msrb1/?t=fl"
 						target="_blank">MSRB</a> | <a class="footer_link"
