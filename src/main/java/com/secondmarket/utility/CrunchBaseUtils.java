@@ -76,13 +76,26 @@ public final class CrunchBaseUtils {
 	}
 
 	/**
-	 * Get name and state information for Wikipedia and EDGAR records
-	 * Modify by Danjuan
+	 * Get name and state information for Wikipedia and EDGAR records Modify by
+	 * Danjuan
+	 * 
 	 * @param crunchbaseDoc
 	 * @return
 	 */
-	public String[] getCompanyNameAndState(Map<String, String> crunchbaseDoc) {
-    	String[] strs = new String[2];
+	public String getCompanyName(Map<String, String> crunchbaseDoc) {
+		String name = "";
+		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
+				.toJson(crunchbaseDoc));
+
+		if (cbBasicDBObject.containsField("name")
+				&& cbBasicDBObject.get("name") != null) {
+			name = cbBasicDBObject.get("name").toString().trim();
+		}
+		return name;
+	}
+
+	public String getCompanyState(Map<String, String> crunchbaseDoc) {
+		String state = "";
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(crunchbaseDoc));
 		if (cbBasicDBObject.containsField("offices")
@@ -96,18 +109,13 @@ public final class CrunchBaseUtils {
 				// Get state_code
 				if (officeObj.containsField("state_code")
 						&& officeObj.get("state_code") != null) {
-					strs[0] = officeObj.get("state_code").toString().trim();
+					state = officeObj.get("state_code").toString().trim();
 					break;
-				} 
+				}
 			}
-		} 
-		if (cbBasicDBObject.containsField("name")
-				&& cbBasicDBObject.get("name") != null) {
-			strs[1] = cbBasicDBObject.get("name").toString().trim();
-		} 
-		return strs;
+		}
+
+		return state;
 	}
-	
-	
 
 }

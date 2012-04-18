@@ -5,17 +5,9 @@
 	xmlns:og="http://opengraphprotocol.org/schema/">
 <head>
 
-<script type="text/javascript">
-		$(function() {
-			$("#tree").treeview({
-				collapsed: true,
-				animated: "medium",
-				control:"#sidetreecontrol",
-				persist: "location"
-			});
-		})
-		
-	</script>
+<script type="text/javascript" src="/js/simpletreemenu.js">
+</script>
+<link rel="stylesheet" type="text/css" href="/css/simpletree.css" />
 
 
 
@@ -25,32 +17,14 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes" />
 
-<meta name="description"
-	content="Facebook is the world's largest social network, with over 840 million users. Facebook was founded by Mark Zuckerberg in February 2004, initially as an excl" />
-
 <link rel="image_src"
 	href="https://dbr2dggbe4ycd.cloudfront.net/company/facebook_150.png" />
-
-<meta property="og:image"
-	content="https://dbr2dggbe4ycd.cloudfront.net/company/facebook_150.png" />
-
-<link rel="shortcut icon" type="image/x-icon"
-	href="/static/images/favicon.ico">
-
-<link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png" />
-
 
 
 <title>Facebook - SecondMarket</title>
 
 <script type="text/javascript">
-
     var contextPath = "/";
-
-    var avatarUrl = "https://d36z0f16h51j2.cloudfront.net/";
-
-    var companyLogoUrl = "https://dbr2dggbe4ycd.cloudfront.net/company/";
-
 </script>
 
 <link rel="stylesheet" type="text/css" media="all" href="/css/all.css" />
@@ -84,85 +58,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 <script type="text/javascript" src="/js/all.js"></script>
 <script type="text/javascript" src="/js/organization.js"></script>
 <script type="text/javascript" src="/js/often.js"></script>
-<script type="text/javascript" src="js/bid-listing-search.js"></script>
 <script type="text/javascript" src="/js/jquery.jstree.js"></script>
-<script type="text/javascript">
-
-    var _gaq = _gaq || [];
-
-    _gaq.push(['_setAccount', 'UA-5817994-1']);
-
-    //		  _gaq.push(['_setDomainName', '.secondmarket.com']);
-
-    _gaq.push(['_trackPageview']);
-
-    _gaq.push(['_trackPageLoadTime']);
-
-
-
-    (function() {
-
-        var ga = document.createElement('script');
-
-        ga.type = 'text/javascript';
-
-        ga.async = true;
-
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-
-        var s = document.getElementsByTagName('script')[0];
-
-        s.parentNode.insertBefore(ga, s);
-
-    })();
-
-
-
-    _gaq.push(function() {
-
-        var pageTracker = _gat._getTrackerByName();
-
-            var gsmid = pageTracker._getVisitorCustomVar(1);
-
-        if (typeof gsmid == 'undefined' || gsmid != 'AU000001F626') {
-
-            _gaq.push(['_setCustomVar', 1, 'SMID', 'AU000001F626', 1]);
-
-        }
-
-        var gtype = pageTracker._getVisitorCustomVar(3);
-
-        if (typeof gtype == 'undefined' || gtype != 'INDIVIDUAL') {
-
-            _gaq.push(['_setCustomVar', 3, 'RepType', 'INDIVIDUAL', 1]);
-
-        }
-
-        var gstatus = pageTracker._getVisitorCustomVar(2);
-
-        if (typeof gstatus == 'undefined' || gstatus != 'U') {
-
-            _gaq.push(['_setCustomVar', 2, 'Status', 'U', 2]);
-
-        }
-
-    });
-
-</script>
-<script type="text/javascript">
-
-    
-
-</script>
-
-
-
-<script type="text/javascript">
-
-    var _sf_startpt = (new Date()).getTime();
-
-</script>
-
 <script type="text/javascript" src="/js/plusone.js"></script>
 </head>
 <body>
@@ -171,8 +67,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 		<div id="header">
 			<div class="container">
 				<div id="sm-header-logo" class="span-6 append-1 sm-mts">
-					<a href="/?t=lg"><img src="/images/sm-logo-small.png"
-						alt="SecondMarket" /></a>
+					<a href="https://www.secondmarket.com/?t=lg"><img
+						src="/images/sm-logo-small.png" alt="SecondMarket" /></a>
 				</div>
 				<div class="span-5">
 					<div class="sm-l sm-member-of">
@@ -185,15 +81,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 				<nav>
 					<div class="span-24">
 						<div class="sm-nav-bar">
-							<div class="span-16"></div>
-
-							<div class="span-8 last">
-								<form class="sm-search" action="/search" method="get">
-									<fieldset>
-										<input type="submit" value="Search" id="searchbtn"
-											class="sm-allow-double-submit" />
-									</fieldset>
-								</form>
+							<div class="span-16">
+								<ul id="sm-navigation"></ul>
 							</div>
 						</div>
 					</div>
@@ -209,8 +98,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 				<h5 class="sm-mb">
 					<a href="#">Main Search</a>&nbsp;|&nbsp;Facebook
 				</h5>
-				<div itemscope itemtype="http://schema.org/Corporation"
-					class="span-24 last clearfix" id="sm-main-content">
+				<div class="span-24 last clearfix" id="sm-main-content">
 					<hr />
 
 					<div class="span-24 last">
@@ -220,7 +108,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 								<div id="companyLeftSide" class="span-4">
 									<div class="sm-icon-border">
-										<img itemprop="image" alt="Facebook"
+										<img alt="Facebook"
 											src="https://dbr2dggbe4ycd.cloudfront.net/company/facebook_150.png"
 											border="0" />
 									</div>
@@ -230,9 +118,11 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 								<div class="span-12 last">
 									<div class="sm-gray-box sm-overview-info">
-										<div class="sm-r" id="profileUrls"><h5>Total funding: $2.34B</h5></div>
+										<div class="sm-r" id="profileUrls">
+											<h5>Total funding: $2.34B</h5>
+										</div>
 
-										<h2 itemprop="name">Facebook</h2>
+										<h2>Facebook</h2>
 										<div class="ellipsis">
 											<a href="http://facebook.com" target="_blank"
 												class="ellipsis">http://facebook.com</a>
@@ -249,8 +139,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 										<div class="sm-l sm-mt sm-db">
 											1000 Employees &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a>video One</a>
-											&nbsp;&nbsp; <a>video Two</a>
-											&nbsp;&nbsp; <a>video Three</a>
+											&nbsp;&nbsp; <a>video Two</a> &nbsp;&nbsp; <a>video Three</a>
 										</div>
 										<div class="clear"></div>
 									</div>
@@ -260,8 +149,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 								<div class="sm-r bbq-loading" style="display: none">&nbsp;</div>
 
-								<div itemprop="description"
-									class="span-16 sm-more-block sm-data">
+								<div class="span-16 sm-more-block sm-data">
 									<h4>Company Overview</h4>
 									<p class="sm-ellipsis sm-more-item">Facebook is the world's
 										largest social network, with over 840 million users.</p>
@@ -353,8 +241,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 								<div class="sm-r bbq-loading" style="display: none">&nbsp;</div>
 
-								<div itemprop="description"
-									class="span-16 sm-more-block sm-data">
+								<div class="span-16 sm-more-block sm-data">
 									<h4>Wikipeida</h4>
 									<p class="sm-ellipsis sm-more-item">Facebook is the world's
 										largest social network, with over 840 million users.</p>
@@ -448,7 +335,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 									<hr class="space" />
 									<h4 class="clear">Offices</h4>
 
-									<div itemprop="address">
+									<div>
 										<div class="sm-ellipsis">1601 S California Ave</div>
 										<div class="span-7 sm-ellipsis">Palo Alto, CA 94304</div>
 										<div class="span-7 sm-ellipsis">United States</div>
@@ -498,44 +385,44 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 									<h4>Current Affiliated People</h4>
 									<!-- <div class="sm-b">Board of Directors</div> -->
-									<ul class="sm-more-block sm-clear-ul" num="6">
+									<ul class="sm-more-block sm-clear-ul">
 										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis" itemprop="employees">Peter
+											<div class="span-7 sm-ellipsis">Peter
 												Thiel</div>
 											<div class="sm-mb small sm-ellipses quiet">Board Of
 												Directors</div>
 										</li>
 										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis" itemprop="employees">Reed
+											<div class="span-7 sm-ellipsis">Reed
 												Hastings</div>
 											<div class="sm-mb small sm-ellipses quiet">CEO, Netflix</div>
 										</li>
 										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis" itemprop="founders"">Marc
+											<div class="span-7 sm-ellipsis">Marc
 												Andreessen</div>
 											<div class="sm-mb small sm-ellipses quiet">Co-Founder,
 												Andreessen Horowitz</div>
 										</li>
 										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis" itemprop="employees">Erskine
+											<div class="span-7 sm-ellipsis">Erskine
 												Bowles</div>
 											<div class="sm-mb small sm-ellipses quiet">Former White
 												House Chief of Staff</div>
 										</li>
 										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis" itemprop="founders"">Mark
+											<div class="span-7 sm-ellipsis">Mark
 												Zuckerberg</div>
 											<div class="sm-mb small sm-ellipses quiet">Founder and
 												CEO, Board Of Directors</div>
 										</li>
 										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis" itemprop="employees">David
+											<div class="span-7 sm-ellipsis">David
 												Sze</div>
 											<div class="sm-mb small sm-ellipses quiet">Observer to
 												Board of Directors</div>
 										</li>
 										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis" itemprop="employees">Jim
+											<div class="span-7 sm-ellipsis">Jim
 												Breye</div>
 											<div class="sm-mb small sm-ellipses quiet">Partner,
 												Accel Partners</div>
@@ -546,14 +433,6 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											class="sm-link sm-more-toggle sm-more-close">View Less</a></li>
 									</ul>
 									<hr class="space" />
-
-
-									<a style="display: none;"
-										class="sm-link sm-more-toggle sm-more-open">View More</a> <a
-										style="display: none;"
-										class="sm-link sm-more-toggle sm-more-close">View Less</a>
-									</li>
-									</ul>
 
 								</div>
 
@@ -566,7 +445,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 								<h3>Funding</h3>
 								<div class="sm-shadow-box">
 									<table border="0" cellspacing="0" cellpadding="0"
-										class="span- financings sm-more-block" num="5">
+										class="span- financings sm-more-block">
 										<tr class="sm-more-item">
 
 											<td width="195"><strong>Unattributed</strong>, <span
@@ -657,77 +536,52 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 									</table>
 
-
 									<hr class="space" />
-
 								</div>
 
 								<hr class="space" />
-								<h3>Edgar Doc.</h3>
+
+
+								<h3>Edgar Filings</h3>
 								<div class="sm-shadow-box">
 									<div class="sm-underline">
-										<a href="#" id="capital-structure-expand-all">Expand All</a>
-										&nbsp;|&nbsp; <a href="#" id="capital-structure-collapse-all">Collapse
+										<a href="javascript:ddtreemenu.flatten('treemenu1', 'expand')">Expand
+											All</a> | <a
+											href="javascript:ddtreemenu.flatten('treemenu1', 'contact')">Collapse
 											All</a>
 									</div>
-									<div id="capital-structure"
-										rel="/fixed-income/capital-structure" currentNode="facebook">
-
-
-									</div>
+									<ul id="treemenu1" class="treeview">
+										<li></li>
+										<!-- <li><a href="#">Item1</a></li>
+										<li><a href="#">Item2</a></li> -->
+										<li>Folder 1
+											<ul>
+												<li><a href="#">Sub Item 1.1</a></li>
+												<li><a href="#">Sub Item 1.2</a></li>
+											</ul>
+										</li>
+										<li>Folder 2
+											<ul>
+												<li><a href="#">Sub Item 2.1</a></li>
+												<li>Folder 2.1
+													<ul>
+														<li><a href="#">Sub Item 2.1.1</a></li>
+														<li><a href="#">Sub Item 2.1.2</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+									<script type="text/javascript">
+										ddtreemenu.createTree("treemenu1", true)
+									</script>
 								</div>
-								<hr class="space">
 
-
-								<script language="JavaScript">
-    $(function() {
-
-        $('#capital-structure').jstree(
-            {
-                "json_data":{
-                    "ajax":{
-                        "url":$('#capital-structure').attr('rel'),
-                        "data":function(n){
-
-                            var ret = {"currentNode" : $('#capital-structure').attr('currentNode')}
-                            if(n.attr != undefined){A
-                                ret['slug'] = n.attr('slug');
-                            }
-                            return ret;
-                        }
-                    },
-                    progressive_render: true
-                },
-                "plugins":
-                        ["themes","json_data"],
-                "themes":{
-                    "theme": "sm",
-                    "dots": true,
-                    "icons": false
-                }
-
-            }
-        );
-
-        $('#capital-structure-expand-all').click(function(e){
-            e.preventDefault();
-            $('#capital-structure').jstree('open_all')
-        });
-
-        $('#capital-structure-collapse-all').click(function(e){
-            e.preventDefault();
-            $('#capital-structure').jstree('close_all')
-        });
-
-    });
-</script>
 
 							</div>
-
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<hr class="space" />
@@ -739,7 +593,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 				<a href="https://www.secondmarket.com/?t=lgf"><img
 					src="/images/sm-footer.png" alt="SecondMarket" /></a>
 				<p>
-					Member&nbsp<a class="footer_link"
+					Member&nbsp;<a class="footer_link"
 						href="http://www.finra.org/index.htm?t=fl" target="_blank">FINRA</a>
 					| <a class="footer_link" href="http://www.msrb.org/msrb1/?t=fl"
 						target="_blank">MSRB</a> | <a class="footer_link"

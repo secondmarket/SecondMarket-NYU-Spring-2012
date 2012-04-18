@@ -78,11 +78,11 @@ public final class ImporterImpl implements Importer {
 			url_CrunchBase = "http://api.crunchbase.com/v/1/company/"
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
-			
-			state = crunchbaseUtils.getCompanyNameAndState(crunchbaseDoc)[0];
-			name = crunchbaseUtils.getCompanyNameAndState(crunchbaseDoc)[1];
-			
-			if(name == null || name.length() == 0 ){
+
+			state = crunchbaseUtils.getCompanyState(crunchbaseDoc);
+			name = crunchbaseUtils.getCompanyName(crunchbaseDoc);
+
+			if (name == null || name.length() == 0) {
 
 				title = wikiUtils.findCompanyUrl(companyName);
 				edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
