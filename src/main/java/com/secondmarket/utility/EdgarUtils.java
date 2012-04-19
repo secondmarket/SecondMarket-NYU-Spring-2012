@@ -98,7 +98,7 @@ public class EdgarUtils {
 			if (nameList.size() > 0) {
 //				System.out.println("--------Multiple Company Names --------");
 				for (EdgarCompanyDetail name : nameList) {
-					url2 = preUrl + name.getCompanyLink();
+					url2 = /*preUrl + */name.getCompanyLink();
 					Document doc2;
 					doc2 = Jsoup.connect(url2).get();
 					multiDocList = new ArrayList<EdgarDocDetail>();
@@ -161,7 +161,7 @@ public class EdgarUtils {
 			for (EdgarDocDetail entry : name.getDetailList()) {
 //				System.out.println("DOC " + (docNum++) + " "
 //						+ entry.getFilings() + " " + entry.getFileDate());
-				url = preUrl + entry.getFormatLink();
+				url = /*preUrl + */entry.getFormatLink();
 				filingList = new ArrayList<EdgarFilingDetail>();
 				Document doc;
 				try {
@@ -232,8 +232,8 @@ public class EdgarUtils {
 			item.setSeq(tds.get(0).ownText());
 			item.setDescr(tds.get(1).ownText());
 			item.setDocName(tds.get(2).getElementsByTag("a").get(0).ownText());
-			item.setDocLink(tds.get(2).getElementsByTag("a").get(0)
-					.attr("href") + preUrl);
+			item.setDocLink(preUrl + tds.get(2).getElementsByTag("a").get(0)
+					.attr("href"));
 			item.setType(tds.get(3).ownText());
 			item.setSize(tds.get(4).ownText());
 			// for test
@@ -259,13 +259,13 @@ public class EdgarUtils {
 
 		if (tds.get(4).hasText()) {
 			item.setFileNum(tds.get(4).text());
-			item.setFileNumLink(tds.get(4).getElementsByTag("a").get(0)
-					.attr("href") +preUrl);
+			item.setFileNumLink(preUrl + tds.get(4).getElementsByTag("a").get(0)
+					.attr("href") );
 		}
 
 		item.setFilings(tds.get(0).ownText());
 		item.setFormat(tds.get(1).getElementsByTag("a").get(0).ownText());
-		item.setFormatLink(tds.get(1).getElementsByTag("a").get(0).attr("href") + preUrl);
+		item.setFormatLink(preUrl + tds.get(1).getElementsByTag("a").get(0).attr("href"));
 		item.setDescr(tds.get(2).text());
 		item.setFileDate(tds.get(3).text());
 
@@ -283,15 +283,15 @@ public class EdgarUtils {
 
 			// looking for the company do not have a SIC (private company)
 			item = new EdgarCompanyDetail();
-			item.setCompanyLink(tds.get(0).getElementsByTag("a").get(0)
-					.attr("href")+ preUrl);
+			item.setCompanyLink(preUrl + tds.get(0).getElementsByTag("a").get(0)
+					.attr("href"));
 			item.setCompanyName(tds.get(1).ownText());
 			// item.setSICNum(tds.get(1).getElementsByTag("a").get(0).ownText());
 			// item.setSICLink(tds.get(1).getElementsByTag("a").get(0)
 			// .attr("href"));
 			item.setLocation(tds.get(2).text());
-			item.setLocationLink(tds.get(2).getElementsByTag("a").get(0)
-					.attr("href") + preUrl);
+			item.setLocationLink(preUrl + tds.get(2).getElementsByTag("a").get(0)
+					.attr("href"));
 		}
 		return item;
 	}
