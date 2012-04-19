@@ -79,7 +79,7 @@ public class EdgarUtils {
 	//	System.out.println(url);
 		Document doc;
 		try {
-			doc = Jsoup.connect(url).get();
+			doc = Jsoup.connect(url).timeout(10*1000).get();
 			for (Element table : doc.select("table.tableFile2")) {
 				for (Element row : table.select("tr")) {
 					tds = row.select("td");
