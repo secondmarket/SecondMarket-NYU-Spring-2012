@@ -233,7 +233,7 @@ public class EdgarUtils {
 			item.setDescr(tds.get(1).ownText());
 			item.setDocName(tds.get(2).getElementsByTag("a").get(0).ownText());
 			item.setDocLink(tds.get(2).getElementsByTag("a").get(0)
-					.attr("href"));
+					.attr("href") + preUrl);
 			item.setType(tds.get(3).ownText());
 			item.setSize(tds.get(4).ownText());
 			// for test
@@ -260,12 +260,12 @@ public class EdgarUtils {
 		if (tds.get(4).hasText()) {
 			item.setFileNum(tds.get(4).text());
 			item.setFileNumLink(tds.get(4).getElementsByTag("a").get(0)
-					.attr("href"));
+					.attr("href") +preUrl);
 		}
 
 		item.setFilings(tds.get(0).ownText());
 		item.setFormat(tds.get(1).getElementsByTag("a").get(0).ownText());
-		item.setFormatLink(tds.get(1).getElementsByTag("a").get(0).attr("href"));
+		item.setFormatLink(tds.get(1).getElementsByTag("a").get(0).attr("href") + preUrl);
 		item.setDescr(tds.get(2).text());
 		item.setFileDate(tds.get(3).text());
 
@@ -284,14 +284,14 @@ public class EdgarUtils {
 			// looking for the company do not have a SIC (private company)
 			item = new EdgarCompanyDetail();
 			item.setCompanyLink(tds.get(0).getElementsByTag("a").get(0)
-					.attr("href"));
+					.attr("href")+ preUrl);
 			item.setCompanyName(tds.get(1).ownText());
 			// item.setSICNum(tds.get(1).getElementsByTag("a").get(0).ownText());
 			// item.setSICLink(tds.get(1).getElementsByTag("a").get(0)
 			// .attr("href"));
 			item.setLocation(tds.get(2).text());
 			item.setLocationLink(tds.get(2).getElementsByTag("a").get(0)
-					.attr("href"));
+					.attr("href") + preUrl);
 		}
 		return item;
 	}
