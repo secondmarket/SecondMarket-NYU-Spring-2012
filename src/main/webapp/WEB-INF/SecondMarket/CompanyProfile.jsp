@@ -1,4 +1,8 @@
 <%@ include file="/WEB-INF/SecondMarket/include.jsp"%>
+<%@ page language="java" import="com.secondmarket.model.Company"%>
+<%
+	Company company = (Company)request.getAttribute("company");
+%>
 
 <!DOCTYPE html>
 <html lang="en" xmlns:fb="http://www.facebook.com/2008/fbml"
@@ -21,7 +25,7 @@
 	href="https://dbr2dggbe4ycd.cloudfront.net/company/facebook_150.png" />
 
 
-<title>Facebook - SecondMarket</title>
+<title><%out.print(company.getCompanyName());%> - SecondMarket</title>
 
 <script type="text/javascript">
     var contextPath = "/";
@@ -96,7 +100,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 			<div class="container">
 
 				<h5 class="sm-mb">
-					<a href="#">Main Search</a>&nbsp;|&nbsp;Facebook
+					<a href="#">Main Search</a>&nbsp;|&nbsp;<%out.print(company.getCompanyName());%>
 				</h5>
 				<div class="span-24 last clearfix" id="sm-main-content">
 					<hr />
@@ -108,7 +112,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 								<div id="companyLeftSide" class="span-4">
 									<div class="sm-icon-border">
-										<img alt="Facebook"
+										<img alt="<%out.print(company.getCompanyName());%>"
 											src="https://dbr2dggbe4ycd.cloudfront.net/company/facebook_150.png"
 											border="0" />
 									</div>
@@ -119,7 +123,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 								<div class="span-12 last">
 									<div class="sm-gray-box sm-overview-info">
 										<div class="sm-r" id="profileUrls">
-											<h5>Total funding: $2.34B</h5>
+											<h5>Total funding: <%out.print(company.getFunding());%></h5>
 										</div>
 
 										<h2>Facebook</h2>
@@ -575,6 +579,20 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 									<script type="text/javascript">
 										ddtreemenu.createTree("treemenu1", true)
 									</script>
+								</div>
+								
+								<hr class="space" />
+								
+								<h3>Company Videos</h3>
+								<div class="sm-shadow-box">
+									<div class="videoclass">
+									</div>
+									<ul id="treemenu2">
+										<li></li>
+										<li><a href="#">Video 1</a></li>
+										<li><a href="#">Video 2</a></li>
+										<li><a href="#">Video 3</a></li>
+									</ul>
 								</div>
 
 

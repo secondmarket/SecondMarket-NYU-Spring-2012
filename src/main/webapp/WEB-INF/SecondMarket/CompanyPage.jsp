@@ -8,11 +8,11 @@
 <script type="text/javascript" src="/js/CeeBoxjs/jquery.ceebox-min.js"></script>
 <script type="text/javascript" src="/js/CeeBoxjs/jquery.swfobject.js"></script>
 <script type="text/javascript">
- jQuery(document).ready(function(){
-	$(".ceebox").ceebox({
+ $(document).ready(function(){
+	$(".videoclass").ceebox({
 		borderColor:'#666',
 		boxColor: "#000",
-		titles: false,
+		titles: false
 	});
 		});
 </script>
@@ -66,6 +66,7 @@
 		<tr>
 			<th style="text-align: center">Video</th>
 			<td style="text-align: center">
+			<div class="videoclass">
 				<%
 					List<String> videoSrcUrl = company.getVideos();
 					int number = 1;
@@ -75,12 +76,13 @@
 						} else {
 							out.println("<a href=\""
 									+ url
-									+ "\" class=\"ceebox\" rel=\"width:420 height:380\" style=\"text-decoration: none\">Video["
+									+ "\" rel=\"width:420 height:380\" style=\"text-decoration: none\">Video["
 									+ number + "]</a>");
 							number++;
 						}
 					}
 				%>
+			</div>
 			</td>
 		</tr>
 
