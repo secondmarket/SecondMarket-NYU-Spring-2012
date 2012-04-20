@@ -1,7 +1,8 @@
 <%@ include file="/WEB-INF/SecondMarket/include.jsp"%>
-<%@ page language="java" import="com.secondmarket.model.Company"%>
+<%@ page language="java" import="java.util.*"%>
+<%@ page language="java" import="com.secondmarket.model.*"%>
 <%
-	Company company = (Company)request.getAttribute("company");
+	Company company = (Company) request.getAttribute("company");
 %>
 
 <!DOCTYPE html>
@@ -25,7 +26,11 @@
 	href="https://dbr2dggbe4ycd.cloudfront.net/company/facebook_150.png" />
 
 
-<title><%out.print(company.getCompanyName());%> - SecondMarket</title>
+<title>
+	<%
+		out.print(company.getCompanyName());
+	%> - SecondMarket
+</title>
 
 <script type="text/javascript">
     var contextPath = "/";
@@ -59,14 +64,41 @@ if (typeof jQuery.ui == 'undefined') {
 document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.js" type="text/javascript"%3E%3C/script%3E'));
 }
 </script>
+<script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/all.js"></script>
 <script type="text/javascript" src="/js/organization.js"></script>
 <script type="text/javascript" src="/js/often.js"></script>
 <script type="text/javascript" src="/js/jquery.jstree.js"></script>
 <script type="text/javascript" src="/js/plusone.js"></script>
+
+<script type="text/javascript" src="/js/CeeBoxjs/ceeboxjquery.js"></script>
+<script type="text/javascript" src="/js/CeeBoxjs/jquery.ceebox-min.js"></script>
+<script type="text/javascript" src="/js/CeeBoxjs/jquery.swfobject.js"></script>
+<script type="text/javascript">
+ $(document).ready(function(){
+	$(".videoclass").ceebox({
+		borderColor:'#666',
+		boxColor: "#000",
+		titles: false,
+		fadeIn: 100,
+		fadeOut: 100
+	});
+	
+	$("map").ceebox({
+		borderColor:'#666',
+		boxColor: "#000",
+		titles: false,
+		fadeIn: 100,
+		fadeOut: 100
+	});
+	
+});
+  
+</script>
+
+<link rel="stylesheet" type="text/css" href="/css/ceebox-min.css" />
 </head>
 <body>
-
 	<div id="wrap">
 		<div id="header">
 			<div class="container">
@@ -100,7 +132,9 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 			<div class="container">
 
 				<h5 class="sm-mb">
-					<a href="#">Main Search</a>&nbsp;|&nbsp;<%out.print(company.getCompanyName());%>
+					<a href="/SecondMarket/CompanyMain.htm">Main Search</a>&nbsp;|&nbsp;<%
+						out.print(company.getCompanyName());
+					%>
 				</h5>
 				<div class="span-24 last clearfix" id="sm-main-content">
 					<hr />
@@ -112,9 +146,11 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 								<div id="companyLeftSide" class="span-4">
 									<div class="sm-icon-border">
-										<img alt="<%out.print(company.getCompanyName());%>"
-											src="https://dbr2dggbe4ycd.cloudfront.net/company/facebook_150.png"
-											border="0" />
+										<%
+											out.print("<img src=\"/SecondMarket/getLogo.htm?companyName="
+													+ company.getCompanyName() + "\" border=\"0\" alt=\""
+													+ company.getCompanyName() + "\">");
+										%>
 									</div>
 									<div></div>
 									<div class="clear"></div>
@@ -123,31 +159,122 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 								<div class="span-12 last">
 									<div class="sm-gray-box sm-overview-info">
 										<div class="sm-r" id="profileUrls">
-											<h5>Total funding: <%out.print(company.getFunding());%></h5>
+											<h5>
+												Total funding:&nbsp;
+												<%
+													out.print(company.getFunding());
+												%>
+											</h5>
 										</div>
 
-										<h2>Facebook</h2>
+										<h2>
+											<%
+												out.print(company.getCompanyName());
+											%>
+										</h2>
 										<div class="ellipsis">
-											<a href="http://facebook.com" target="_blank"
-												class="ellipsis">http://facebook.com</a>
+											<a href="<%out.print(company.getHomepageurl());%>"
+												target="_blank" class="ellipsis"> <%
+ 	out.print(company.getHomepageurl());
+ %>
+											</a>
+										</div>
+										<div class="sm-l">
+											<%
+												out.print(company.getIndustry());
+											%>
+											Industry
 										</div>
 										<div class="clear"></div>
-										<div class="sm-l">Consumer Web and Social Media</div>
-										<div class="clear">Since Feburary 2004</div>
 
-										<!-- <hr class="space" /> -->
-										<!-- <div class="sm-l sm-mt sm-db sm-mr">
-											<img src="/images/video_icon.png" style="width:30; height:30; align:right" />
-										</div> -->
-										<!-- <div class="sm-l sm-mt sm-db">Video</div> -->
-										<div class="sm-l sm-mt sm-db">
-											1000 Employees &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a>video One</a>
-											&nbsp;&nbsp; <a>video Two</a> &nbsp;&nbsp; <a>video Three</a>
+										<div class="sm-l sm-mt sm-db sm-mr">
+											<%
+												if (company.getFoundedDate() != null
+														&& company.getFoundedDate().trim().length() != 0) {
+													out.print("Since " + company.getFoundedDate());
+												}
+											%>
 										</div>
+
+
+										<div class="sm-r sm-mt sm-db sm-mr" id="profileUrls">
+											<%
+												if (company.getWikiUrl() != null
+														&& company.getWikiUrl().trim().length() != 0) {
+													out.print("<a href=\"#\"><img src=\"/images/wiki.png\" usemap=\"#wikiurlmap\" /></a>");
+												}
+											%>
+											<!-- <a href="#"><img src="/images/wiki.png"
+												usemap="#planetmap" /></a> this line works with <map name="wikiurlmap" class="iframe"></map> -->
+											<a target="_blank" id="profileFacebookIcon"
+												href="http://www.facebook.com"><img
+												src="/images/pro-facebook-icon.png"></a> <a
+												target="_blank" id="profileTwitterIcon"
+												href="http://www.twitter.com"><img
+												src="/images/pro-twitter-icon.png"></a> <a target="_blank"
+												id="profileLinkedInIcon" href="http://www.linkedin.com"><img
+												src="/images/pro-linkedin-icon.png"></a>
+										</div>
+										<div class="videoclass">
+											<%
+												List<String> videoSrcUrl = company.getVideos();
+												if (videoSrcUrl != null) {
+													int number = 1;
+													for (String url : videoSrcUrl) {
+														if (url != null && url.length() != 0) {
+															if (number == 1) {
+																out.println("<a href=\""
+																		+ url
+																		+ "\" rel=\"width:420 height:380\" style=\"text-decoration: none\">"
+																		+ "<img src=\"/images/video.png\" /></a>");
+															} else {
+																out.println("<a href=\""
+																		+ url
+																		+ "\" rel=\"width:420 height:380\" style=\"text-decoration: none\"></a>");
+															}
+															number++;
+														}
+													}
+												}
+											%>
+										</div>
+										<!-- <div class="sm-r sm-mt sm-db sm-mr">
+											<a href="#"><img
+												src="/images/wikipedia_icon.png" width="30" height="30" /></a>
+										</div> -->
+
+										<!-- <div class="videoclass">
+											<a href="http://blip.tv/play/goRrgqjkfQI"
+												rel="width:500 height:400" style="text-decoration: none"><img
+												src="/images/video_icon.png" width="36" height="36" /></a>
+											&nbsp; <a href="http://blip.tv/play/hRaTlyAA"
+												rel="width:500 height:400" style="text-decoration: none"></a>
+											<a
+												href="http://www.vator.tv/embed/vpembed.swf?v=3970_twitter-Int-2-08-13.flv&b=2&i=3970&o=embed&vp=1&l=http://vator.tv/news/show/2008-08-17-is-there-anybody-out-there"
+												rel="width:480 height:300" style="text-decoration: none"></a>
+										</div> -->
 										<div class="clear"></div>
 									</div>
 								</div>
+
+								<%
+									if (company.getWikiUrl() != null
+											&& company.getWikiUrl().trim().length() != 0) {
+										out.print("<map name=\"wikiurlmap\" class=\"iframe\">");
+										out.print("<area shape=\"rect\" coords=\"0,0,82,126\" alt=\"Wikipedia Article\" href=\""
+												+ company.getWikiUrl() + "\" />");
+										out.print("</map>");
+									}
+								%>
+
+								<%-- <map name="wikiurlmap" class="iframe">
+									<area shape="rect" coords="0,0,82,126" alt="Wikipedia Article"
+										href="<%out.print(company.getWikiUrl());%>" />
+									<area shape="rect" coords="0,0,82,126" alt="Mercury"
+										href="http://en.wikipedia.org/wiki/Mercury_(planet)" />
+									<area shape="rect" coords="0,0,82,126" alt="Venus"
+										href="http://en.wikipedia.org/wiki/Venus" />
+								</map> --%>
 
 								<hr class="space" />
 
@@ -155,210 +282,112 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 								<div class="span-16 sm-more-block sm-data">
 									<h4>Company Overview</h4>
-									<p class="sm-ellipsis sm-more-item">Facebook is the world's
+									<div class="expandable">
+										<%
+											out.print(company.getCboverview());
+										%>
+									</div>
+
+									<!-- <p>Facebook is the world's
 										largest social network, with over 840 million users.</p>
-									<p class="sm-ellipsis sm-more-item">Facebook was founded by
+									<p>Facebook was founded by
 										Mark Zuckerberg in February 2004, initially as an exclusive
 										network for Harvard students. It was a huge hit: in 2 weeks,
 										half of the schools in the Boston area began demanding a
 										Facebook network. Zuckerberg immediately recruited his friends
 										Dustin Moskowitz and Chris Hughes to help build Facebook, and
 										within four months, Facebook added 30 more college networks.</p>
-									<p class="sm-ellipsis sm-more-item">The original idea for
-										the term Facebook came from Zuckerberg's high school (Phillips
-										Exeter Academy). The Exeter Face Book was passed around to
-										every student as a way for students to get to know their
-										classmates for the following year. It was a physical paper
-										book until Zuckerberg brought it to the internet.</p>
-									<p class="sm-ellipsis sm-more-item">With this success,
-										Zuckerberg, Moskowitz and Hughes moved out to Palo Alto for
-										the summer and rented a sublet. A few weeks later, Zuckerberg
-										ran into the former cofounder of Napster, Sean Parker. Parker
-										soon moved in to Zuckerberg's apartment and they began working
-										together. Parker provided the introduction to their first
-										investor, Peter Thiel, cofounder of PayPal and managing
-										partner of The Founders Fund. Thiel invested $500,000 into
-										Facebook.</p>
-									<p class="sm-ellipsis sm-more-item">With millions more
-										users, Friendster attempted to acquire the company for $10
-										million in mid 2004. Facebook turned down the offer and
-										subsequently received $12.7 million in funding from Accel
-										Partners, at a valuation of around $100 million. Facebook
-										continued to grow, opening up to high school students in
-										September 2005 and adding an immensely popular photo sharing
-										feature the next month. The next spring, Facebook received $25
-										million in funding from Greylock Partners and Meritech
-										Capital, as well as previous investors Accel Partners and
-										Peter Thiel. The pre-money valuation for this deal was about
-										$525 million. Facebook subsequently opened up to work
-										networks, eventually amassing over 20,000 work networks.
-										Finally in September 2006, Facebook opened to anyone with an
-										email address.</p>
-									<p class="sm-ellipsis sm-more-item">In the summer of 2006,
-										Yahoo attempted to acquire the company for $1 billion dollars.
-										Reports actually indicated that Zuckerberg made a verbal
-										agreement to sell Facebook to Yahoo. A few days later when
-										Yahoo's stock price took a dive, the offer was lowered to $800
-										million and Zuckerberg walked away from the deal. Yahoo later
-										offered $1 billion again, this time Zuckerberg turned Yahoo
-										down and earned instant notoriety as the "kid" who turned down
-										a billion. This was not the first time Zuckerberg turned down
-										an acquisition offer; Viacom had previously unsuccessfully
-										attempted to acquire the company for $750 million in March,
-										2006.</p>
-									<p class="sm-ellipsis sm-more-item">One sour note for
-										Facebook has been the controversy with social network
-										ConnectU. The founders of ConnectU, former classmates of Mark
-										Zuckerberg at Harvard, allege that Zuckerberg stole their
-										original source code for Facebook. The ordeal has gone to
-										court, and has now been resolved.</p>
-									<p class="sm-ellipsis sm-more-item">Notwithstanding this
-										lingering controversy, Facebook's growth in the fall of 2007
-										was staggering. Over 1 million new users signed up every week,
-										200,000 daily, totaling over 50 million active users. Facebook
-										received 40 billion page views a month. Long gone were the
-										days of Facebook as a social network for college students. 11%
-										of users are over the age of 35, and the fastest growing
-										demographic is users over 30. Facebook has also seen huge
-										growth internationally; 15% of the user base is in Canada.
-										Facebook users' passion, or addiction, to the site is
-										unparalleled: more than half use the product every single day
-										and users spend an average of 19 minutes a day on Facebook.
-										Facebook is 6th most trafficked site in the US and top photo
-										sharing site with 4.1 billion photos uploaded.</p>
-									<p class="sm-ellipsis sm-more-item">Based on these types of
-										numbers, Microsoft invested $240 million into Facebook for 1.6
-										percent of the company in October 2007. This meant a valuation
-										of over $15 billion, making Facebook the 5th most valuable US
-										Internet company, yet with only $150 million in annual
-										revenue. Many explained Microsoft's decision as being solely
-										driven by the desire to outbid Google.</p>
 									<p class="sm-ellipsis sm-more-item">Facebook's competitors
 										include MySpace, Bebo, Friendster, LinkedIn, Tagged, Hi5,
-										Piczo, and Open Social.</p>
-									<a style="display: none;"
-										class="sm-link sm-more-toggle sm-more-open">View More</a> <a
-										style="display: none;"
-										class="sm-link sm-more-toggle sm-more-close">View Less</a>
+										Piczo, and Open Social.</p> -->
 								</div>
 
 
 								<div class="sm-r bbq-loading" style="display: none">&nbsp;</div>
 
-								<div class="span-16 sm-more-block sm-data">
+
+								<%
+									Map<String, String> wikiContentMap = company.getWikiContentMap();
+									if (wikiContentMap != null) {
+										Set<String> keySet = wikiContentMap.keySet();
+										for (String key : keySet) {
+											String topic = key;
+											String content = wikiContentMap.get(key);
+											out.print("<div class=\"span-16 sm-more-block sm-data\">");
+											out.print("<h4>" + topic + "</h4>");
+											out.print("<div class=\"expandablediv\">");
+											out.print("<p>" + content + "</p>");
+											out.print("</div></div>");
+										}
+
+									} else {
+										out.print("<div class=\"span-16 sm-more-block sm-data\">");
+										out.print("<h4>No wikipedia content</h4>");
+										out.print("<div class=\"expandablediv\">");
+										out.print("<p></p>");
+										out.print("</div></div>");
+									}
+								%>
+								<!-- <div class="span-16 sm-more-block sm-data">
 									<h4>Wikipeida</h4>
-									<p class="sm-ellipsis sm-more-item">Facebook is the world's
-										largest social network, with over 840 million users.</p>
-									<p class="sm-ellipsis sm-more-item">Facebook was founded by
-										Mark Zuckerberg in February 2004, initially as an exclusive
-										network for Harvard students. It was a huge hit: in 2 weeks,
-										half of the schools in the Boston area began demanding a
-										Facebook network. Zuckerberg immediately recruited his friends
-										Dustin Moskowitz and Chris Hughes to help build Facebook, and
-										within four months, Facebook added 30 more college networks.</p>
-									<p class="sm-ellipsis sm-more-item">The original idea for
-										the term Facebook came from Zuckerberg's high school (Phillips
-										Exeter Academy). The Exeter Face Book was passed around to
-										every student as a way for students to get to know their
-										classmates for the following year. It was a physical paper
-										book until Zuckerberg brought it to the internet.</p>
-									<p class="sm-ellipsis sm-more-item">With this success,
-										Zuckerberg, Moskowitz and Hughes moved out to Palo Alto for
-										the summer and rented a sublet. A few weeks later, Zuckerberg
-										ran into the former cofounder of Napster, Sean Parker. Parker
-										soon moved in to Zuckerberg's apartment and they began working
-										together. Parker provided the introduction to their first
-										investor, Peter Thiel, cofounder of PayPal and managing
-										partner of The Founders Fund. Thiel invested $500,000 into
-										Facebook.</p>
-									<p class="sm-ellipsis sm-more-item">With millions more
-										users, Friendster attempted to acquire the company for $10
-										million in mid 2004. Facebook turned down the offer and
-										subsequently received $12.7 million in funding from Accel
-										Partners, at a valuation of around $100 million. Facebook
-										continued to grow, opening up to high school students in
-										September 2005 and adding an immensely popular photo sharing
-										feature the next month. The next spring, Facebook received $25
-										million in funding from Greylock Partners and Meritech
-										Capital, as well as previous investors Accel Partners and
-										Peter Thiel. The pre-money valuation for this deal was about
-										$525 million. Facebook subsequently opened up to work
-										networks, eventually amassing over 20,000 work networks.
-										Finally in September 2006, Facebook opened to anyone with an
-										email address.</p>
-									<p class="sm-ellipsis sm-more-item">In the summer of 2006,
-										Yahoo attempted to acquire the company for $1 billion dollars.
-										Reports actually indicated that Zuckerberg made a verbal
-										agreement to sell Facebook to Yahoo. A few days later when
-										Yahoo's stock price took a dive, the offer was lowered to $800
-										million and Zuckerberg walked away from the deal. Yahoo later
-										offered $1 billion again, this time Zuckerberg turned Yahoo
-										down and earned instant notoriety as the "kid" who turned down
-										a billion. This was not the first time Zuckerberg turned down
-										an acquisition offer; Viacom had previously unsuccessfully
-										attempted to acquire the company for $750 million in March,
-										2006.</p>
-									<p class="sm-ellipsis sm-more-item">One sour note for
-										Facebook has been the controversy with social network
-										ConnectU. The founders of ConnectU, former classmates of Mark
-										Zuckerberg at Harvard, allege that Zuckerberg stole their
-										original source code for Facebook. The ordeal has gone to
-										court, and has now been resolved.</p>
-									<p class="sm-ellipsis sm-more-item">Notwithstanding this
-										lingering controversy, Facebook's growth in the fall of 2007
-										was staggering. Over 1 million new users signed up every week,
-										200,000 daily, totaling over 50 million active users. Facebook
-										received 40 billion page views a month. Long gone were the
-										days of Facebook as a social network for college students. 11%
-										of users are over the age of 35, and the fastest growing
-										demographic is users over 30. Facebook has also seen huge
-										growth internationally; 15% of the user base is in Canada.
-										Facebook users' passion, or addiction, to the site is
-										unparalleled: more than half use the product every single day
-										and users spend an average of 19 minutes a day on Facebook.
-										Facebook is 6th most trafficked site in the US and top photo
-										sharing site with 4.1 billion photos uploaded.</p>
-									<p class="sm-ellipsis sm-more-item">Based on these types of
-										numbers, Microsoft invested $240 million into Facebook for 1.6
-										percent of the company in October 2007. This meant a valuation
-										of over $15 billion, making Facebook the 5th most valuable US
-										Internet company, yet with only $150 million in annual
-										revenue. Many explained Microsoft's decision as being solely
-										driven by the desire to outbid Google.</p>
-									<p class="sm-ellipsis sm-more-item">Facebook's competitors
-										include MySpace, Bebo, Friendster, LinkedIn, Tagged, Hi5,
-										Piczo, and Open Social.</p>
-									<a style="display: none;"
-										class="sm-link sm-more-toggle sm-more-open">View More</a> <a
-										style="display: none;"
-										class="sm-link sm-more-toggle sm-more-close">View Less</a>
-								</div>
+									<div class="expandablediv">
+										<p>Facebook was founded by Mark Zuckerberg in February
+											2004, initially as an exclusive network for Harvard students.
+											It was a huge hit: in 2 weeks, half of the schools in the
+											Boston area began demanding a Facebook network. Zuckerberg
+											immediately recruited his friends Dustin Moskowitz and Chris
+											Hughes to help build Facebook, and within four months,
+											Facebook added 30 more college networks.</p>
+										<p>The original idea for the term Facebook came from
+											Zuckerberg's high school (Phillips Exeter Academy). The
+											Exeter Face Book was passed around to every student as a way
+											for students to get to know their classmates for the
+											following year. It was a physical paper book until Zuckerberg
+											brought it to the internet.</p>
+									</div>
+								</div> -->
 
 
 								<div class="span-8 append-1 sm-table-style sm-data">
 									<hr class="space" />
 									<h4 class="clear">Offices</h4>
 
-									<div>
-										<div class="sm-ellipsis">1601 S California Ave</div>
-										<div class="span-7 sm-ellipsis">Palo Alto, CA 94304</div>
-										<div class="span-7 sm-ellipsis">United States</div>
-									</div>
-									<hr class="space" />
+									<%
+										List<Office> offices = company.getOffices();
+										if (offices != null) {
+											for (Office office : offices) {
+												out.print("<div class=\"sm-ellipsis\">"
+														+ office.getAddress1() + "</div>");
+												out.print("<div class=\"sm-ellipsis\">"
+														+ office.getAddress2() + "</div>");
+												if (!"undefined".equals(office.getStatecode())
+														&& !"undefined".equals(office.getZipcode())) {
+													out.print("<div class=\"span-7 sm-ellipsis\">"
+															+ office.getCity() + ", "
+															+ office.getStatecode() + " "
+															+ office.getZipcode() + "</div>");
+												} else {
+													out.print("<div class=\"span-7 sm-ellipsis\">"
+															+ office.getCity() + "</div>");
+												}
+												out.print("<div class=\"span-7 sm-ellipsis\">"
+														+ office.getCountrycode() + "</div>");
+												out.print("<hr class=\"space\" />");
+											}
+										} else {
+											out.print("<div class=\"sm-ellipsis\">no office information</div>");
+											out.print("<div class=\"sm-ellipsis\">N/A</div>");
+											out.print("<div class=\"span-7 sm-ellipsis\"></div>");
+											out.print("<div class=\"span-7 sm-ellipsis\"></div>");
+										}
+									%>
 
-									<div class="sm-ellipsis">Hanover Reach</div>
+									<!-- <div class="sm-ellipsis">Hanover Reach</div>
 									<div class="sm-ellipsis">Grand Canal Harbour</div>
 									<div class="span-7 sm-ellipsis">Dublin</div>
 									<div class="span-7 sm-ellipsis">Ireland</div>
+									<hr class="space" /> -->
 
-									<hr class="space" />
-
-									<div class="sm-ellipsis">340 Madison Ave</div>
-									<div class="sm-ellipsis"></div>
-									<div class="span-7 sm-ellipsis">New York, NY 10017</div>
-									<div class="span-7 sm-ellipsis">United States</div>
-
-									<hr class="space" />
 									<hr class="space" />
 
 									<ul class="span-7 sm-ellipsis sm-more-block sm-oh">
@@ -388,49 +417,36 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 									<hr class="space" />
 
 									<h4>Current Affiliated People</h4>
-									<!-- <div class="sm-b">Board of Directors</div> -->
 									<ul class="sm-more-block sm-clear-ul">
-										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis">Peter
-												Thiel</div>
+										<%
+											List<Relationship> relationships = company.getRelationships();
+											if (relationships != null) {
+												for (Relationship person : relationships) {
+													if (!"".equals(person.getName())
+															&& !"".equals(person.getTitle())) {
+														out.print("<li class=\"sm-more-item\">");
+														out.print("<div class=\"span-7 sm-ellipsis\">"
+																+ person.getName() + "</div>");
+														out.print("<div class=\"sm-mb small sm-ellipses quiet\">"
+																+ person.getTitle() + "</div>");
+														out.print("</li>");
+													} else {
+														continue;
+													}
+												}
+											} else {
+												out.print("<li class=\"sm-more-item\"><div class=\"span-7 sm-ellipsis\">"
+														+ "no affiliated people information"
+														+ "</div><div class=\"sm-mb small sm-ellipses quiet\">N/A</div></li>");
+											}
+										%>
+
+										<!-- <li class="sm-more-item">
+											<div class="span-7 sm-ellipsis">Peter Thiel</div>
 											<div class="sm-mb small sm-ellipses quiet">Board Of
 												Directors</div>
-										</li>
-										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis">Reed
-												Hastings</div>
-											<div class="sm-mb small sm-ellipses quiet">CEO, Netflix</div>
-										</li>
-										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis">Marc
-												Andreessen</div>
-											<div class="sm-mb small sm-ellipses quiet">Co-Founder,
-												Andreessen Horowitz</div>
-										</li>
-										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis">Erskine
-												Bowles</div>
-											<div class="sm-mb small sm-ellipses quiet">Former White
-												House Chief of Staff</div>
-										</li>
-										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis">Mark
-												Zuckerberg</div>
-											<div class="sm-mb small sm-ellipses quiet">Founder and
-												CEO, Board Of Directors</div>
-										</li>
-										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis">David
-												Sze</div>
-											<div class="sm-mb small sm-ellipses quiet">Observer to
-												Board of Directors</div>
-										</li>
-										<li class="sm-more-item">
-											<div class="span-7 sm-ellipsis">Jim
-												Breye</div>
-											<div class="sm-mb small sm-ellipses quiet">Partner,
-												Accel Partners</div>
-										</li>
+										</li> -->
+
 										<li><a style="display: none;"
 											class="sm-link sm-more-toggle sm-more-open">View More</a> <a
 											style="display: none;"
@@ -450,87 +466,45 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 								<div class="sm-shadow-box">
 									<table border="0" cellspacing="0" cellpadding="0"
 										class="span- financings sm-more-block">
-										<tr class="sm-more-item">
+										<%
+											List<FundingRound> fundings = company.getFundings();
+											if (fundings != null) {
+												Collections.reverse(fundings);
+												for (FundingRound funding : fundings) {
+													out.print("<tr class=\"sm-more-item\">");
+													out.print("<td width=\"190\"><strong>"
+															+ funding.getRoundCode()
+															+ "</strong>, <span class=\"small\">"
+															+ funding.getFundedDate() + "</span>");
+													List<String> investors = funding.getInvestorList();
+													if (investors != null) {
+														for (String name : investors) {
+															out.print("<div class=\"small sm-ellipsis quiet sm-mbs\">"
+																	+ name + "</div>");
+														}
+													}
+													out.print("<td width=\"48\" class=\"sm-r sm-b\" align=\"right\">"
+															+ funding.getRaisedCurrencyCode()
+															+ funding.getRaisedAmountString() + "</td>");
+													out.print("</tr>");
+												}
+											} else {
+												out.print("<tr class=\"sm-more-item\">");
+												out.print("<td width=\"195\"><strong>no funding rounds</strong></td>");
+												out.print("<td width=\"48\" class=\"sm-r sm-b\" align=\"right\">N/A</td></tr>");
+											}
+										%>
 
+										<!-- <tr class="sm-more-item">
 											<td width="195"><strong>Unattributed</strong>, <span
 												class="small">Jun 2010</span>
-
-												<div class="small sm-ellipsis quiet sm-mbs">Elevation
-													Partners</div></td>
-
-											<td width="48" class="sm-r sm-b" align="right">$120M</td>
-										</tr>
-										<tr class="sm-more-item">
-											<td><strong>Series D</strong>, <span class="small">May
-													2009</span>
-
-												<div class="small sm-ellipsis quiet sm-mbs">Digital
-													Sky Technologies</div></td>
-											<td width="48" class="sm-r sm-b">$200M</td>
-										</tr>
-										<tr class="sm-more-item">
-											<td><strong>Debt</strong>, <span class="small">May
-													2008</span>
-
-												<div class="small sm-ellipsis quiet sm-mbs">
-													TriplePoint Capital</div></td>
-											<td width="48" class="sm-r sm-b">$100M</td>
-										</tr>
-										<tr class="sm-more-item">
-											<td><strong>Series C</strong>, <span class="small">Mar
-													2008</span>
-
-												<div class="small sm-ellipsis quiet sm-mbs">Li
-													Ka-shing</div></td>
-											<td width="48" class="sm-r sm-b">$60M</td>
-										</tr>
-										<tr class="sm-more-item">
-											<td><strong>Series C</strong>, <span class="small">Jan
-													2008</span>
-
-												<div class="small sm-ellipsis quiet sm-mbs">European
-													Founders Fund</div></td>
-											<td width="48" class="sm-r sm-b">$15M</td>
-										</tr>
-										<tr class="sm-more-item">
-											<td><strong>Series C</strong>, <span class="small">Oct
-													2007</span>
-
-												<div class="small sm-ellipsis quiet sm-mbs">Microsoft</div>
-											</td>
-											<td width="48" class="sm-r sm-b">$240M</td>
-										</tr>
-										<tr class="sm-more-item">
-											<td><strong>Series B</strong>, <span class="small">Apr
-													2006</span>
-
-												<div class="small sm-ellipsis quiet ">Greylock
-													Partners</div>
-												<div class="small sm-ellipsis quiet ">Meritech Capital
-													Partners</div>
-												<div class="small sm-ellipsis quiet sm-mbs">The
-													Founders Fund</div></td>
-											<td width="48" class="sm-r sm-b">$27M</td>
-										</tr>
-										<tr class="sm-more-item">
-											<td><strong>Series A</strong>, <span class="small">May
-													2005</span>
-
 												<div class="small sm-ellipsis quiet ">Accel Partners</div>
 												<div class="small sm-ellipsis quiet ">Mark Pincus</div>
 												<div class="small sm-ellipsis quiet sm-mbs">Reid
 													Hoffman</div></td>
-											<td width="48" class="sm-r sm-b">$12M</td>
-										</tr>
-										<tr class="sm-more-item">
-											<td><strong>Angel</strong>, <span class="small">Sep
-													2004</span>
+											<td width="48" class="sm-r sm-b" align="right">$120M</td>
+										</tr> -->
 
-												<div class="small sm-ellipsis quiet ">Peter Thiel</div>
-												<div class="small sm-ellipsis quiet sm-mbs">Reid
-													Hoffman</div></td>
-											<td width="48" class="sm-r sm-b">$500K</td>
-										</tr>
 										<tr>
 											<td colspan="2"><a style="display: none;"
 												class="sm-link sm-more-toggle sm-more-open">View More</a> <a
@@ -554,6 +528,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											href="javascript:ddtreemenu.flatten('treemenu1', 'contact')">Collapse
 											All</a>
 									</div>
+
+									<%%>
 									<ul id="treemenu1" class="treeview">
 										<li></li>
 										<!-- <li><a href="#">Item1</a></li>
@@ -579,20 +555,6 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 									<script type="text/javascript">
 										ddtreemenu.createTree("treemenu1", true)
 									</script>
-								</div>
-								
-								<hr class="space" />
-								
-								<h3>Company Videos</h3>
-								<div class="sm-shadow-box">
-									<div class="videoclass">
-									</div>
-									<ul id="treemenu2">
-										<li></li>
-										<li><a href="#">Video 1</a></li>
-										<li><a href="#">Video 2</a></li>
-										<li><a href="#">Video 3</a></li>
-									</ul>
 								</div>
 
 

@@ -88,7 +88,7 @@
 
 		<tr>
 			<th style="text-align: center">Overview</th>
-			<td>${company.overview}</td>
+			<td>${company.cboverview}</td>
 		</tr>
 	</table>
 
