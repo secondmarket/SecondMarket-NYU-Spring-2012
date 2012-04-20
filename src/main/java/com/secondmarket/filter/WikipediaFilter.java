@@ -162,7 +162,7 @@ public class WikipediaFilter {
 			topicBody = allTopicsBody.substring(indexMarker, indexMarker
 					+ nextEndIndex);
 			String topicName = this.getTopicName(topicBody);
-		//	System.out.println(topicName);
+//			System.out.println(topicName);
 
 			String cleanedString = this.cleanTextBody(topicBody);
 			/*
@@ -174,7 +174,9 @@ public class WikipediaFilter {
 			 * if (sentenceList.size() != 0) { contentMap.put(topicName,
 			 * sentenceList); }
 			 */
-			contentMap.put(topicName, cleanedString);
+			if(cleanedString.length()!=0){
+	    		contentMap.put(topicName, cleanedString);
+			}
 
 			tempBody = allTopicsBody.substring(indexMarker + nextEndIndex + 1);
 			indexMarker = indexMarker + nextEndIndex;
@@ -213,40 +215,41 @@ public class WikipediaFilter {
 		// by bliki WikiModel
 		topicBody = topicBody.replaceAll("(?i)(\\{{2})(As of\\|)(.*?)(\\}{2})",
 				"As of $3");
-		//remove image.
-//		topicBody = topicBody.replaceAll("\\[\\[Image:.*?\\]\\]", "");
-//		topicBody = topicBody.replaceAll("[[File:]]","");
-//		//remove comments <!--     -->
-//		topicBody = topicBody.replaceAll("<!--.*?-->","");
-//		//remove wikinews
-//		topicBody = topicBody.replaceAll("\\{\\{wikinews.*?\\}\\}", "");
-//		// remove {{Main|news}}
-//		topicBody = topicBody.replaceAll("\\{\\{[Mm]ain\\|.*?\\}\\}", "");
-//		System.out.println("0000000" + topicBody + "\n");
+		// remove image.
+		// topicBody = topicBody.replaceAll("\\[\\[Image:.*?\\]\\]", "");
+		// topicBody = topicBody.replaceAll("[[File:]]","");
+		// //remove comments <!-- -->
+		// topicBody = topicBody.replaceAll("<!--.*?-->","");
+		// //remove wikinews
+		// topicBody = topicBody.replaceAll("\\{\\{wikinews.*?\\}\\}", "");
+		// // remove {{Main|news}}
+		// topicBody = topicBody.replaceAll("\\{\\{[Mm]ain\\|.*?\\}\\}", "");
+		// System.out.println("0000000" + topicBody + "\n");
 		topicBody = topicBody.replaceFirst("(\\\\n)+", "");
 		WikiModel wikiModel = new WikiModel(
 				"http://en.wikipedia.org/wiki/${image}",
 				"http://en.wikipedia.org/wiki/${title}");
 		String htmlStr = wikiModel.render(topicBody);
 
-	//	 System.out.println("1111111" + htmlStr + "\n");
+//		System.out.println("1111111" + htmlStr + "\n");
 
-	//	 Whitelist whiteList = Whitelist.basic();
-	//	 String cleanedStr = Jsoup.clean(htmlStr, whiteList);
-		 //remove image
-		 String cleanedStr = htmlStr;
-		 while(cleanedStr.contains("</div")){
-			 int backIndex = cleanedStr.indexOf("</div>");
-			 String tmp = cleanedStr.substring(0,backIndex);
-			 int index = tmp.lastIndexOf("<div");
-			 cleanedStr = cleanedStr.substring(0,index)+cleanedStr.substring(backIndex+6);
-		 }
-		 cleanedStr = cleanedStr.replaceAll("(\\n)+", "");
-	//	 System.out.println("3333333" + cleanedStr + "\n");
+		// Whitelist whiteList = Whitelist.basic();
+		// String cleanedStr = Jsoup.clean(htmlStr, whiteList);
+		// remove image
+		String cleanedStr = htmlStr;
+		while (cleanedStr.contains("</div")) {
+			int backIndex = cleanedStr.indexOf("</div>");
+			String tmp = cleanedStr.substring(0, backIndex);
+			int index = tmp.lastIndexOf("<div");
+			cleanedStr = cleanedStr.substring(0, index)
+					+ cleanedStr.substring(backIndex + 6);
+		}
+		cleanedStr = cleanedStr.replaceAll("(\\n)+", "");
+//		System.out.println("3333333" + cleanedStr + "\n");
 		// Remove "{{any content}}"
-		 cleanedStr = cleanedStr.replaceAll("\\{{2}.*?\\}{2}", "");
-		cleanedStr  = cleanedStr.replaceFirst("(\\\\n)+", "");
-		 
+		cleanedStr = cleanedStr.replaceAll("\\{{2}.*?\\}{2}", "");
+		cleanedStr = cleanedStr.replaceFirst("(\\\\n)+", "");
+
 		cleanedStr = cleanedStr.replaceAll("(\\\\n)+", "<br/>");
 
 		// Remove tags like "[1]"
@@ -254,10 +257,8 @@ public class WikipediaFilter {
 				"<sup[^>]*><a[^>]*>\\[\\d*\\]</a></sup>", "");
 		cleanedStr = cleanedStr.replaceAll("\\\\\\&#34;", "&#34;");
 		cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
-		// System.out.println("2222222" + cleanedStr + "\n");
+//		System.out.println("2222222" + cleanedStr + "\n");
 
-		 
-		//
 		// // cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "")
 		// // .replaceAll("\\\\n", "").replace("{{", "").replace("}}", "");
 		//
