@@ -79,7 +79,7 @@ public class EdgarUtils {
 	//	System.out.println(url);
 		Document doc;
 		try {
-			doc = Jsoup.connect(url).timeout(10*1000).get();
+			doc = Jsoup.connect(url).timeout(30*1000).get();
 			for (Element table : doc.select("table.tableFile2")) {
 				for (Element row : table.select("tr")) {
 					tds = row.select("td");
@@ -100,7 +100,7 @@ public class EdgarUtils {
 				for (EdgarCompanyDetail name : nameList) {
 					url2 = /*preUrl + */name.getCompanyLink();
 					Document doc2;
-					doc2 = Jsoup.connect(url2).timeout(10*1000).get();
+					doc2 = Jsoup.connect(url2).timeout(30*1000).get();
 					multiDocList = new ArrayList<EdgarDocDetail>();
 					for (Element table : doc2.select("table.tableFile2")) {
 						for (Element row : table.select("tr")) {

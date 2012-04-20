@@ -175,6 +175,9 @@ public class WikipediaFilter {
 			 * sentenceList); }
 			 */
 			if(cleanedString.length()!=0){
+				if(topicName.contains(".")){
+					topicName = topicName.replaceAll("\\.", "&#46;");
+				}
 	    		contentMap.put(topicName, cleanedString);
 			}
 
