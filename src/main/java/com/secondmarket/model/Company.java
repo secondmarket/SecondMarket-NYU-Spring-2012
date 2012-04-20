@@ -33,7 +33,9 @@ public class Company {
 
 	private String industry;
 
-	private String overview;
+	private String cboverview;
+
+	private Map<String, String> wikiContentMap;
 
 	private int employees;
 
@@ -46,7 +48,7 @@ public class Company {
 	private Map<String, String> crunchbaseDoc;
 
 	private Map<String, String> wikipediaDoc;
-	
+
 	private String wikiUrl;
 
 	@Embedded
@@ -161,12 +163,20 @@ public class Company {
 		this.logo = logo;
 	}
 
-	public String getOverview() {
-		return overview;
+	public String getCboverview() {
+		return cboverview;
 	}
 
-	public void setOverview(String overview) {
-		this.overview = overview;
+	public void setCboverview(String cboverview) {
+		this.cboverview = cboverview;
+	}
+
+	public Map<String, String> getWikiContentMap() {
+		return wikiContentMap;
+	}
+
+	public void setWikiContentMap(Map<String, String> wikiContentMap) {
+		this.wikiContentMap = wikiContentMap;
 	}
 
 	public int getEmployees() {
@@ -216,12 +226,12 @@ public class Company {
 	public void setVideos(List<String> videos) {
 		this.videos = videos;
 	}
-	
-	public String getWikiUrl(){
+
+	public String getWikiUrl() {
 		return wikiUrl;
 	}
-	
-	public void setWikiUrl(String url){		
+
+	public void setWikiUrl(String url) {
 		this.wikiUrl = url;
 	}
 

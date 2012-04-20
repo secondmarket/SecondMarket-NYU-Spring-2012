@@ -1,5 +1,6 @@
 package com.secondmarket.utility;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,8 @@ public class DataAggregator {
 		String location;
 		String country;
 		String industry;
-		String overview;
+		String cboverview;
+		Map<String, String> wikiContentMap;
 		int employees;
 		String foundedDate;
 		List<FundingRound> fundings;
@@ -55,9 +57,15 @@ public class DataAggregator {
 		location = cbFilter.getLocation(cbBasicDBObject);
 		country = cbFilter.getCounrty(cbBasicDBObject);
 		industry = cbFilter.getIndustry(cbBasicDBObject);
-		overview = cbFilter.getOverview(cbBasicDBObject);
-		String aggregatedOverview = this.appendWikipediaContent(overview,
-				wikiBasicDBObject, company);
+		cboverview = cbFilter.getOverview(cbBasicDBObject);
+		if (wikiBasicDBObject != null) {
+			wikiContentMap = wikiFilter.extractText(wikiBasicDBObject, company);
+		} else {
+			wikiContentMap = new HashMap<String, String>();
+		}
+
+		// String aggregatedOverview = this.appendWikipediaContent(cboverview,
+		// wikiBasicDBObject, company);
 
 		employees = cbFilter.getNumberOfEmployees(cbBasicDBObject);
 		foundedDate = cbFilter.getFoundedDate(cbBasicDBObject);
@@ -75,8 +83,9 @@ public class DataAggregator {
 		company.setLocation(location);
 		company.setCountry(country);
 		company.setIndustry(industry);
-		// company.setOverview(overview);
-		company.setOverview(aggregatedOverview);
+		company.setCboverview(cboverview);
+		company.setWikiContentMap(wikiContentMap);
+		// company.setCboverview(aggregatedOverview);
 		company.setEmployees(employees);
 		company.setFoundedDate(foundedDate);
 		company.setFundings(fundings);
