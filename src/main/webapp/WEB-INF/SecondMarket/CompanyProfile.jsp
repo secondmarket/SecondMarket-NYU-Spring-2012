@@ -198,9 +198,16 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 
 										<div class="sm-r sm-mt sm-db sm-mr" id="profileUrls">
-											<a href="#"><img src="/images/wiki.png"
-												usemap="#planetmap" /></a> <a target="_blank"
-												id="profileFacebookIcon" href="http://www.facebook.com"><img
+											<%
+												if (company.getWikiUrl() != null
+														&& company.getWikiUrl().trim().length() != 0) {
+													out.print("<a href=\"#\"><img src=\"/images/wiki.png\" usemap=\"#wikiurlmap\" /></a>");
+												}
+											%>
+											<!-- <a href="#"><img src="/images/wiki.png"
+												usemap="#planetmap" /></a> this line works with <map name="wikiurlmap" class="iframe"></map> -->
+											<a target="_blank" id="profileFacebookIcon"
+												href="http://www.facebook.com"><img
 												src="/images/pro-facebook-icon.png"></a> <a
 												target="_blank" id="profileTwitterIcon"
 												href="http://www.twitter.com"><img
@@ -249,17 +256,25 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 										<div class="clear"></div>
 									</div>
 								</div>
-								
-								<%-- <h1><%out.print(company.getWikiUrl());%></h1> --%>
 
-								<map name="planetmap" class="iframe">
+								<%
+									if (company.getWikiUrl() != null
+											&& company.getWikiUrl().trim().length() != 0) {
+										out.print("<map name=\"wikiurlmap\" class=\"iframe\">");
+										out.print("<area shape=\"rect\" coords=\"0,0,82,126\" alt=\"Wikipedia Article\" href=\""
+												+ company.getWikiUrl() + "\" />");
+										out.print("</map>");
+									}
+								%>
+
+								<%-- <map name="wikiurlmap" class="iframe">
 									<area shape="rect" coords="0,0,82,126" alt="Wikipedia Article"
-										href="http://en.wikipedia.org/wiki/Facebook" />
-									<!-- <area shape="rect" coords="0,0,82,126" alt="Mercury"
+										href="<%out.print(company.getWikiUrl());%>" />
+									<area shape="rect" coords="0,0,82,126" alt="Mercury"
 										href="http://en.wikipedia.org/wiki/Mercury_(planet)" />
 									<area shape="rect" coords="0,0,82,126" alt="Venus"
-										href="http://en.wikipedia.org/wiki/Venus" /> -->
-								</map>
+										href="http://en.wikipedia.org/wiki/Venus" />
+								</map> --%>
 
 								<hr class="space" />
 
@@ -291,11 +306,11 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 								<div class="sm-r bbq-loading" style="display: none">&nbsp;</div>
 
 
-								<%-- <%
+								<%
 									Map<String, String> wikiContentMap = company.getWikiContentMap();
-									if (wikiContentMap != null){
+									if (wikiContentMap != null) {
 										Set<String> keySet = wikiContentMap.keySet();
-										for (String key : keySet){
+										for (String key : keySet) {
 											String topic = key;
 											String content = wikiContentMap.get(key);
 											out.print("<div class=\"span-16 sm-more-block sm-data\">");
@@ -304,7 +319,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											out.print("<p>" + content + "</p>");
 											out.print("</div></div>");
 										}
-											
+
 									} else {
 										out.print("<div class=\"span-16 sm-more-block sm-data\">");
 										out.print("<h4>No wikipedia content</h4>");
@@ -312,9 +327,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 										out.print("<p></p>");
 										out.print("</div></div>");
 									}
-								
-								%> --%>
-								<div class="span-16 sm-more-block sm-data">
+								%>
+								<!-- <div class="span-16 sm-more-block sm-data">
 									<h4>Wikipeida</h4>
 									<div class="expandablediv">
 										<p>Facebook was founded by Mark Zuckerberg in February
@@ -331,7 +345,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											following year. It was a physical paper book until Zuckerberg
 											brought it to the internet.</p>
 									</div>
-								</div>
+								</div> -->
 
 
 								<div class="span-8 append-1 sm-table-style sm-data">
@@ -514,11 +528,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											href="javascript:ddtreemenu.flatten('treemenu1', 'contact')">Collapse
 											All</a>
 									</div>
-									
-									<%
-									
-									
-									%>
+
+									<%%>
 									<ul id="treemenu1" class="treeview">
 										<li></li>
 										<!-- <li><a href="#">Item1</a></li>

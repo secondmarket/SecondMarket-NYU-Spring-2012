@@ -59,7 +59,8 @@ public class DataAggregator {
 		industry = cbFilter.getIndustry(cbBasicDBObject);
 		cboverview = cbFilter.getOverview(cbBasicDBObject);
 		if (wikiBasicDBObject != null) {
-			wikiContentMap = wikiFilter.extractText(wikiBasicDBObject, company);
+			wikiContentMap = wikiFilter.getFilteredWikipediaDoc(
+					wikiBasicDBObject, company);
 		} else {
 			wikiContentMap = new HashMap<String, String>();
 		}
@@ -116,7 +117,8 @@ public class DataAggregator {
 				} else {
 					wikipediaContentStringBuffer.append("<h4>" + sectionTopic
 							+ "</h4>");
-					wikipediaContentStringBuffer.append(contentMap.get(sectionTopic)+"<br/>");
+					wikipediaContentStringBuffer.append(contentMap
+							.get(sectionTopic) + "<br/>");
 					/*
 					 * List<String> sentenceList = contentMap.get(sectionTopic);
 					 * for (String sentence : sentenceList) {
