@@ -35,6 +35,9 @@ public final class CrunchBaseFilter {
 	private NumberFormat numberFormat = NumberFormat.getInstance();
 
 	public String getCompanyName(BasicDBObject basicDBObject) {
+		if(basicDBObject == null){
+			return "undefined";
+		}
 		if (basicDBObject.containsField("name")
 				&& basicDBObject.get("name") != null) {
 			return basicDBObject.get("name").toString().trim();
@@ -44,6 +47,9 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getHomepageUrl(BasicDBObject basicDBObject) {
+		if(basicDBObject == null){
+			return "undefined";
+		}
 		if (basicDBObject.containsField("homepage_url")
 				&& basicDBObject.get("homepage_url") != null) {
 			return basicDBObject.get("homepage_url").toString().trim();
@@ -53,6 +59,9 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getFunding(BasicDBObject basicDBObject) {
+		if(basicDBObject == null){
+			return "undefined";
+		}
 		if (basicDBObject.containsField("total_money_raised")
 				&& basicDBObject.get("total_money_raised") != null) {
 			return (HtmlUtils.htmlEscapeHex(basicDBObject
@@ -65,6 +74,9 @@ public final class CrunchBaseFilter {
 
 	public double getFundingAmount(BasicDBObject basicDBObject) {
 		double fundingAmount;
+		if(basicDBObject == null){
+			return Double.NaN;
+		}
 		if (basicDBObject.containsField("total_money_raised")
 				&& basicDBObject.get("total_money_raised") != null) {
 			String funding = basicDBObject.get("total_money_raised").toString()
@@ -94,6 +106,9 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getLocation(BasicDBObject basicDBObject) {
+		if(basicDBObject == null){
+			return "undefined";
+		}
 		if (basicDBObject.containsField("offices")
 				&& basicDBObject.get("offices") != null) {
 			BasicDBList value = (BasicDBList) JSON.parse(basicDBObject
@@ -116,6 +131,9 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getCounrty(BasicDBObject basicDBObject) {
+		if(basicDBObject == null){
+			return "undefined";
+		}
 		if (basicDBObject.containsField("offices")
 				&& basicDBObject.get("offices") != null) {
 			BasicDBList value = (BasicDBList) JSON.parse(basicDBObject
@@ -138,6 +156,9 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getIndustry(BasicDBObject basicDBObject) {
+		if(basicDBObject == null){
+			return "undefined";
+		}
 		if (basicDBObject.containsField("category_code")
 				&& basicDBObject.get("category_code") != null) {
 			String category = basicDBObject.get("category_code").toString()
@@ -149,6 +170,9 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getOverview(BasicDBObject basicDBObject) {
+		if(basicDBObject == null){
+			return "undefined";
+		}
 		if (basicDBObject.containsField("overview")
 				&& basicDBObject.get("overview") != null) {
 			return basicDBObject.get("overview").toString().trim();
@@ -160,6 +184,9 @@ public final class CrunchBaseFilter {
 	public List<FundingRound> getFundings(BasicDBObject basicDBObject) {
 		List<FundingRound> fundings = new ArrayList<FundingRound>();
 
+		if(basicDBObject==null){
+			return fundings;
+		}
 		if (basicDBObject.containsField("funding_rounds")
 				&& basicDBObject.get("funding_rounds") != null) {
 			BasicDBList fundingRoundsList = (BasicDBList) JSON
@@ -326,6 +353,8 @@ public final class CrunchBaseFilter {
 	public List<Office> getOffices(BasicDBObject basicDBObject) {
 		List<Office> offices = new ArrayList<Office>();
 
+		if(basicDBObject==null)
+			return offices;
 		if (basicDBObject.containsField("offices")
 				&& basicDBObject.get("offices") != null) {
 			BasicDBList officeList = (BasicDBList) JSON.parse(basicDBObject
@@ -423,6 +452,8 @@ public final class CrunchBaseFilter {
 	public List<Relationship> getRelationships(BasicDBObject basicDBObject) {
 		List<Relationship> relationships = new ArrayList<Relationship>();
 
+		if(basicDBObject==null)
+			return relationships;
 		if (basicDBObject.containsField("relationships")
 				&& basicDBObject.get("relationships") != null) {
 			BasicDBList relationshipList = (BasicDBList) JSON
@@ -521,6 +552,8 @@ public final class CrunchBaseFilter {
 
 	public String getCompanyImageUrl(BasicDBObject basicDBObject) {
 		String companyURL = "";
+		if(basicDBObject==null)
+			return companyURL;
 		if (basicDBObject.containsField("image")
 				&& basicDBObject.get("image") != null) {
 			BasicDBObject availablesizeObj = (BasicDBObject) JSON
@@ -542,6 +575,8 @@ public final class CrunchBaseFilter {
 	}
 
 	public int getNumberOfEmployees(BasicDBObject basicDBObject) {
+		if(basicDBObject==null)
+			return 0;
 		if (basicDBObject.containsField("number_of_employees")
 				&& basicDBObject.get("number_of_employees") != null) {
 			return basicDBObject.getInt("number_of_employees");
@@ -553,6 +588,8 @@ public final class CrunchBaseFilter {
 	public String getFoundedDate(BasicDBObject basicDBObject) {
 		String foundedYear = "";
 		String foundedMonth = "";
+		if (basicDBObject==null)
+			return "";
 		if (basicDBObject.containsField("founded_year")
 				&& basicDBObject.get("founded_year") != null) {
 			foundedYear = basicDBObject.get("founded_year").toString().trim();
@@ -569,6 +606,9 @@ public final class CrunchBaseFilter {
 
 	public List<String> getEmbedVideoSrcs(BasicDBObject basicDBObject) {
 		List<String> embedsVideoUrlList = new ArrayList<String>();
+		if(basicDBObject==null){
+			return embedsVideoUrlList;
+		}
 		if (basicDBObject.containsField("video_embeds")
 				&& basicDBObject.get("video_embeds") != null) {
 			BasicDBList videoCodeList = (BasicDBList) JSON.parse(basicDBObject

@@ -114,10 +114,9 @@ public class DataAggregator {
 				if (contentMap.get(sectionTopic).length() == 0) {
 					continue;
 				} else {
-					wikipediaContentStringBuffer.append("<h5>" + sectionTopic
-							+ "</h5>");
-					wikipediaContentStringBuffer.append(" -- "
-							+ contentMap.get(sectionTopic) + "<br/>");
+					wikipediaContentStringBuffer.append("<h4>" + sectionTopic
+							+ "</h4>");
+					wikipediaContentStringBuffer.append(contentMap.get(sectionTopic)+"<br/>");
 					/*
 					 * List<String> sentenceList = contentMap.get(sectionTopic);
 					 * for (String sentence : sentenceList) {

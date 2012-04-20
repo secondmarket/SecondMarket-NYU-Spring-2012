@@ -65,6 +65,7 @@ public final class ImporterImpl implements Importer {
 		Map<String, EdgarCompanyDetail> edgarDoc = null;
 		String url_CrunchBase = null;
 		String url_Wikipedia = null;
+		String wikiUrl = null;
 		String companyName = null;
 		String state = null;
 
@@ -97,17 +98,20 @@ public final class ImporterImpl implements Importer {
 
 			if (title == null) {
 				url_Wikipedia = null;
+				wikiUrl = null;
 				count++;
 			} else {
 				url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
 						+ title + "&prop=revisions&rvprop=content&format=json";
+				
+				wikiUrl = "http://en.wikipedia.org/wiki/"+title;
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 			}
 
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
-					crunchbaseDoc, wikipediaDoc, edgarDoc, url_Wikipedia);
+					crunchbaseDoc, wikipediaDoc, edgarDoc, wikiUrl);
 			wikipediaDoc = null;
 			edgarDoc = null;
 		}

@@ -138,98 +138,51 @@ public class WikipediaFilter {
 	 * @param basicDBObject
 	 * @return
 	 */
-//	public Map<String, String> extractText(BasicDBObject basicDBObject,
-//			Company company) {
-//		String jsonBody = basicDBObject.toString().trim();
-//	//	System.out.println(jsonBody);
-//		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
-//
-//		int beginIndex = oneWhiteSpaceBody.indexOf("'''");
-//		// Minus 2 to get rid of the ending quote
-//		int endIndex = oneWhiteSpaceBody.indexOf("}]") - 2;
-//		String allTopicsBody = oneWhiteSpaceBody
-//				.substring(beginIndex, endIndex);
-//
-//		// Map<String, List<String>> contentMap = new LinkedHashMap<String,
-//		// List<String>>();
-//		Map<String, String> contentMap = new LinkedHashMap<String, String>();
-//		int indexMarker = 0;
-//		int nextEndIndex = allTopicsBody.indexOf("\\n==");
-//		String topicBody = "";
-//		String tempBody = "";
-//		// int i = 0;
-//		while (nextEndIndex != -1) {
-//			topicBody = allTopicsBody.substring(indexMarker, indexMarker
-//					+ nextEndIndex);
-//			// System.out.println("topicBody: " + topicBody);
-//
-//			String topicName = this.getTopicName(topicBody);
-//			// System.out.println(topicName);
-//
-//			String cleanedString = this.cleanTextBody(topicBody);
-//
-//			/*
-//			 * List<String> sentenceList = this.extractEventSentences(
-//			 * cleanedString, company); String[] detectedSentences =
-//			 * this.sentenceAnalysis(cleanedString); List<String> sentenceList =
-//			 * new ArrayList<String>( Arrays.asList(detectedSentences));
-//			 * 
-//			 * if (sentenceList.size() != 0) { contentMap.put(topicName,
-//			 * sentenceList); }
-//			 */
-//			contentMap.put(topicName, cleanedString);
-//
-//			tempBody = allTopicsBody.substring(indexMarker + nextEndIndex + 1);
-//			indexMarker = indexMarker + nextEndIndex + 1;
-//			nextEndIndex = tempBody.indexOf("\\n==");
-//
-//			// i++;
-//		}
-//
-//		return contentMap;
-//	}
-	
 	public Map<String, String> extractText(BasicDBObject basicDBObject,
 			Company company) {
 		String jsonBody = basicDBObject.toString().trim();
-	//	System.out.println(jsonBody);
-	//	String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
+		// System.out.println(jsonBody);
+		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
 
-		int beginIndex = jsonBody.indexOf("'''");
+		int beginIndex = oneWhiteSpaceBody.indexOf("'''");
 		// Minus 2 to get rid of the ending quote
-		int endIndex = jsonBody.indexOf("}]") - 2;
-		String allTopicsBody = jsonBody
+		int endIndex = oneWhiteSpaceBody.indexOf("}]") - 2;
+		String allTopicsBody = oneWhiteSpaceBody
 				.substring(beginIndex, endIndex);
 
+		// Map<String, List<String>> contentMap = new LinkedHashMap<String,
+		// List<String>>();
 		Map<String, String> contentMap = new LinkedHashMap<String, String>();
 		int indexMarker = 0;
 		int nextEndIndex = allTopicsBody.indexOf("\\n==");
 		String topicBody = "";
 		String tempBody = "";
 		// int i = 0;
-		while (nextEndIndex != -1) {
+		while (nextEndIndex != 0) {
 			topicBody = allTopicsBody.substring(indexMarker, indexMarker
 					+ nextEndIndex);
-			// System.out.println("topicBody: " + topicBody);
-
 			String topicName = this.getTopicName(topicBody);
-			// System.out.println(topicName);
+		//	System.out.println(topicName);
 
-			WikiModel wikiModel = new WikiModel("http://www.mywiki.com/wiki/${image}", "http://www.mywiki.com/wiki/${title}");
-            String cleanedString = wikiModel.render(new PlainTextConverter(), topicBody);
-
+			String cleanedString = this.cleanTextBody(topicBody);
+			/*
+			 * List<String> sentenceList = this.extractEventSentences(
+			 * cleanedString, company); String[] detectedSentences =
+			 * this.sentenceAnalysis(cleanedString); List<String> sentenceList =
+			 * new ArrayList<String>( Arrays.asList(detectedSentences));
+			 * 
+			 * if (sentenceList.size() != 0) { contentMap.put(topicName,
+			 * sentenceList); }
+			 */
 			contentMap.put(topicName, cleanedString);
 
 			tempBody = allTopicsBody.substring(indexMarker + nextEndIndex + 1);
-			indexMarker = indexMarker + nextEndIndex + 1;
-			nextEndIndex = tempBody.indexOf("\\n==");
-
+			indexMarker = indexMarker + nextEndIndex;
+			nextEndIndex = tempBody.indexOf("\\n==") + 1;
 			// i++;
 		}
-
 		return contentMap;
 	}
-
 
 	public String getTopicName(String topicBody) {
 		String topicName = "";
@@ -252,48 +205,79 @@ public class WikipediaFilter {
 
 	public String cleanTextBody(String topicBody) {
 		// First get rid of section name part
-		topicBody = topicBody.replaceAll("n\\s*={2,}.+={2,}", "");
+
+		topicBody = topicBody.replaceAll("n\\s*={2,}.+={2,}", "n");
 
 		// Wikipedia has its own mark-up syntax "As of",
 		// http://en.wikipedia.org/wiki/Wikipedia:As_of, which can not be parsed
 		// by bliki WikiModel
 		topicBody = topicBody.replaceAll("(?i)(\\{{2})(As of\\|)(.*?)(\\}{2})",
 				"As of $3");
-
-		// System.out.println("0000000" + topicBody + "\n");
-
+		//remove image.
+//		topicBody = topicBody.replaceAll("\\[\\[Image:.*?\\]\\]", "");
+//		topicBody = topicBody.replaceAll("[[File:]]","");
+//		//remove comments <!--     -->
+//		topicBody = topicBody.replaceAll("<!--.*?-->","");
+//		//remove wikinews
+//		topicBody = topicBody.replaceAll("\\{\\{wikinews.*?\\}\\}", "");
+//		// remove {{Main|news}}
+//		topicBody = topicBody.replaceAll("\\{\\{[Mm]ain\\|.*?\\}\\}", "");
+//		System.out.println("0000000" + topicBody + "\n");
+		topicBody = topicBody.replaceFirst("(\\\\n)+", "");
 		WikiModel wikiModel = new WikiModel(
 				"http://en.wikipedia.org/wiki/${image}",
 				"http://en.wikipedia.org/wiki/${title}");
 		String htmlStr = wikiModel.render(topicBody);
 
-		// System.out.println("1111111" + htmlStr + "\n");
+	//	 System.out.println("1111111" + htmlStr + "\n");
 
-		Whitelist whiteList = Whitelist.none();
-		String cleanedStr = Jsoup.clean(htmlStr, whiteList);
-
-		// System.out.println("2222222" + cleanedStr + "\n");
-
-		// cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "")
-		// .replaceAll("\\\\n", "").replace("{{", "").replace("}}", "");
+	//	 Whitelist whiteList = Whitelist.basic();
+	//	 String cleanedStr = Jsoup.clean(htmlStr, whiteList);
+		 //remove image
+		 String cleanedStr = htmlStr;
+		 while(cleanedStr.contains("</div")){
+			 int backIndex = cleanedStr.indexOf("</div>");
+			 String tmp = cleanedStr.substring(0,backIndex);
+			 int index = tmp.lastIndexOf("<div");
+			 cleanedStr = cleanedStr.substring(0,index)+cleanedStr.substring(backIndex+6);
+		 }
+		 cleanedStr = cleanedStr.replaceAll("(\\n)+", "");
+	//	 System.out.println("3333333" + cleanedStr + "\n");
+		// Remove "{{any content}}"
+		 cleanedStr = cleanedStr.replaceAll("\\{{2}.*?\\}{2}", "");
+		cleanedStr  = cleanedStr.replaceFirst("(\\\\n)+", "");
+		 
+		cleanedStr = cleanedStr.replaceAll("(\\\\n)+", "<br/>");
 
 		// Remove tags like "[1]"
-		// Remove tags like "\\n"
-		// Remove all slashes
-		cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "")
-				.replaceAll("\\\\n", "").replace("\\", "");
+		cleanedStr = cleanedStr.replaceAll(
+				"<sup[^>]*><a[^>]*>\\[\\d*\\]</a></sup>", "");
+		cleanedStr = cleanedStr.replaceAll("\\\\\\&#34;", "&#34;");
+		cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
+		// System.out.println("2222222" + cleanedStr + "\n");
 
-		// Remove "{{any content}}"
-		cleanedStr = cleanedStr.replaceAll("\\{{2}.*?\\}{2}", "");
-
+		 
+		//
+		// // cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "")
+		// // .replaceAll("\\\\n", "").replace("{{", "").replace("}}", "");
+		//
+		// // Remove tags like "[1]"
+		// // Remove tags like "\\n"
+		// // Remove all slashes
+		// cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "")
+		// .replaceAll("\\\\n", "").replace("\\", "");
+		//
+		// // Remove "{{any content}}"
+		// cleanedStr = cleanedStr.replaceAll("\\{{2}.*?\\}{2}", "");
+		//
 		// System.out.println("33333333" + cleanedStr + "\n");
-
-		// Clean tags like "\\\" and "\\"
-		cleanedStr = cleanedStr.replace("\\\\\\", "").replace("\\\\", " ");
-
-		// Format the text with exactly one white space for multiple spaces
-		cleanedStr = cleanedStr.replaceAll("\\s+", " ");
-
+		//
+		// // Clean tags like "\\\" and "\\"
+		// cleanedStr = cleanedStr.replace("\\\\\\", "").replace("\\\\", " ");
+		//
+		// // Format the text with exactly one white space for multiple spaces
+		// cleanedStr = cleanedStr.replaceAll("\\s+", " ");
+		//
 		// System.out.println("4444444" + cleanedStr + "\n");
 
 		return cleanedStr;
@@ -406,7 +390,7 @@ public class WikipediaFilter {
 
 		// Filter out the following entry sets: info-box, founder, key_people
 		for (String item : infoBoxEntry) {
-//			System.out.println(item);
+			// System.out.println(item);
 			if (Pattern
 					.compile(Pattern.quote("infobox"), Pattern.CASE_INSENSITIVE)
 					.matcher(item).find()) {
@@ -432,7 +416,7 @@ public class WikipediaFilter {
 				StringTokenizer st = new StringTokenizer(cleanedStr, "=;");
 				String key = st.nextToken();
 				String value = st.nextToken();
-//				System.out.println(key + "-->" + value);
+				// System.out.println(key + "-->" + value);
 			} else {
 				String htmlStr = wikiModel.render(item);
 				Whitelist whiteList = Whitelist.none();
@@ -440,13 +424,13 @@ public class WikipediaFilter {
 				String cleanedStr = Jsoup.clean(htmlStr, whiteList);
 				cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
 				cleanedStr = cleanedStr.replace("{{", "").replace("}}", "");
-//				System.out.println(cleanedStr);
+				// System.out.println(cleanedStr);
 				StringTokenizer st = new StringTokenizer(cleanedStr, "=;");
 				String key = st.nextToken();
 				String value = st.nextToken();
-//				System.out.println(key + "-->" + value);
+				// System.out.println(key + "-->" + value);
 			}
-//			System.out.println();
+			// System.out.println();
 		}
 
 		return null;
@@ -468,11 +452,11 @@ public class WikipediaFilter {
 		List<String> removedList = new ArrayList<String>();
 		while (iter.hasNext()) {
 			String key = iter.next();
-//			System.out.println("Key in the MAP: " + key);
+			// System.out.println("Key in the MAP: " + key);
 			for (Pattern pattern : patternList) {
 				if (WikipediaUtils.checkPatternMatch(pattern, key)) {
 					removedList.add(key);
-//					System.out.println("MATTCH: " + pattern.toString());
+					// System.out.println("MATTCH: " + pattern.toString());
 					break;
 				}
 			}
