@@ -23,7 +23,7 @@ public class WikiCleaner {
 	}
 
 	public static void main(String[] args) {
-		String title = "Wetpaint";
+		String title = "Digg";
 		String url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
 				+ title + "&prop=revisions&rvprop=content&format=json";
 
@@ -31,7 +31,7 @@ public class WikiCleaner {
 
 		WikiCleaner test = new WikiCleaner();
 	// TODO pass one more map for wikipedia doc
-	    test.companyDao.saveCompany("Wetpaint",
+	    test.companyDao.saveCompany("Digg",
 			null, wikipediaDoc, null, url_Wikipedia);
 	}
 
