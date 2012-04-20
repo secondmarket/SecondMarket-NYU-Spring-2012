@@ -532,8 +532,6 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 									<%%>
 									<ul id="treemenu1" class="treeview">
 										<li></li>
-										<!-- <li><a href="#">Item1</a></li>
-										<li><a href="#">Item2</a></li> -->
 										<li>Folder 1
 											<ul>
 												<li><a href="#">Sub Item 1.1</a></li>
