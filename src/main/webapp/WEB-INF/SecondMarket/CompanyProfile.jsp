@@ -529,7 +529,24 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											All</a>
 									</div>
 
-									<%%>
+									<%
+										Map<String, EdgarCompanyDetail> edgarDoc = company.getEdgarDoc();
+										if (edgarDoc != null && !edgarDoc.isEmpty()) {
+											Set<String> keySet = edgarDoc.keySet();
+											for (String key : keySet){
+												EdgarCompanyDetail edgarCompanyDetail = edgarDoc.get(key);
+												
+												
+											}
+											
+										} else {
+											out.print("<ul id=\"treemenu1\" class=\"treeview\">");
+											out.print("<li></li>");
+											out.print("<li>No EDGAR data</li>");
+											out.print("</ul>");
+										}
+									%>
+									
 									<ul id="treemenu1" class="treeview">
 										<li></li>
 										<li>Folder 1
@@ -550,6 +567,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											</ul>
 										</li>
 									</ul>
+									
 									<script type="text/javascript">
 										ddtreemenu.createTree("treemenu1", true)
 									</script>
