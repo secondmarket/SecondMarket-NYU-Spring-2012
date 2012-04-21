@@ -307,19 +307,19 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 
 								<%
-									Map<String, String> wikiContentMap = company.getWikiContentMap();
-									if (wikiContentMap != null) {
-										Set<String> keySet = wikiContentMap.keySet();
-										for (String key : keySet) {
-											String topic = key;
-											String content = wikiContentMap.get(key);
+									List<String> wikiContentTopics = company.getWikiContentTopics();
+									List<String> wikiContentValues = company.getWikiContentValues();
+									if (wikiContentTopics != null && !wikiContentTopics.isEmpty()
+											&& wikiContentValues != null
+											&& !wikiContentValues.isEmpty()
+											&& wikiContentTopics.size() == wikiContentValues.size()) {
+										for (int i = 0; i < wikiContentTopics.size(); i++) {
 											out.print("<div class=\"span-16 sm-more-block sm-data\">");
-											out.print("<h4>" + topic + "</h4>");
+											out.print("<h4>" + wikiContentTopics.get(i) + "</h4>");
 											out.print("<div class=\"expandablediv\">");
-											out.print("<p>" + content + "</p>");
+											out.print("<p>" + wikiContentValues.get(i) + "</p>");
 											out.print("</div></div>");
 										}
-
 									} else {
 										out.print("<div class=\"span-16 sm-more-block sm-data\">");
 										out.print("<h4>No wikipedia content</h4>");
@@ -529,32 +529,106 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											All</a>
 									</div>
 
+
 									<%
+										out.print("<ul id=\"treemenu1\" class=\"treeview\">");
+										out.print("<li></li>");
 										Map<String, EdgarCompanyDetail> edgarDoc = company.getEdgarDoc();
 										if (edgarDoc != null && !edgarDoc.isEmpty()) {
 											Set<String> keySet = edgarDoc.keySet();
-											for (String key : keySet){
-												EdgarCompanyDetail edgarCompanyDetail = edgarDoc.get(key);
-												
-												
+											if (keySet != null) {
+												for (String key : keySet) {
+													out.print("<li>" + key);
+													EdgarCompanyDetail edgarCompanyDetail = edgarDoc
+															.get(key);
+													if (edgarCompanyDetail != null) {
+														List<EdgarDocDetail> detail = edgarCompanyDetail
+																.getDetailList();
+														if (detail != null) {
+															out.print("<ul>");
+															for (EdgarDocDetail edgarDocDetail : detail) {
+																out.print("<li>"
+																		+ edgarDocDetail.getFilings()
+																		+ edgarDocDetail.getFileDate());
+																List<EdgarFilingDetail> docList = edgarDocDetail
+																		.getDocList();
+																if (docList != null) {
+																	out.print("<ul>");
+																	for (EdgarFilingDetail filingDetail : docList) {
+																		out.print("<li><a href=\""
+																				+ filingDetail.getDocLink()
+																				+ "\">"
+																				+ filingDetail.getDocName()
+																				+ "</a></li>");
+																	}
+																	out.print("</ul>");
+																} else {
+																	continue;
+																}
+																out.print("</li>");
+															}
+															out.print("</ul>");
+														} else {
+															continue;
+														}
+													} else {
+														continue;
+													}
+													out.print("</li>");
+												}
+											} else {
+												out.print("<ul id=\"treemenu1\" class=\"treeview\">");
+												out.print("<li></li>");
+												out.print("<li>No EDGAR data</li>");
+												out.print("</ul>");
 											}
-											
+
 										} else {
 											out.print("<ul id=\"treemenu1\" class=\"treeview\">");
 											out.print("<li></li>");
 											out.print("<li>No EDGAR data</li>");
 											out.print("</ul>");
 										}
+
+										out.print("</ul>");
 									%>
-									
-									<ul id="treemenu1" class="treeview">
+
+									<!-- <ul id="treemenu1" class="treeview">
 										<li></li>
 										<li>Folder 1
 											<ul>
-												<li><a href="#">Sub Item 1.1</a></li>
-												<li><a href="#">Sub Item 1.2</a></li>
+												<li>Sub folder1
+													<ul>
+														<li>Subsub folder1
+															<ul>
+																<li><a href="#">Sub Item 1.1</a></li>
+																<li><a href="#">Sub Item 1.2</a></li>
+																<li><a href="#">Sub Item 1.3</a></li>
+															</ul>
+														</li>
+														<li>Subsub folder2
+															<ul>
+																<li><a href="#">Sub Item 2.1</a></li>
+																<li><a href="#">Sub Item 2.2</a></li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+												<li>Sub folder2
+													<ul>
+														<li>Subsub folder2
+															<ul>
+																<li><a href="#">Sub Item 2.1</a></li>
+
+															</ul>
+
+														</li>
+													</ul>
+												</li>
+
 											</ul>
 										</li>
+
 										<li>Folder 2
 											<ul>
 												<li><a href="#">Sub Item 2.1</a></li>
@@ -566,8 +640,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 												</li>
 											</ul>
 										</li>
-									</ul>
-									
+									</ul> -->
+
 									<script type="text/javascript">
 										ddtreemenu.createTree("treemenu1", true)
 									</script>

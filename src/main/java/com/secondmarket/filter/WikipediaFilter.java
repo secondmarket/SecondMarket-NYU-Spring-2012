@@ -1,6 +1,5 @@
 package com.secondmarket.filter;
 
-import info.bliki.wiki.filter.PlainTextConverter;
 import info.bliki.wiki.model.WikiModel;
 
 import java.io.IOException;
@@ -449,8 +448,8 @@ public class WikipediaFilter {
 	 */
 	public Map<String, String> getFilteredWikipediaDoc(
 			BasicDBObject basicDBObject, Company company) {
-
 		Map<String, String> map = extractText(basicDBObject, company);
+		
 		List<Pattern> patternList = p.getValues("CLEAN", "OPTIONS");
 		Iterator<String> iter = map.keySet().iterator();
 		List<String> removedList = new ArrayList<String>();
@@ -468,6 +467,7 @@ public class WikipediaFilter {
 		for (String key : removedList) {
 			map.remove(key);
 		}
+		
 		return map;
 
 	}

@@ -1,5 +1,6 @@
 package com.secondmarket.utility;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +41,9 @@ public class DataAggregator {
 		String industry;
 		String cboverview;
 		Map<String, String> wikiContentMap;
+		List<String> wikiContentTopics;
+		List<String> wikiContentValues;
+
 		int employees;
 		String foundedDate;
 		List<FundingRound> fundings;
@@ -61,12 +65,19 @@ public class DataAggregator {
 		if (wikiBasicDBObject != null) {
 			wikiContentMap = wikiFilter.getFilteredWikipediaDoc(
 					wikiBasicDBObject, company);
+			Iterator<String> it = wikiContentMap.keySet().iterator();
+			wikiContentTopics = new ArrayList<String>();
+			wikiContentValues = new ArrayList<String>();
+			while (it.hasNext()) {
+				String key = it.next();
+				String value = wikiContentMap.get(key);
+				wikiContentTopics.add(key);
+				wikiContentValues.add(value);
+			}
 		} else {
-			wikiContentMap = new HashMap<String, String>();
+			wikiContentTopics = new ArrayList<String>();
+			wikiContentValues = new ArrayList<String>();
 		}
-
-		// String aggregatedOverview = this.appendWikipediaContent(cboverview,
-		// wikiBasicDBObject, company);
 
 		employees = cbFilter.getNumberOfEmployees(cbBasicDBObject);
 		foundedDate = cbFilter.getFoundedDate(cbBasicDBObject);
@@ -74,7 +85,6 @@ public class DataAggregator {
 		offices = cbFilter.getOffices(cbBasicDBObject);
 		relationships = cbFilter.getRelationships(cbBasicDBObject);
 		byte[] imagebyte = cbFilter.getCompanyLogo(cbBasicDBObject);
-
 		embedsVideoUrlList = cbFilter.getEmbedVideoSrcs(cbBasicDBObject);
 
 		company.setCompanyName(companyName);
@@ -85,8 +95,8 @@ public class DataAggregator {
 		company.setCountry(country);
 		company.setIndustry(industry);
 		company.setCboverview(cboverview);
-		company.setWikiContentMap(wikiContentMap);
-		// company.setCboverview(aggregatedOverview);
+		company.setWikiContentTopics(wikiContentTopics);
+		company.setWikiContentValues(wikiContentValues);
 		company.setEmployees(employees);
 		company.setFoundedDate(foundedDate);
 		company.setFundings(fundings);

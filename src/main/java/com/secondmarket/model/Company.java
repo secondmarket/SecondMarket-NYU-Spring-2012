@@ -35,7 +35,9 @@ public class Company {
 
 	private String cboverview;
 
-	private Map<String, String> wikiContentMap;
+	private List<String> wikiContentTopics;
+
+	private List<String> wikiContentValues;
 
 	private int employees;
 
@@ -171,12 +173,20 @@ public class Company {
 		this.cboverview = cboverview;
 	}
 
-	public Map<String, String> getWikiContentMap() {
-		return wikiContentMap;
+	public List<String> getWikiContentTopics() {
+		return wikiContentTopics;
 	}
 
-	public void setWikiContentMap(Map<String, String> wikiContentMap) {
-		this.wikiContentMap = wikiContentMap;
+	public void setWikiContentTopics(List<String> wikiContentTopics) {
+		this.wikiContentTopics = wikiContentTopics;
+	}
+
+	public List<String> getWikiContentValues() {
+		return wikiContentValues;
+	}
+
+	public void setWikiContentValues(List<String> wikiContentValues) {
+		this.wikiContentValues = wikiContentValues;
 	}
 
 	public int getEmployees() {
