@@ -191,7 +191,7 @@ public class WikipediaFilter {
 	public String getTopicName(String topicBody) {
 		String topicName = "";
 		if (topicBody.startsWith("'''")) {
-			topicName = "Overview";
+			topicName = "Summary";
 		} else {
 			Pattern pattern = Pattern.compile("={2,}.+={2,}");
 			Matcher matcher = pattern.matcher(topicBody);

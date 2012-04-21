@@ -522,18 +522,28 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 
 								<h3>Edgar Filings</h3>
 								<div class="sm-shadow-box">
-									<div class="sm-underline">
+									<!-- <div class="sm-underline">
 										<a href="javascript:ddtreemenu.flatten('treemenu1', 'expand')">Expand
 											All</a> | <a
 											href="javascript:ddtreemenu.flatten('treemenu1', 'contact')">Collapse
 											All</a>
-									</div>
+									</div> -->
 
 
 									<%
+										Map<String, EdgarCompanyDetail> edgarDoc = company.getEdgarDoc();
+
+										if (edgarDoc != null && !edgarDoc.isEmpty()) {
+											out.print("<div class=\"sm-underline\">");
+											out.print("<a href=\"javascript:ddtreemenu.flatten('treemenu1', 'expand')\">"
+													+ "Expand All</a> | <a href=\"javascript:ddtreemenu.flatten('treemenu1', 'contact')\">"
+													+ "Collapse All</a>");
+											out.print("</div>");
+										}
+
 										out.print("<ul id=\"treemenu1\" class=\"treeview\">");
 										out.print("<li></li>");
-										Map<String, EdgarCompanyDetail> edgarDoc = company.getEdgarDoc();
+
 										if (edgarDoc != null && !edgarDoc.isEmpty()) {
 											Set<String> keySet = edgarDoc.keySet();
 											if (keySet != null) {
@@ -577,17 +587,11 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 													out.print("</li>");
 												}
 											} else {
-												out.print("<ul id=\"treemenu1\" class=\"treeview\">");
-												out.print("<li></li>");
 												out.print("<li>No EDGAR data</li>");
-												out.print("</ul>");
 											}
 
 										} else {
-											out.print("<ul id=\"treemenu1\" class=\"treeview\">");
-											out.print("<li></li>");
 											out.print("<li>No EDGAR data</li>");
-											out.print("</ul>");
 										}
 
 										out.print("</ul>");
