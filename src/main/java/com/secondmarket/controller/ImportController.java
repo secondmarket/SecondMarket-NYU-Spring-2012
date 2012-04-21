@@ -79,7 +79,7 @@ public class ImportController {
 		// Then import CrunchBase data
 		dataImporter.storeAllCompanies();
 
-		return "main";
+		return "CompanyMain";
 
 	}
 

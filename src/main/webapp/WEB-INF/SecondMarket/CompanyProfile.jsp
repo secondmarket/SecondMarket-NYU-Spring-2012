@@ -557,7 +557,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 																	for (EdgarFilingDetail filingDetail : docList) {
 																		out.print("<li><a href=\""
 																				+ filingDetail.getDocLink()
-																				+ "\">"
+																				+ "\" target=\"_blank\">"
 																				+ filingDetail.getDocName()
 																				+ "</a></li>");
 																	}
