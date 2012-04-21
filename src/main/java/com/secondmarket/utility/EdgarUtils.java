@@ -157,21 +157,22 @@ public class EdgarUtils {
 //			System.out.println("COMPANY " + (companyNum++) + " -> "
 //					+ name.getCompanyName() + " -- " + name.getLocation());
 //			docNum = 1;
-			flag = false;
 			for (EdgarDocDetail entry : name.getDetailList()) {
+				flag = false;
 //				System.out.println("DOC " + (docNum++) + " "
 //						+ entry.getFilings() + " " + entry.getFileDate());
 				url = /*preUrl + */entry.getFormatLink();
 				filingList = new ArrayList<EdgarFilingDetail>();
 				Document doc;
 				try {
-					doc = Jsoup.connect(url).timeout(10*1000).get();
+					doc = Jsoup.connect(url).timeout(30*1000).get();
 					for (Element table : doc.select("table.tableFile")) {
 						for (Element row : table.select("tr")) {
 							tds = row.select("td");
 							if (tds.size() == 5) {
 								item = getDocsbyCompany(tds, patternList);
 								if (item != null) {
+//									System.out.println("TRRRRRRRRRRRRRRRRR");
 									filingList.add(item);
 									flag = true;
 								}
@@ -183,6 +184,7 @@ public class EdgarUtils {
 				}
 				entry.setDocList(filingList);
 				if(!flag){
+//					System.out.println("REEEEEEEEEEEEEEEEEEEEEEE");
 					removedList.add(entry);
 				}
 			}
@@ -197,7 +199,7 @@ public class EdgarUtils {
 				}
 			}
 			removedList.clear();
-			if (!map.containsKey(name.getCompanyName())&&name.getDetailList().size()>0 && flag) {
+			if (!map.containsKey(name.getCompanyName())&&name.getDetailList().size()>0 ) {
 //				System.out.println("PUT INTO MAP : "+name.getCompanyName().replace('.', '#'));
 				map.put(name.getCompanyName().replace('.', '#'), name);
 			}

@@ -548,9 +548,9 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											Set<String> keySet = edgarDoc.keySet();
 											if (keySet != null) {
 												for (String key : keySet) {
-													out.print("<li>" + key);
 													EdgarCompanyDetail edgarCompanyDetail = edgarDoc
 															.get(key);
+													out.print("<li>" + edgarCompanyDetail.getCompanyName());
 													if (edgarCompanyDetail != null) {
 														List<EdgarDocDetail> detail = edgarCompanyDetail
 																.getDetailList();
@@ -559,7 +559,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 															for (EdgarDocDetail edgarDocDetail : detail) {
 																out.print("<li>"
 																		+ edgarDocDetail.getFilings()
-																		+ edgarDocDetail.getFileDate());
+																		+ " " + edgarDocDetail.getFileDate());
 																List<EdgarFilingDetail> docList = edgarDocDetail
 																		.getDocList();
 																if (docList != null) {
