@@ -45,6 +45,8 @@ public class Company {
 
 	private byte[] logo;
 
+	private byte[] profileLogo;
+
 	private List<String> videos;
 
 	private Map<String, String> crunchbaseDoc;
@@ -243,6 +245,14 @@ public class Company {
 
 	public void setWikiUrl(String url) {
 		this.wikiUrl = url;
+	}
+
+	public byte[] getProfileLogo() {
+		return profileLogo;
+	}
+
+	public void setProfileLogo(byte[] profileLogo) {
+		this.profileLogo = profileLogo;
 	}
 
 }

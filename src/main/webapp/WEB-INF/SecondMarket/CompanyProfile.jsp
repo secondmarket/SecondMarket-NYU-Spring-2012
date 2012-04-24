@@ -150,7 +150,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 								<div id="companyLeftSide" class="span-4">
 									<div class="sm-icon-border">
 										<%
-											out.print("<img src=\"/SecondMarket/getLogo.htm?companyName="
+											out.print("<img src=\"/SecondMarket/getProfileLogo.htm?companyName="
 													+ company.getCompanyName() + "\" border=\"0\" alt=\""
 													+ company.getCompanyName() + "\">");
 										%>

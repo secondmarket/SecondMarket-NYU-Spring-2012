@@ -1,10 +1,5 @@
 package com.secondmarket.filter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -23,6 +18,7 @@ import com.mongodb.util.JSON;
 import com.secondmarket.model.FundingRound;
 import com.secondmarket.model.Office;
 import com.secondmarket.model.Relationship;
+import com.secondmarket.utility.ImageProcessor;
 
 /**
  * 
@@ -33,9 +29,10 @@ public final class CrunchBaseFilter {
 	// For converting the integer month number to String month name
 	private String[] months = new DateFormatSymbols().getMonths();
 	private NumberFormat numberFormat = NumberFormat.getInstance();
+	private ImageProcessor imageProcessor = new ImageProcessor();;
 
 	public String getCompanyName(BasicDBObject basicDBObject) {
-		if(basicDBObject == null){
+		if (basicDBObject == null) {
 			return "undefined";
 		}
 		if (basicDBObject.containsField("name")
@@ -47,7 +44,7 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getHomepageUrl(BasicDBObject basicDBObject) {
-		if(basicDBObject == null){
+		if (basicDBObject == null) {
 			return "undefined";
 		}
 		if (basicDBObject.containsField("homepage_url")
@@ -59,7 +56,7 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getFunding(BasicDBObject basicDBObject) {
-		if(basicDBObject == null){
+		if (basicDBObject == null) {
 			return "undefined";
 		}
 		if (basicDBObject.containsField("total_money_raised")
@@ -74,7 +71,7 @@ public final class CrunchBaseFilter {
 
 	public double getFundingAmount(BasicDBObject basicDBObject) {
 		double fundingAmount;
-		if(basicDBObject == null){
+		if (basicDBObject == null) {
 			return Double.NaN;
 		}
 		if (basicDBObject.containsField("total_money_raised")
@@ -106,7 +103,7 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getLocation(BasicDBObject basicDBObject) {
-		if(basicDBObject == null){
+		if (basicDBObject == null) {
 			return "undefined";
 		}
 		if (basicDBObject.containsField("offices")
@@ -131,7 +128,7 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getCounrty(BasicDBObject basicDBObject) {
-		if(basicDBObject == null){
+		if (basicDBObject == null) {
 			return "undefined";
 		}
 		if (basicDBObject.containsField("offices")
@@ -156,7 +153,7 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getIndustry(BasicDBObject basicDBObject) {
-		if(basicDBObject == null){
+		if (basicDBObject == null) {
 			return "undefined";
 		}
 		if (basicDBObject.containsField("category_code")
@@ -170,7 +167,7 @@ public final class CrunchBaseFilter {
 	}
 
 	public String getOverview(BasicDBObject basicDBObject) {
-		if(basicDBObject == null){
+		if (basicDBObject == null) {
 			return "undefined";
 		}
 		if (basicDBObject.containsField("overview")
@@ -184,7 +181,7 @@ public final class CrunchBaseFilter {
 	public List<FundingRound> getFundings(BasicDBObject basicDBObject) {
 		List<FundingRound> fundings = new ArrayList<FundingRound>();
 
-		if(basicDBObject==null){
+		if (basicDBObject == null) {
 			return fundings;
 		}
 		if (basicDBObject.containsField("funding_rounds")
@@ -353,7 +350,7 @@ public final class CrunchBaseFilter {
 	public List<Office> getOffices(BasicDBObject basicDBObject) {
 		List<Office> offices = new ArrayList<Office>();
 
-		if(basicDBObject==null)
+		if (basicDBObject == null)
 			return offices;
 		if (basicDBObject.containsField("offices")
 				&& basicDBObject.get("offices") != null) {
@@ -452,7 +449,7 @@ public final class CrunchBaseFilter {
 	public List<Relationship> getRelationships(BasicDBObject basicDBObject) {
 		List<Relationship> relationships = new ArrayList<Relationship>();
 
-		if(basicDBObject==null)
+		if (basicDBObject == null)
 			return relationships;
 		if (basicDBObject.containsField("relationships")
 				&& basicDBObject.get("relationships") != null) {
@@ -516,8 +513,9 @@ public final class CrunchBaseFilter {
 
 		return relationships;
 	}
-
-	public byte[] getCompanyLogo(BasicDBObject basicDBObject) {
+	
+	//This method has been moved to ImageProcessor class
+	/*public byte[] getCompanyLogo(BasicDBObject basicDBObject) {
 		String imageURL = this.getCompanyImageUrl(basicDBObject);
 		if (imageURL.length() == 0) {
 			imageURL = "https://dbr2dggbe4ycd.cloudfront.net/company/default_150.png";
@@ -548,11 +546,21 @@ public final class CrunchBaseFilter {
 		}
 
 		return baos.toByteArray();
+	}*/
+
+	public List<byte[]> getResizedLogos(BasicDBObject basicDBObject) {
+		String imageURL = this.getCompanyImageUrl(basicDBObject);
+		if (imageURL.length() == 0) {
+			imageURL = "https://dbr2dggbe4ycd.cloudfront.net/company/default_150.png";
+		}
+
+		List<byte[]> logos = imageProcessor.processImage(imageURL);
+		return logos;
 	}
 
 	public String getCompanyImageUrl(BasicDBObject basicDBObject) {
 		String companyURL = "";
-		if(basicDBObject==null)
+		if (basicDBObject == null)
 			return companyURL;
 		if (basicDBObject.containsField("image")
 				&& basicDBObject.get("image") != null) {
@@ -575,7 +583,7 @@ public final class CrunchBaseFilter {
 	}
 
 	public int getNumberOfEmployees(BasicDBObject basicDBObject) {
-		if(basicDBObject==null)
+		if (basicDBObject == null)
 			return 0;
 		if (basicDBObject.containsField("number_of_employees")
 				&& basicDBObject.get("number_of_employees") != null) {
@@ -588,7 +596,7 @@ public final class CrunchBaseFilter {
 	public String getFoundedDate(BasicDBObject basicDBObject) {
 		String foundedYear = "";
 		String foundedMonth = "";
-		if (basicDBObject==null)
+		if (basicDBObject == null)
 			return "";
 		if (basicDBObject.containsField("founded_year")
 				&& basicDBObject.get("founded_year") != null) {
@@ -606,7 +614,7 @@ public final class CrunchBaseFilter {
 
 	public List<String> getEmbedVideoSrcs(BasicDBObject basicDBObject) {
 		List<String> embedsVideoUrlList = new ArrayList<String>();
-		if(basicDBObject==null){
+		if (basicDBObject == null) {
 			return embedsVideoUrlList;
 		}
 		if (basicDBObject.containsField("video_embeds")

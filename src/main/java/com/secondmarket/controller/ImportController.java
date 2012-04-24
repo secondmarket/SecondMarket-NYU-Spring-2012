@@ -288,6 +288,18 @@ public class ImportController {
 		return new ResponseEntity<byte[]>(companyLogo, responseHeaders,
 				HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/SecondMarket/getProfileLogo.htm", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getProfileLogo(
+			@RequestParam("companyName") String companyName) {
+		Company company = dataImporter.searchCompanyByName(companyName);
+		byte[] profileLogo = company.getProfileLogo();
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setContentType(MediaType.IMAGE_PNG);
+		responseHeaders.setContentLength(profileLogo.length);
+		return new ResponseEntity<byte[]>(profileLogo, responseHeaders,
+				HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/SecondMarket/CompanyMain.htm", method = RequestMethod.GET)
 	public String initCompanyMain(Model model) {
