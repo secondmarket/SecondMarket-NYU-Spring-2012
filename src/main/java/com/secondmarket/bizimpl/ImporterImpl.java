@@ -1,6 +1,7 @@
 package com.secondmarket.bizimpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -71,7 +72,7 @@ public final class ImporterImpl implements Importer {
 
 		String title = null;
 		String name = null;
-		int count = 0;
+		// int count = 0;
 
 		for (int i = 0; i < list.size(); i++) {
 			nameAndPermalinkMap = (Map<String, String>) list.get(i);
@@ -99,12 +100,12 @@ public final class ImporterImpl implements Importer {
 			if (title == null) {
 				url_Wikipedia = null;
 				wikiUrl = null;
-				count++;
+				// count++;
 			} else {
 				url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
 						+ title + "&prop=revisions&rvprop=content&format=json";
-				
-				wikiUrl = "http://en.wikipedia.org/wiki/"+title;
+
+				wikiUrl = "http://en.wikipedia.org/wiki/" + title;
 
 				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 			}
@@ -279,4 +280,53 @@ public final class ImporterImpl implements Importer {
 		return String.valueOf(pageAmount);
 	}
 
+	public String jsonizeOffices(Company company) {
+		Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
+		List<Office> offices = company.getOffices();
+		if (offices != null) {
+			List<Map<String, Object>> officeJSONList = new ArrayList<Map<String, Object>>();
+			Iterator<Office> it = offices.iterator();
+			while (it.hasNext()) {
+				Office office = it.next();
+				Map<String, Object> officeMap = new HashMap<String, Object>();
+				officeMap.put("address1", office.getAddress1());
+				officeMap.put("address2", office.getAddress2());
+				officeMap.put("zipcode", office.getZipcode());
+				officeMap.put("city", office.getCity());
+				officeMap.put("statecode", office.getStatecode());
+				officeMap.put("countrycode", office.getCountrycode());
+				officeMap.put("latitude", office.getLatitude());
+				officeMap.put("longitude", office.getLongitude());
+				officeJSONList.add(officeMap);
+			}
+			jsonMap.put("offices", officeJSONList);
+		} else {
+			List<Map<String, Object>> officeJSONList = new ArrayList<Map<String, Object>>();
+			Map<String, Object> officeMap = new HashMap<String, Object>();
+			officeMap.put("address1", "");
+			officeMap.put("address2", "");
+			officeMap.put("zipcode", "");
+			officeMap.put("city", "");
+			officeMap.put("statecode", "");
+			officeMap.put("countrycode", "");
+			officeMap.put("latitude", 0.0);
+			officeMap.put("longitude", 0.0);
+			officeJSONList.add(officeMap);
+			jsonMap.put("offices", officeJSONList);
+		}
+
+		String jsonMapString = "";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			jsonMapString = mapper.writeValueAsString(jsonMap);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// Using GSON to format the data
+		return gson.toJson(jsonMapString);
+	}
 }

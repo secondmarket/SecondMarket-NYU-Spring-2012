@@ -18,7 +18,6 @@ import com.mongodb.util.JSON;
 import com.secondmarket.dao.CompanyDAO;
 import com.secondmarket.model.Company;
 import com.secondmarket.model.EdgarCompanyDetail;
-import com.secondmarket.model.FundingRound;
 import com.secondmarket.properties.SMProperties;
 import com.secondmarket.utility.DataAggregator;
 
@@ -93,8 +92,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	public void saveCompany(String companyName,
 			Map<String, String> crunchbaseDoc,
 			Map<String, String> wikipediaDoc,
-			Map<String, EdgarCompanyDetail> edgarDoc,
-			String wikiUrl) {
+			Map<String, EdgarCompanyDetail> edgarDoc, String wikiUrl) {
 		Company company = new Company();
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(crunchbaseDoc));
@@ -112,29 +110,6 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	public Company findCompanyByName(String companyName) {
 		Company company = ds.find(Company.class).field("companyName")
 				.equal(companyName).get();
-
-		/*
-		 * System.out.println("*************");
-		 * System.out.println(company.getCountry());
-		 * System.out.println(company.getFunding());
-		 * System.out.println(company.getFundingAmount());
-		 * System.out.println(company.getIndustry());
-		 * System.out.println(company.getLocation());
-		 * System.out.println(company.getOverview()); List<FundingRound> list =
-		 * company.getFundings(); for (FundingRound round : list) {
-		 * System.out.println("==========");
-		 * System.out.println(round.getRoundCode());
-		 * System.out.println(round.getRaisedAmount());
-		 * System.out.println(round.getRaisedCurrencyCode());
-		 * System.out.println(round.getFundedDate()); List<String> investorList
-		 * = round.getInvestorList(); if (investorList != null) { for (String
-		 * investorName : investorList) { System.out.println(investorName); } }
-		 * 
-		 * System.out.println("=========="); }
-		 * 
-		 * System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-		 */
-
 		return company;
 	}
 

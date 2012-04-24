@@ -71,6 +71,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 <script type="text/javascript" src="/js/jquery.jstree.js"></script>
 <script type="text/javascript" src="/js/plusone.js"></script>
 
+<script type="text/javascript" src="/js/googleMapAPI.js"></script>
+<script type="text/javascript" src="/js/companyProfile.js"></script>
 <script type="text/javascript" src="/js/CeeBoxjs/ceeboxjquery.js"></script>
 <script type="text/javascript" src="/js/CeeBoxjs/jquery.ceebox-min.js"></script>
 <script type="text/javascript" src="/js/CeeBoxjs/jquery.swfobject.js"></script>
@@ -92,6 +94,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 		fadeOut: 100
 	});
 	
+	generateGoogleMap('<%out.print(company.getCompanyName());%>');
 });
   
 </script>
@@ -382,25 +385,21 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 										}
 									%>
 
-									<!-- <div class="sm-ellipsis">Hanover Reach</div>
+									<!-- <div id="officepanel">
+									<div class="sm-ellipsis">Hanover Reach</div>
 									<div class="sm-ellipsis">Grand Canal Harbour</div>
 									<div class="span-7 sm-ellipsis">Dublin</div>
 									<div class="span-7 sm-ellipsis">Ireland</div>
-									<hr class="space" /> -->
+									<hr class="space" />
+									</div> -->
+
+									<div id="googleMapDiv"
+										style="width: 310px; height: 400px; border: solid 1px gray">
+									</div>
+
+
 
 									<hr class="space" />
-
-									<ul class="span-7 sm-ellipsis sm-more-block sm-oh">
-										<li
-											style="margin: 0; padding: 0; margin-left: -40px; list-style-type: none;">
-											<a style="display: none;"
-											class="sm-link sm-more-toggle sm-more-open">View More</a> <a
-											style="display: none;"
-											class="sm-link sm-more-toggle sm-more-close">View Less</a>
-										</li>
-									</ul>
-
-
 									<hr class="space" />
 									<div>
 										Source: <a href="http://www.crunchbase.com" target="_blank">Crunchbase</a>,
@@ -558,8 +557,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 															out.print("<ul>");
 															for (EdgarDocDetail edgarDocDetail : detail) {
 																out.print("<li>"
-																		+ edgarDocDetail.getFilings()
-																		+ " " + edgarDocDetail.getFileDate());
+																		+ edgarDocDetail.getFilings() + " "
+																		+ edgarDocDetail.getFileDate());
 																List<EdgarFilingDetail> docList = edgarDocDetail
 																		.getDocList();
 																if (docList != null) {

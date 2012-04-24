@@ -15,36 +15,6 @@ $("document").ready(function() {
 });
 
 
-/*
-//load the company data in a table
-function loadContent(pageIndex, sortByField){
-	$.ajax({
-      		type: "GET",
-      		url: "/SecondMarket/loadsortedcompanies.htm?pageIndex=" + pageIndex + "&sortByField=" + sortByField + "&isDescending=" + isDescending,
-      		dataType: "json",
-      		success: function(data) {
-      			var jsonData = eval("("+data+")");
-      			var tablebody = '';
-      			$.each(jsonData, function(key, val){
-      				tablebody += '<tr><td width="20%" style="text-align: center">' + 
-					'<a href=\"/SecondMarket/viewcompanyinfo.htm?companyName=' + val.name + '\" target=\"_blank\">' + val.name + '</a>' +
-      				'</td><td width="20%" style="text-align: center">' + val.location + 
-      				'</td><td width="20%" style="text-align: center">' + val.country + 
-					'</td><td width="20%" style="text-align: center">' + val.funding + 
-					'</td><td width="20%" style="text-align: center">' + val.industry + '</td></tr>';
-      			});
-      			
-      			$('#companyTable').html(tablebody);
-				
-      		},
-      		error: function(data){
-            	alert('loadSortedCompaniesError');
-	 		}
-    	});
-}
-*/
-
-
 function clearAll(){
     isDescending = true;
     sortByField = "fundingAmount";

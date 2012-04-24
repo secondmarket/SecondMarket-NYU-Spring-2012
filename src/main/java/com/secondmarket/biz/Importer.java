@@ -41,6 +41,8 @@ public interface Importer {
 
 	String jsonizeDataForCompanyMainPage(List<Company> paginatedList);
 
+	String jsonizeOffices(Company company);
+
 	String getExistingPageAmount(int companiesPerPage);
 
 	Company searchCompanyByName(String companyName);

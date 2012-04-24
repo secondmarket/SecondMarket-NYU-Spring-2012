@@ -349,4 +349,12 @@ public class ImportController {
 				"company", company);
 		return modelAndView;
 	}
+
+	@RequestMapping(value = "/SecondMarket/getOfficesByCompanyName.htm", method = RequestMethod.GET)
+	public @ResponseBody
+	String retrieveOfficesData(@RequestParam("companyName") String companyName) {
+		Company company = dataImporter.retrieveCompanyByName(companyName);
+		String result = dataImporter.jsonizeOffices(company);
+		return result;
+	}
 }
