@@ -161,7 +161,7 @@ public class WikipediaFilter {
 			topicBody = allTopicsBody.substring(indexMarker, indexMarker
 					+ nextEndIndex);
 			String topicName = this.getTopicName(topicBody);
-//			System.out.println(topicName);
+			// System.out.println(topicName);
 
 			String cleanedString = this.cleanTextBody(topicBody);
 			/*
@@ -173,14 +173,16 @@ public class WikipediaFilter {
 			 * if (sentenceList.size() != 0) { contentMap.put(topicName,
 			 * sentenceList); }
 			 */
-			if(cleanedString.length()!=0){
-				if(topicName.contains(".")){
+			if (cleanedString.length() != 0) {
+				if (topicName.contains(".")) {
 					topicName = topicName.replaceAll("\\.", "&#46;");
 				}
-	    		contentMap.put(topicName, cleanedString);
+				contentMap.put(topicName, cleanedString);
 			}
 
 			tempBody = allTopicsBody.substring(indexMarker + nextEndIndex + 1);
+			// System.out.println("LASTLATST:" +
+			// tempBody.substring(tempBody.length()-5));
 			indexMarker = indexMarker + nextEndIndex;
 			nextEndIndex = tempBody.indexOf("\\n==") + 1;
 			// i++;
@@ -228,12 +230,13 @@ public class WikipediaFilter {
 		// topicBody = topicBody.replaceAll("\\{\\{[Mm]ain\\|.*?\\}\\}", "");
 		// System.out.println("0000000" + topicBody + "\n");
 		topicBody = topicBody.replaceFirst("(\\\\n)+", "");
+
 		WikiModel wikiModel = new WikiModel(
 				"http://en.wikipedia.org/wiki/${image}",
 				"http://en.wikipedia.org/wiki/${title}");
 		String htmlStr = wikiModel.render(topicBody);
 
-//		System.out.println("1111111" + htmlStr + "\n");
+		// System.out.println("1111111" + htmlStr + "\n");
 
 		// Whitelist whiteList = Whitelist.basic();
 		// String cleanedStr = Jsoup.clean(htmlStr, whiteList);
@@ -246,20 +249,36 @@ public class WikipediaFilter {
 			cleanedStr = cleanedStr.substring(0, index)
 					+ cleanedStr.substring(backIndex + 6);
 		}
-		cleanedStr = cleanedStr.replaceAll("(\\n)+", "");
-//		System.out.println("3333333" + cleanedStr + "\n");
+		// System.out.println("3333333" + cleanedStr + "\n");
 		// Remove "{{any content}}"
 		cleanedStr = cleanedStr.replaceAll("\\{{2}.*?\\}{2}", "");
-		cleanedStr = cleanedStr.replaceFirst("(\\\\n)+", "");
-
-		cleanedStr = cleanedStr.replaceAll("(\\\\n)+", "<br/>");
+		// Remove special table
+		cleanedStr = cleanedStr.replaceAll("\\{\\| *class.*?\\|\\}",
+				"Table is removed!");
+		// System.out.println("3333333" + cleanedStr + "\n");
 
 		// Remove tags like "[1]"
 		cleanedStr = cleanedStr.replaceAll(
 				"<sup[^>]*><a[^>]*>\\[\\d*\\]</a></sup>", "");
 		cleanedStr = cleanedStr.replaceAll("\\\\\\&#34;", "&#34;");
-		cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
-//		System.out.println("2222222" + cleanedStr + "\n");
+		// clear \n
+		cleanedStr = cleanedStr.replaceAll("\\n", "");
+
+		cleanedStr = cleanedStr.replaceAll("(\\\\n)+", "\\\\n");
+		cleanedStr = cleanedStr.replaceFirst("<p>(\\\\n)+", "<p>");
+//		while (cleanedStr.contains("<p>\n") || cleanedStr.contains("<p>\\n")) {
+//			cleanedStr = cleanedStr.replaceAll("^(\\n)*<p>(\\n)*(\\\\n)*",
+//					"<p>");
+//		}
+		// System.out.println("5555555" + cleanedStr + "\n");
+
+		cleanedStr = cleanedStr.replaceAll("(\\\\n)+", "<br/>");
+		// cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
+		// System.out.println("2222222" + cleanedStr + "\n");
+
+		if (cleanedStr.equals("<p></p>")) {
+			cleanedStr = "";
+		}
 
 		// // cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "")
 		// // .replaceAll("\\\\n", "").replace("{{", "").replace("}}", "");
@@ -449,7 +468,7 @@ public class WikipediaFilter {
 	public Map<String, String> getFilteredWikipediaDoc(
 			BasicDBObject basicDBObject, Company company) {
 		Map<String, String> map = extractText(basicDBObject, company);
-		
+
 		List<Pattern> patternList = p.getValues("CLEAN", "OPTIONS");
 		Iterator<String> iter = map.keySet().iterator();
 		List<String> removedList = new ArrayList<String>();
@@ -467,7 +486,7 @@ public class WikipediaFilter {
 		for (String key : removedList) {
 			map.remove(key);
 		}
-		
+
 		return map;
 
 	}
