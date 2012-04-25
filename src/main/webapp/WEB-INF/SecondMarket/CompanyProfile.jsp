@@ -96,7 +96,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 	
 	generateGoogleMap('<%out.print(company.getCompanyName());%>');
 });
-  
+
 </script>
 
 <link rel="stylesheet" type="text/css" href="/css/ceebox-min.css" />
@@ -151,7 +151,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 									<div class="sm-icon-border">
 										<%
 											out.print("<img src=\"/SecondMarket/getProfileLogo.htm?companyName="
-													+ company.getCompanyName() + "\" border=\"0\" alt=\""
+													+ company.getCompanyName()
+													+ "\" border=\"0\" alt=\""
 													+ company.getCompanyName() + "\">");
 										%>
 									</div>
@@ -394,8 +395,12 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 									</div> -->
 
 									<div id="googleMapDiv"
-										style="width: 310px; height: 400px; border: solid 1px gray">
-									</div>
+										style="width: 310px; height: 400px; border: solid 1px gray; <%if (company.getOffices() != null) {
+				if (company.getOffices().get(0).getLatitude() == 0.0
+						&& company.getOffices().get(0).getLongitude() == 0.0) {
+					out.print("visibility:hidden");
+				}
+			}%> "></div>
 
 
 
@@ -446,10 +451,6 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 												Directors</div>
 										</li> -->
 
-										<li><a style="display: none;"
-											class="sm-link sm-more-toggle sm-more-open">View More</a> <a
-											style="display: none;"
-											class="sm-link sm-more-toggle sm-more-close">View Less</a></li>
 									</ul>
 									<hr class="space" />
 
@@ -504,12 +505,6 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 											<td width="48" class="sm-r sm-b" align="right">$120M</td>
 										</tr> -->
 
-										<tr>
-											<td colspan="2"><a style="display: none;"
-												class="sm-link sm-more-toggle sm-more-open">View More</a> <a
-												style="display: none;"
-												class="sm-link sm-more-toggle sm-more-close">View Less</a></td>
-										</tr>
 
 									</table>
 

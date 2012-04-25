@@ -1,18 +1,19 @@
-var isDescending = true;
-var sortByField = "fundingAmount";
-var companyName = "";
-var selectedCountry = "all";
-var industryArray = ["Advertising","Biotech","Cleantech","Hardware","Web","Ecommerce","Education","Enterprise","Games_video","Legal","Mobile","Network_hosting","Consulting","Public_relations","Search","Security","Semiconductor","Software","Other"];
-var minFunding = 0;
-var maxFunding = -1;
-var employees = 0;
+var pageIndex = 0;
+var	isDescending = true;
+var	sortByField = "fundingAmount";
+var	companyName = "";
+var	selectedCountry = "all";
+var	industryArray = ["Advertising","Biotech","Cleantech","Hardware","Web","Ecommerce","Education","Enterprise","Games_video","Legal","Mobile","Network_hosting","Consulting","Public_relations","Search","Security","Semiconductor","Software","Other"];
+var	minFunding = 0;
+var	maxFunding = -1;
+var	employees = 0;
 
-//load the initial contents
+
 $("document").ready(function() {
-	loadContent(0);
+	loadContent(pageIndex);
 	countPages();
-    
 });
+
 
 
 function clearAll(){

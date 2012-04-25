@@ -5,7 +5,14 @@ function generateGoogleMap(companyName){
 			data: "companyName=" + companyName,
       		dataType: "json",
       		success: function(data) {
-				generateDragableMap(data);
+                var jsonData = eval("("+data+")");
+                if (jsonData.offices[0].latitude==0.0 && jsonData.offices[0].longitude==0.0){
+                    return;
+                } else if(jsonData.offices[0].latitude==null || jsonData.offices[0].longitude==null){
+                    return;
+                } else {
+                    generateDragableMap(data);
+                }
       		},
       		error: function(data){
             	alert('getOffices error');
