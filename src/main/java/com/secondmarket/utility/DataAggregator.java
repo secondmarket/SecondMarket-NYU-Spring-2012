@@ -60,22 +60,6 @@ public class DataAggregator {
 		country = cbFilter.getCounrty(cbBasicDBObject);
 		industry = cbFilter.getIndustry(cbBasicDBObject);
 		cboverview = cbFilter.getOverview(cbBasicDBObject);
-		if (wikiBasicDBObject != null) {
-			wikiContentMap = wikiFilter.getFilteredWikipediaDoc(
-					wikiBasicDBObject, company);
-			Iterator<String> it = wikiContentMap.keySet().iterator();
-			wikiContentTopics = new ArrayList<String>();
-			wikiContentValues = new ArrayList<String>();
-			while (it.hasNext()) {
-				String key = it.next();
-				String value = wikiContentMap.get(key);
-				wikiContentTopics.add(key);
-				wikiContentValues.add(value);
-			}
-		} else {
-			wikiContentTopics = new ArrayList<String>();
-			wikiContentValues = new ArrayList<String>();
-		}
 
 		employees = cbFilter.getNumberOfEmployees(cbBasicDBObject);
 		foundedDate = cbFilter.getFoundedDate(cbBasicDBObject);
@@ -95,6 +79,23 @@ public class DataAggregator {
 		company.setCountry(country);
 		company.setIndustry(industry);
 		company.setCboverview(cboverview);
+		
+		if (wikiBasicDBObject != null) {
+			wikiContentMap = wikiFilter.getFilteredWikipediaDoc(
+					wikiBasicDBObject, company);
+			Iterator<String> it = wikiContentMap.keySet().iterator();
+			wikiContentTopics = new ArrayList<String>();
+			wikiContentValues = new ArrayList<String>();
+			while (it.hasNext()) {
+				String key = it.next();
+				String value = wikiContentMap.get(key);
+				wikiContentTopics.add(key);
+				wikiContentValues.add(value);
+			}
+		} else {
+			wikiContentTopics = new ArrayList<String>();
+			wikiContentValues = new ArrayList<String>();
+		}
 		company.setWikiContentTopics(wikiContentTopics);
 		company.setWikiContentValues(wikiContentValues);
 		company.setEmployees(employees);

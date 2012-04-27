@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.secondmarket.model.Company;
 import com.secondmarket.properties.SMProperties;
+import com.secondmarket.utility.Utils;
 import com.secondmarket.utility.WikipediaUtils;
 
 /**
@@ -143,7 +144,17 @@ public class WikipediaFilter {
 		// System.out.println(jsonBody);
 		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
 
-		int beginIndex = oneWhiteSpaceBody.indexOf("'''");
+		String companyName = company.getCompanyName();
+	//	String companyName = "Spot Runner";
+		String name = "";
+		int beginIndex = 0;
+		int secondIndex = 0;
+		do {
+			beginIndex = oneWhiteSpaceBody.indexOf("'''", secondIndex);
+			secondIndex = oneWhiteSpaceBody.indexOf("'''", beginIndex + 1);
+			name = oneWhiteSpaceBody.substring(beginIndex+3, secondIndex);
+			secondIndex = secondIndex + 1;
+		} while (!Utils.compareTwoStrings(companyName, name));
 		// Minus 2 to get rid of the ending quote
 		int endIndex = oneWhiteSpaceBody.indexOf("}]") - 2;
 		String allTopicsBody = oneWhiteSpaceBody
@@ -161,7 +172,7 @@ public class WikipediaFilter {
 			topicBody = allTopicsBody.substring(indexMarker, indexMarker
 					+ nextEndIndex);
 			String topicName = this.getTopicName(topicBody);
-			// System.out.println(topicName);
+	//		System.out.println(topicName);
 
 			String cleanedString = this.cleanTextBody(topicBody);
 			/*
@@ -230,6 +241,8 @@ public class WikipediaFilter {
 		// topicBody = topicBody.replaceAll("\\{\\{[Mm]ain\\|.*?\\}\\}", "");
 		// System.out.println("0000000" + topicBody + "\n");
 		topicBody = topicBody.replaceFirst("(\\\\n)+", "");
+		topicBody = topicBody.replaceAll("(\\\\t)+", "").replaceAll("(\\\\n)+",
+				"\\\\n").replaceAll("( *\\\\n)+","\\\\n" );
 
 		WikiModel wikiModel = new WikiModel(
 				"http://en.wikipedia.org/wiki/${image}",
@@ -266,10 +279,11 @@ public class WikipediaFilter {
 
 		cleanedStr = cleanedStr.replaceAll("(\\\\n)+", "\\\\n");
 		cleanedStr = cleanedStr.replaceFirst("<p>(\\\\n)+", "<p>");
-//		while (cleanedStr.contains("<p>\n") || cleanedStr.contains("<p>\\n")) {
-//			cleanedStr = cleanedStr.replaceAll("^(\\n)*<p>(\\n)*(\\\\n)*",
-//					"<p>");
-//		}
+		// while (cleanedStr.contains("<p>\n") || cleanedStr.contains("<p>\\n"))
+		// {
+		// cleanedStr = cleanedStr.replaceAll("^(\\n)*<p>(\\n)*(\\\\n)*",
+		// "<p>");
+		// }
 		// System.out.println("5555555" + cleanedStr + "\n");
 
 		cleanedStr = cleanedStr.replaceAll("(\\\\n)+", "<br/>");
