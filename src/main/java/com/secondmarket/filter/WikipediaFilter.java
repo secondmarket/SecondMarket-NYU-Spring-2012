@@ -145,7 +145,7 @@ public class WikipediaFilter {
 		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
 
 		String companyName = company.getCompanyName();
-	//	String companyName = "Spot Runner";
+	//	String companyName = "Prosper";
 		String name = "";
 		int beginIndex = 0;
 		int secondIndex = 0;
@@ -172,9 +172,9 @@ public class WikipediaFilter {
 			topicBody = allTopicsBody.substring(indexMarker, indexMarker
 					+ nextEndIndex);
 			String topicName = this.getTopicName(topicBody);
-	//		System.out.println(topicName);
+//			System.out.println(topicName);
 
-			String cleanedString = this.cleanTextBody(topicBody);
+			String cleanedString = cleanTextBody(topicBody);
 			/*
 			 * List<String> sentenceList = this.extractEventSentences(
 			 * cleanedString, company); String[] detectedSentences =
@@ -287,6 +287,8 @@ public class WikipediaFilter {
 		// System.out.println("5555555" + cleanedStr + "\n");
 
 		cleanedStr = cleanedStr.replaceAll("(\\\\n)+", "<br/>");
+		cleanedStr = cleanedStr.replaceAll("(<br/>)+", "<br/>");
+		cleanedStr = cleanedStr.replaceAll("(<br/>)+", "<p>");
 		// cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
 		// System.out.println("2222222" + cleanedStr + "\n");
 
