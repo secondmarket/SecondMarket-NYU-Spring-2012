@@ -27,7 +27,7 @@ import com.secondmarket.utility.WikipediaUtils;
 
 /**
  * 
- * @author Ming Li
+ * @author Ming Li & Danjuan Ye
  * 
  */
 public final class ImporterImpl implements Importer {
@@ -40,6 +40,9 @@ public final class ImporterImpl implements Importer {
 	private SMProperties wikiProperty;
 	private SMProperties edgarProperty;
 
+	/**
+	 * Create  objects of Property to get the Criteria for Wikipedia and Edgar
+	 */
 	public ImporterImpl() {
 		gson = new Gson();
 		try {

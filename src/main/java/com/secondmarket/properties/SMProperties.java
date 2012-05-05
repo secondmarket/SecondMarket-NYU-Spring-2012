@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 /***
  * 
- * @author Danjuan
+ * @author Danjuan Ye
  *
  */
 public class SMProperties {

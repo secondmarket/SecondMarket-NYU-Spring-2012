@@ -4,7 +4,7 @@ import com.google.code.morphia.annotations.Embedded;
 
 /***
  * 
- * @author Danjuan
+ * @author Danjuan Ye
  *
  */
 @Embedded

@@ -2,7 +2,7 @@ package com.secondmarket.properties;
 
 /***
  * 
- * @author Danjuan
+ * @author Danjuan Ye
  *
  */
 public interface PropertyLoader {

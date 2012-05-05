@@ -23,7 +23,7 @@ import com.secondmarket.utility.DataAggregator;
 
 /**
  * 
- * @author Ming Li
+ * @author Ming Li & Danjuan Ye
  * 
  */
 public final class CompanyDAOImpl implements CompanyDAO {
@@ -36,6 +36,9 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 	private DataAggregator aggregator;
 
+	/***
+	 * For master list generation
+	 */
 	public CompanyDAOImpl() {
 		try {
 
@@ -54,6 +57,10 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		ds = morphia.createDatastore(mongo, "secondmarket");
 	}
 
+	/***
+	 * For extracting data from data sources for every companies
+	 * @param wikiProperty wikipedia criteria
+	 */
 	public CompanyDAOImpl(SMProperties wikiProperty) {
 		try {
 
