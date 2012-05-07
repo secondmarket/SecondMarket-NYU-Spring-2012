@@ -22,6 +22,7 @@ import com.secondmarket.properties.SMProperties;
 import com.secondmarket.utility.DataAggregator;
 
 /**
+ * Company Data Access Object implementation class
  * 
  * @author Ming Li
  * 
@@ -29,20 +30,24 @@ import com.secondmarket.utility.DataAggregator;
 public final class CompanyDAOImpl implements CompanyDAO {
 	private DB db;
 	private Mongo mongo;
-	private DBCollection dbCollection;
+	private DBCollection companyCollection;
 	private Gson gson = new Gson();// Using Gson to format the JSON object
 	private Datastore ds;
 	private Morphia morphia;
 
 	private DataAggregator aggregator;
 
+	/**
+	 * CompanyDAOImpl class constructor (no argument), initializes the injected
+	 * utility class instances
+	 */
 	public CompanyDAOImpl() {
 		try {
 
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
-			dbCollection = db.getCollection("company");
-//			dbCollection.drop();
+			// dbCollection = db.getCollection("company");
+			// dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -54,13 +59,17 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		ds = morphia.createDatastore(mongo, "secondmarket");
 	}
 
+	/**
+	 * CompanyDAOImpl class constructor (with argument), initializes the
+	 * injected utility class instances
+	 */
 	public CompanyDAOImpl(SMProperties wikiProperty) {
 		try {
 
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
-			dbCollection = db.getCollection("company");
-//			dbCollection.drop();
+			// dbCollection = db.getCollection("company");
+			// dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -73,6 +82,9 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		aggregator = new DataAggregator(wikiProperty);
 	}
 
+	/**
+	 * Persists the master list in database
+	 */
 	public void saveMasterlist(List<Object> masterList) {
 		// Using different collection
 		DBCollection coll = db.getCollection("companies");
@@ -82,6 +94,9 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		coll.insert(doc);
 	}
 
+	/**
+	 * Retrieves the master list from database
+	 */
 	public List<Object> getMasterList() {
 		DBCollection coll = db.getCollection("companies");
 		DBObject companies = coll.findOne();
@@ -89,6 +104,20 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return masterList;
 	}
 
+	/**
+	 * Deletes the existing company collection Being called when importing all
+	 * the company data
+	 */
+	public void deleteCompanyCollection() {
+		companyCollection = db.getCollection("company");
+		companyCollection.drop();
+	}
+
+	/**
+	 * Applies the data filter for respective data source, and aggregates the
+	 * data by calling model functions which maps the values into the MongoDB
+	 * fields using MORPHIA, persists all the data for one company
+	 */
 	public void saveCompany(String companyName,
 			Map<String, String> crunchbaseDoc,
 			Map<String, String> wikipediaDoc,
@@ -107,12 +136,18 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		ds.save(company);
 	}
 
+	/**
+	 * Retrieves the company object by company name field
+	 */
 	public Company findCompanyByName(String companyName) {
 		Company company = ds.find(Company.class).field("companyName")
 				.equal(companyName).get();
 		return company;
 	}
 
+	/**
+	 * Retrieves the company object by imprecise company name
+	 */
 	public List<Company> findCompaniesByImpreciseName(String companyName) {
 		List<Company> companyList = ds.find(Company.class).field("companyName")
 				.equal(Pattern.compile(companyName, Pattern.CASE_INSENSITIVE))
@@ -120,21 +155,9 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return companyList;
 	}
 
-	public List<Company> findCompaniesInPage(int pageIndex,
-			int numberOfElementsPerPage) {
-		List<Company> companyList = null;
-		if (pageIndex != 0) {
-			companyList = ds.createQuery(Company.class)
-					.offset(pageIndex * numberOfElementsPerPage)
-					.limit(numberOfElementsPerPage).asList();
-		} else {
-			companyList = ds.createQuery(Company.class)
-					.limit(numberOfElementsPerPage).asList();
-		}
-
-		return companyList;
-	}
-
+	/**
+	 * Returns the page amount for existing companies
+	 */
 	public int getPageAmount(int companiesPerPage) {
 		long numberOfCompanies = ds.createQuery(Company.class).countAll();
 		int numberOfPages = (int) Math.ceil(((double) numberOfCompanies)
@@ -142,24 +165,9 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return numberOfPages;
 	}
 
-	public List<Company> findSortedCompaniesInPage(int pageIndex,
-			int numberOfElementsPerPage, String sortByField,
-			boolean isDescending) {
-		String orderStr = (isDescending) ? ("-" + sortByField) : sortByField;
-
-		List<Company> companyList = null;
-		if (pageIndex != 0) {
-			companyList = ds.createQuery(Company.class).order(orderStr)
-					.offset(pageIndex * numberOfElementsPerPage)
-					.limit(numberOfElementsPerPage).asList();
-		} else {
-			companyList = ds.createQuery(Company.class).order(orderStr)
-					.limit(numberOfElementsPerPage).asList();
-		}
-
-		return companyList;
-	}
-
+	/**
+	 * Retrieves the companies by page, based on the multiple parameters
+	 */
 	public List<Company> findCompaniesByPage(int numberOfElementsPerPage,
 			int pageIndex, String sortByField, boolean isDescending,
 			String selectedCountry, String companyName,
@@ -284,6 +292,10 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return companyList;
 	}
 
+	/**
+	 * Counts the page amount by applying the multiple parameters for the
+	 * MONGODB query filters
+	 */
 	public int countPages(int numberOfElementsPerPage, String sortByField,
 			boolean isDescending, String selectedCountry, String companyName,
 			List<String> industryList, int minFunding, int maxFunding,

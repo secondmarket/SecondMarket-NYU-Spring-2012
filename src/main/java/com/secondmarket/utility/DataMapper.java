@@ -112,6 +112,7 @@ public final class DataMapper {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
+			System.out.println("CrunchBase is taking a break, please try later");
 		} finally {
 			if (input != null) {
 				try {

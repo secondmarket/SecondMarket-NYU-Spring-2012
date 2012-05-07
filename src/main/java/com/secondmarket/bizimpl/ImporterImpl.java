@@ -26,6 +26,7 @@ import com.secondmarket.utility.EdgarUtils;
 import com.secondmarket.utility.WikipediaUtils;
 
 /**
+ * Importer Implementation class.
  * 
  * @author Ming Li
  * 
@@ -40,6 +41,9 @@ public final class ImporterImpl implements Importer {
 	private SMProperties wikiProperty;
 	private SMProperties edgarProperty;
 
+	/**
+	 * ImporterImpl constructor, initializes the injected class instances.
+	 */
 	public ImporterImpl() {
 		gson = new Gson();
 		try {
@@ -55,10 +59,21 @@ public final class ImporterImpl implements Importer {
 		companyDao = new CompanyDAOImpl(wikiProperty);
 	}
 
+	/**
+	 * Loops through the company master list and imports the company data from
+	 * CrunchBase, WIKIPEDIA and EDGAR respectively
+	 * 
+	 * Only using sublist with 111 companies for testing, use the commented out
+	 * line to import all
+	 */
 	public void storeAllCompanies() {
+		companyDao.deleteCompanyCollection();
+
 		List<Object> masterList = companyDao.getMasterList();
+		System.out.println(masterList.size() + "*********");
 
 		List<Object> list = masterList.subList(0, 111);
+		// List<Object> list = masterList;
 
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> crunchbaseDoc = null;
@@ -119,75 +134,45 @@ public final class ImporterImpl implements Importer {
 		// System.out.println(count);
 	}
 
+	/**
+	 * Calls CompanyDAOImpl function to retrieve the company object by company
+	 * name from database
+	 */
 	public Company retrieveCompanyByName(String companyName) {
 		Company company = companyDao.findCompanyByName(companyName);
 		return company;
 	}
 
+	/**
+	 * Calls CompanyDAOImple function to retrieve the company object by
+	 * imprecise company name from database
+	 */
 	public List<Company> retrieveCompaniesByImpreciseName(String companyName) {
 		List<Company> list = companyDao
 				.findCompaniesByImpreciseName(companyName);
 		return list;
 	}
 
-	public List<Company> retrieveCompaniesInPage(int pageIndex,
-			int numberOfElementsPerPage) {
-		List<Company> paginatedList = companyDao.findCompaniesInPage(pageIndex,
-				numberOfElementsPerPage);
-		return paginatedList;
-	}
-
-	public String getPaginatedDataInJson(List<Company> paginatedList) {
-		// Notice: use LinkedHashMap instead of HashMap
-		// To maintain the order of JSON data
-		Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
-
-		// Loop through the list and generate JSON string
-		Iterator<Company> companyIterator = paginatedList.iterator();
-		while (companyIterator.hasNext()) {
-			Company company = companyIterator.next();
-			Map<String, Object> companyJson = new HashMap<String, Object>();
-			companyJson.put("name", company.getCompanyName());
-			companyJson.put("location", company.getLocation());
-			companyJson.put("country", company.getCountry());
-			companyJson.put("funding", company.getFunding());
-			companyJson.put("industry", company.getIndustry());
-			jsonMap.put(company.getCompanyName(), companyJson);
-		}
-
-		String jsonMapString = "";
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			jsonMapString = mapper.writeValueAsString(jsonMap);
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// Using GSON to format the data
-		return gson.toJson(jsonMapString);
-	}
-
+	/**
+	 * Retrieves the page amount for the existing companies
+	 */
 	public String getExistingPageAmount(int companiesPerPage) {
 		int numberOfPages = companyDao.getPageAmount(companiesPerPage);
 		return String.valueOf(numberOfPages);
 	}
 
-	public List<Company> retrieveSortedCompaniesInPage(int pageIndex,
-			int numberOfElementsPerPage, String sortByField,
-			boolean isDescending) {
-		List<Company> paginatedList = companyDao.findSortedCompaniesInPage(
-				pageIndex, numberOfElementsPerPage, sortByField, isDescending);
-		return paginatedList;
-	}
-
+	/**
+	 * Retrieves the company object by company name
+	 */
 	public Company searchCompanyByName(String companyName) {
 		Company company = companyDao.findCompanyByName(companyName);
 		return company;
 	}
 
+	/**
+	 * Jsonizes the paginated company list which contains all the displaying
+	 * data for the company main page
+	 */
 	public String jsonizeDataForCompanyMainPage(List<Company> paginatedList) {
 		// Notice: use LinkedHashMap instead of HashMap
 		// To maintain the order of JSON data
@@ -258,6 +243,10 @@ public final class ImporterImpl implements Importer {
 		return gson.toJson(jsonMapString);
 	}
 
+	/**
+	 * Retrieves the companies by page based on the number of companies per
+	 * page, pageIndex as well as other parameters
+	 */
 	public List<Company> retrieveCompaniesByPage(int numberOfElementsPerPage,
 			int pageIndex, String sortByField, boolean isDescending,
 			String selectedCountry, String companyName,
@@ -270,6 +259,9 @@ public final class ImporterImpl implements Importer {
 		return paginatedList;
 	}
 
+	/**
+	 * Returns the page amount in string format
+	 */
 	public String getPageAmount(int numberOfElementsPerPage,
 			String sortByField, boolean isDescending, String selectedCountry,
 			String companyName, List<String> industryList, int minFunding,
@@ -280,6 +272,9 @@ public final class ImporterImpl implements Importer {
 		return String.valueOf(pageAmount);
 	}
 
+	/**
+	 * Jsonizes the offices data
+	 */
 	public String jsonizeOffices(Company company) {
 		Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
 		List<Office> offices = company.getOffices();

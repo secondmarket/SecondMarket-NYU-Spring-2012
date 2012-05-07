@@ -7,6 +7,8 @@ import com.secondmarket.model.Company;
 import com.secondmarket.model.EdgarCompanyDetail;
 
 /**
+ * Company Data Access Object interface class, defines all the necessary
+ * functions
  * 
  * @author Ming Li
  * 
@@ -17,11 +19,11 @@ public interface CompanyDAO {
 			Map<String, String> wikiMap,
 			Map<String, EdgarCompanyDetail> edgarMap, String wikiUrl);
 
+	void deleteCompanyCollection();
+
 	Company findCompanyByName(String companyName);
 
 	List<Company> findCompaniesByImpreciseName(String companyName);
-
-	List<Company> findCompaniesInPage(int pageIndex, int numberOfElementsPerPage);
 
 	List<Company> findCompaniesByPage(int numberOfElementsPerPage,
 			int pageIndex, String sortByField, boolean isDescending,
@@ -33,10 +35,6 @@ public interface CompanyDAO {
 			boolean isDescending, String selectedCountry, String companyName,
 			List<String> industryList, int minFunding, int maxFunding,
 			int employees);
-
-	List<Company> findSortedCompaniesInPage(int pageIndex,
-			int numberOfElementsPerPage, String sortByField,
-			boolean isDescending);
 
 	int getPageAmount(int companiesPerPage);
 
