@@ -24,7 +24,7 @@ import com.secondmarket.utility.DataAggregator;
 /**
  * Company Data Access Object implementation class
  * 
- * @author Ming Li
+ * @author Ming Li & Danjuan Ye
  * 
  */
 public final class CompanyDAOImpl implements CompanyDAO {
@@ -39,7 +39,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 	/**
 	 * CompanyDAOImpl class constructor (no argument), initializes the injected
-	 * utility class instances
+	 * utility class instances for master list generation
 	 */
 	public CompanyDAOImpl() {
 		try {
@@ -61,7 +61,11 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 	/**
 	 * CompanyDAOImpl class constructor (with argument), initializes the
-	 * injected utility class instances
+	 * injected utility class instances for extracting data from data sources
+	 * for every companies
+	 * 
+	 * @param wikiProperty
+	 *            wikipedia criteria
 	 */
 	public CompanyDAOImpl(SMProperties wikiProperty) {
 		try {

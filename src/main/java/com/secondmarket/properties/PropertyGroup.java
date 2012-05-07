@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 /***
- * @author Danjuan
+ * @author Danjuan Ye
  * 
  */
 public class PropertyGroup implements PropertyLoader {

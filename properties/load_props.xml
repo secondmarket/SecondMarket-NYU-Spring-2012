@@ -24,7 +24,7 @@
 				<OPTION2></OPTION2>
 			</OPTIONS>
 		</FUNDING>
-		<CLEAN name = "CLEAN">
+		<CLEAN name="CLEAN">
 			<OPTIONS>
 				<OPTION1>.*SEE ALSO.*</OPTION1>
 				<OPTION2>.*REFERENCE.*</OPTION2>
@@ -34,10 +34,8 @@
 			</OPTIONS>
 		</CLEAN>
 	</WIKI>
-	<CRUNCHBASE>
-	</CRUNCHBASE>
 	<EDGAR>
-	<DOCTYPE name = "DOCTYPE">
+		<DOCTYPE name="DOCTYPE">
 			<OPTIONS>
 				<OPTION1>.*\.HTM</OPTION1>
 				<OPTION2>.*\.PDF</OPTION2>
@@ -45,5 +43,7 @@
 			</OPTIONS>
 		</DOCTYPE>
 	</EDGAR>
+	<CRUNCHBASE>
+	</CRUNCHBASE>
 </root>
  

@@ -1,0 +1,36 @@
+
+
+
+
+Wikipeida
+(1) Get the actual URL
+Step 1. Use one company name from crunchbase as a key word to search the corresponding company name in Wikipedia, we will get several related company names.
+Step 2. Apply our criteria to find the actual company URL.
+     a. Get first 10 results if more than 10. (Wikipeida search API returns first 10 automatically)
+     b. Compare the crunchbase company name with every returned company name from searching API to make sure that all a-z characters in Crunchbase name is also in Wikipeida name or all a-z characters in Wikipeida name is also in Cruchbase.
+     c. Now Return the URL if only one result after criteria b. 
+     d. Get the corresponding webpage for the Wikipedia possible company name using API and search Infobox in the webpage
+        Firstly, we search company Infobox templates in our priority options of XML file
+        Then, we search some other Infobox templates (website and software) of XML file.
+        
+(2) Remove the wiki-markups 
+We get the wikipedia Json docoment using the company URL from the above by API. After we use WikiModel, there are still some wikipedia markups which we need to remove them manually.
+
+Edgar
+The general work flow for Edgar is almost the same as Wikipeida. The main difference is that Edgar does not provide any API. We get HTML documents after we apply our criteria so we need to parse them using Jsoup.
+Step 1. Get related company names using company name and location from crunchbase
+Step 2. If the returned company name is more than one, then only persist to the company without SIK number
+Step 3. Use company name in Edgar to get document list
+Step 4. Use document URL in Edgar to get filing list.
+Step 5. Filter some filing documents by applying our criteria.
+
+
+XML Configuration File
+In our program, we set several criteria for the following purpose.
+(1) Get exact company URL in Wikipedia (like INFOBOX).
+(2) Remove meaningless paragraphs of Company Wikipeida page(like CLEAN).
+(3) Specify the file type of Edgar filings (like DOCTYPE).
+We use XML configuration file for all the criteria. Whenever we want to change, add, delete the conditions, we only need to change the XML file. 
+In our code, under the com.secondmarket.properties package, using the getValue functions in SMProperties.java Class, our program can get the responding criteria.
+For local application testing, our program will read load_props.xml under the properties folder directly.
+For web application, our program will read properties.xml under src/main/java.

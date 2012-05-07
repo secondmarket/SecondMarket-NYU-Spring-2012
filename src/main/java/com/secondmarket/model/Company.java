@@ -11,7 +11,7 @@ import com.google.code.morphia.annotations.Id;
 
 /**
  * 
- * @author Ming Li
+ * @author Ming Li & Danjuan Ye
  * 
  */
 @Entity(value = "company", concern = "safe")

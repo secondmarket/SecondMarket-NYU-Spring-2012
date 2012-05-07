@@ -7,6 +7,12 @@ import com.secondmarket.daoimpl.CompanyDAOImpl;
 import com.secondmarket.properties.SMProperties;
 import com.secondmarket.utility.DataMapper;
 
+/***
+ * 
+ * @author Danjuan Ye
+ * This class is for view the wikipedia markups without running the jsp for one company.
+ *
+ */
 public class WikiCleaner {
 
 	public CompanyDAO companyDao;
@@ -23,15 +29,14 @@ public class WikiCleaner {
 	}
 
 	public static void main(String[] args) {
-		String title = "Spot%20Runner";
+		String title = "Prosper%20Marketplace";
 		String url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
 				+ title + "&prop=revisions&rvprop=content&format=json";
 
 		Map<String,String> wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 
 		WikiCleaner test = new WikiCleaner();
-	// TODO pass one more map for wikipedia doc
-	    test.companyDao.saveCompany("Spot%20Runner",
+	    test.companyDao.saveCompany("Prosper%20Marketplace",
 			null, wikipediaDoc, null, url_Wikipedia);
 	}
 

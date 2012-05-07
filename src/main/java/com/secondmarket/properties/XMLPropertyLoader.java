@@ -23,7 +23,7 @@ import org.xml.sax.SAXException;
 
 /***
  * 
- * @author Danjuan
+ * @author Danjuan Ye
  *
  */
 public class XMLPropertyLoader {
