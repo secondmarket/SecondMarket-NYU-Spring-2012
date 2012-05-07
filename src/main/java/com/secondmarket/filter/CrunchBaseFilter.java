@@ -514,40 +514,6 @@ public final class CrunchBaseFilter {
 		return relationships;
 	}
 	
-	//This method has been moved to ImageProcessor class
-	/*public byte[] getCompanyLogo(BasicDBObject basicDBObject) {
-		String imageURL = this.getCompanyImageUrl(basicDBObject);
-		if (imageURL.length() == 0) {
-			imageURL = "https://dbr2dggbe4ycd.cloudfront.net/company/default_150.png";
-		}
-
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		InputStream is = null;
-		try {
-			URL url = new URL(imageURL);
-			is = url.openStream();
-			byte[] byteChunk = new byte[8192];
-			int n;
-			while ((n = is.read(byteChunk)) > 0) {
-				baos.write(byteChunk, 0, n);
-			}
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		return baos.toByteArray();
-	}*/
-
 	public List<byte[]> getResizedLogos(BasicDBObject basicDBObject) {
 		String imageURL = this.getCompanyImageUrl(basicDBObject);
 		if (imageURL.length() == 0) {
