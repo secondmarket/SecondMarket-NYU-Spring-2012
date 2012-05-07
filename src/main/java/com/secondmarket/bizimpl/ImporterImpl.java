@@ -42,11 +42,8 @@ public final class ImporterImpl implements Importer {
 	private SMProperties edgarProperty;
 
 	/**
-<<<<<<< HEAD
 	 * ImporterImpl constructor, initializes the injected class instances.
-=======
-	 * Create  objects of Property to get the Criteria for Wikipedia and Edgar
->>>>>>> branch 'master' of git@github.com:secondmarket/SecondMarket-NYU-Spring-2012.git
+	 * Create objects of Property to get the Criteria for Wikipedia and Edgar
 	 */
 	public ImporterImpl() {
 		gson = new Gson();
