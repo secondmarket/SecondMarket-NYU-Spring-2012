@@ -50,8 +50,8 @@ public class DataAggregator {
 		List<String> embedsVideoUrlList;
 
 		companyName = cbFilter.getCompanyName(cbBasicDBObject);
-		System.out.print(companyIndex + "\t");
-		System.out.println(companyName);
+		/*System.out.print(companyIndex + "\t");
+		System.out.println(companyName);*/
 
 		homepageurl = cbFilter.getHomepageUrl(cbBasicDBObject);
 		funding = cbFilter.getFunding(cbBasicDBObject);

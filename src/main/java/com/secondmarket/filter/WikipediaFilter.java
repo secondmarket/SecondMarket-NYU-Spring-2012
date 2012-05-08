@@ -77,60 +77,6 @@ public class WikipediaFilter {
 				- endIndexVar);
 	}
 
-	public String getCompanyName(BasicDBObject basicDBObject) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getFunding(BasicDBObject basicDBObject) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public double getFundingAmount(BasicDBObject basicDBObject) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public String getLocation(BasicDBObject basicDBObject) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getCounrty(BasicDBObject basicDBObject) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getIndustry(BasicDBObject basicDBObject) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getOverview(BasicDBObject basicDBObject) {
-
-		// TODO clean this testing block
-		/*
-		 * String jsonBody = basicDBObject.toString().trim(); String
-		 * oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
-		 * 
-		 * int beginIndex = oneWhiteSpaceBody.indexOf("'''"); // Minus 2 to get
-		 * rid of the ending quote int endIndex =
-		 * oneWhiteSpaceBody.indexOf("}]") - 2; String allTopicsBody =
-		 * oneWhiteSpaceBody .substring(beginIndex, endIndex);
-		 * 
-		 * int indexMarker = 0; int nextEndIndex =
-		 * allTopicsBody.indexOf("\\n=="); String topicBody = ""; topicBody =
-		 * allTopicsBody.substring(indexMarker, indexMarker + nextEndIndex);
-		 * System.out.println("topicBody: " + topicBody);
-		 * 
-		 * 
-		 * String cleanedString = this.cleanTextBody(topicBody);
-		 */
-
-		return "Check the console output please";
-	}
-
 	/**
 	 * Implemented algorithm to extract the text body for each topic which is
 	 * tagged with mark-up syntax, e.g "==TopicName=="
@@ -145,14 +91,14 @@ public class WikipediaFilter {
 		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
 
 		String companyName = company.getCompanyName();
-	//	String companyName = "Prosper";
+		// String companyName = "Prosper";
 		String name = "";
 		int beginIndex = 0;
 		int secondIndex = 0;
 		do {
 			beginIndex = oneWhiteSpaceBody.indexOf("'''", secondIndex);
 			secondIndex = oneWhiteSpaceBody.indexOf("'''", beginIndex + 1);
-			name = oneWhiteSpaceBody.substring(beginIndex+3, secondIndex);
+			name = oneWhiteSpaceBody.substring(beginIndex + 3, secondIndex);
 			secondIndex = secondIndex + 1;
 		} while (!Utils.compareTwoStrings(companyName, name));
 		// Minus 2 to get rid of the ending quote
@@ -172,7 +118,7 @@ public class WikipediaFilter {
 			topicBody = allTopicsBody.substring(indexMarker, indexMarker
 					+ nextEndIndex);
 			String topicName = this.getTopicName(topicBody);
-//			System.out.println(topicName);
+			// System.out.println(topicName);
 
 			String cleanedString = cleanTextBody(topicBody);
 			/*
@@ -241,8 +187,9 @@ public class WikipediaFilter {
 		// topicBody = topicBody.replaceAll("\\{\\{[Mm]ain\\|.*?\\}\\}", "");
 		// System.out.println("0000000" + topicBody + "\n");
 		topicBody = topicBody.replaceFirst("(\\\\n)+", "");
-		topicBody = topicBody.replaceAll("(\\\\t)+", "").replaceAll("(\\\\n)+",
-				"\\\\n").replaceAll("( *\\\\n)+","\\\\n" );
+		topicBody = topicBody.replaceAll("(\\\\t)+", "")
+				.replaceAll("(\\\\n)+", "\\\\n")
+				.replaceAll("( *\\\\n)+", "\\\\n");
 
 		WikiModel wikiModel = new WikiModel(
 				"http://en.wikipedia.org/wiki/${image}",
