@@ -73,8 +73,8 @@ public final class ImporterImpl implements Importer {
 		List<Object> masterList = companyDao.getMasterList();
 		System.out.println(masterList.size() + "*********");
 
-		List<Object> list = masterList.subList(0, 111);
-		// List<Object> list = masterList;
+//		List<Object> list = masterList.subList(0, 111);
+		List<Object> list = masterList;
 
 		Map<String, String> nameAndPermalinkMap = null;
 		Map<String, String> crunchbaseDoc = null;
@@ -128,7 +128,7 @@ public final class ImporterImpl implements Importer {
 
 			// TODO pass one more map for wikipedia doc
 			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
-					crunchbaseDoc, wikipediaDoc, edgarDoc, wikiUrl);
+					crunchbaseDoc, wikipediaDoc, edgarDoc, wikiUrl, i);
 			wikipediaDoc = null;
 			edgarDoc = null;
 		}

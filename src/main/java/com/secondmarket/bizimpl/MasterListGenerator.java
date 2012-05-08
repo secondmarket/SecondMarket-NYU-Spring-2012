@@ -41,7 +41,8 @@ public final class MasterListGenerator {
 		List<Object> allCompaniesList = DataMapper
 				.getDataInListFromAPI(url_CrunchBaseCompanies);
 
-		List<Object> list = allCompaniesList.subList(0, 300);
+//		List<Object> list = allCompaniesList.subList(0, 300);
+		List<Object> list = allCompaniesList;
 
 		List<Object> eligibleCompanyList = new ArrayList<Object>();
 		Map<String, String> nameAndPermalinkMap = null;

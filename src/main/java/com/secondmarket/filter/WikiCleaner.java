@@ -37,7 +37,7 @@ public class WikiCleaner {
 
 		WikiCleaner test = new WikiCleaner();
 	    test.companyDao.saveCompany("Prosper%20Marketplace",
-			null, wikipediaDoc, null, url_Wikipedia);
+			null, wikipediaDoc, null, url_Wikipedia, 1);
 	}
 
 }

@@ -125,14 +125,14 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	public void saveCompany(String companyName,
 			Map<String, String> crunchbaseDoc,
 			Map<String, String> wikipediaDoc,
-			Map<String, EdgarCompanyDetail> edgarDoc, String wikiUrl) {
+			Map<String, EdgarCompanyDetail> edgarDoc, String wikiUrl, int companyIndex) {
 		Company company = new Company();
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(crunchbaseDoc));
 		BasicDBObject wikiBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(wikipediaDoc));
 		aggregator.filterAndSetCompanyData(cbBasicDBObject, wikiBasicDBObject,
-				company);
+				company, companyIndex);
 		company.setCrunchbaseDoc(crunchbaseDoc);
 		company.setWikipediaDoc(wikipediaDoc);
 		company.setEdgarDoc(edgarDoc);

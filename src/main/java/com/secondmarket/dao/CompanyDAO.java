@@ -17,7 +17,7 @@ public interface CompanyDAO {
 
 	void saveCompany(String companyName, Map<String, String> map,
 			Map<String, String> wikiMap,
-			Map<String, EdgarCompanyDetail> edgarMap, String wikiUrl);
+			Map<String, EdgarCompanyDetail> edgarMap, String wikiUrl, int companyIndex);
 
 	void deleteCompanyCollection();
 

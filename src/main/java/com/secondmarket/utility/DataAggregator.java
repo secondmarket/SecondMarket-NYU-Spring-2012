@@ -29,7 +29,7 @@ public class DataAggregator {
 	}
 
 	public void filterAndSetCompanyData(BasicDBObject cbBasicDBObject,
-			BasicDBObject wikiBasicDBObject, Company company) {
+			BasicDBObject wikiBasicDBObject, Company company, int companyIndex) {
 		String companyName;
 		String homepageurl;
 		String funding;
@@ -50,8 +50,8 @@ public class DataAggregator {
 		List<String> embedsVideoUrlList;
 
 		companyName = cbFilter.getCompanyName(cbBasicDBObject);
-		System.out.println("==============================" + companyName
-				+ "==============================");
+		System.out.print(companyIndex + "\t");
+		System.out.println(companyName);
 
 		homepageurl = cbFilter.getHomepageUrl(cbBasicDBObject);
 		funding = cbFilter.getFunding(cbBasicDBObject);
@@ -79,7 +79,7 @@ public class DataAggregator {
 		company.setCountry(country);
 		company.setIndustry(industry);
 		company.setCboverview(cboverview);
-		
+
 		if (wikiBasicDBObject != null) {
 			wikiContentMap = wikiFilter.getFilteredWikipediaDoc(
 					wikiBasicDBObject, company);
