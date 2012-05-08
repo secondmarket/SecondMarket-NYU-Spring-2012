@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -513,7 +514,7 @@ public final class CrunchBaseFilter {
 
 		return relationships;
 	}
-	
+
 	public List<byte[]> getResizedLogos(BasicDBObject basicDBObject) {
 		String imageURL = this.getCompanyImageUrl(basicDBObject);
 		if (imageURL.length() == 0) {
@@ -618,20 +619,28 @@ public final class CrunchBaseFilter {
 							}
 
 							// if the video src ends with "swf" (flash video),
-							// need "FashVars" for the src url parameters
+							// need "FlashVars" for the src url parameters
 							if (embedVideoUrl.endsWith(".swf")) {
-								String flashVarsStr = embedVideoSrc
-										.substring(embedVideoSrc
-												.indexOf("FlashVars"));
-								Matcher varMatcher = pattern
-										.matcher(flashVarsStr);
-								if (varMatcher.find()) {
-									embedVideoUrl = embedVideoUrl
-											+ "?"
-											+ varMatcher.group(0).replace("\"",
-													"");
-									// System.out.println(embedVideoUrl);
+								String lowerCaseEmbedVideoSrc = embedVideoSrc
+										.toLowerCase(Locale.US);
+								int startIndex = lowerCaseEmbedVideoSrc
+										.indexOf("flashvars");
+								if (startIndex != -1) {
+									String flashVarsStr = embedVideoSrc
+											.substring(startIndex);
+									Matcher varMatcher = pattern
+											.matcher(flashVarsStr);
+									if (varMatcher.find()) {
+										embedVideoUrl = embedVideoUrl
+												+ "?"
+												+ varMatcher.group(0).replace(
+														"\"", "");
+										// System.out.println(embedVideoUrl);
+									}
+								} else {
+									continue;
 								}
+								
 							}
 
 						} else {

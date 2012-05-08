@@ -94,7 +94,7 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 		fadeOut: 100
 	});
 	
-	generateGoogleMap('<%out.print(company.getCompanyName());%>');
+	generateGoogleMap('<%out.print(company.getCompanyIndex());%>');
 });
 
 </script>
@@ -150,8 +150,8 @@ document.write(unescape('%3Cscript src="/static/javascript/jquery-ui-1.8.7.min.j
 								<div id="companyLeftSide" class="span-4">
 									<div class="sm-icon-border">
 										<%
-											out.print("<img src=\"/SecondMarket/getProfileLogo.htm?companyName="
-													+ company.getCompanyName()
+											out.print("<img src=\"/SecondMarket/getProfileLogo.htm?companyIndex="
+													+ company.getCompanyIndex()
 													+ "\" border=\"0\" alt=\""
 													+ company.getCompanyName() + "\">");
 										%>

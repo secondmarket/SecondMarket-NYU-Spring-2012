@@ -368,4 +368,10 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		return numberOfPages;
 	}
 
+	public Company findCompanyByIndex(int companyIndex) {
+		Company company = ds.find(Company.class).field("companyIndex")
+				.equal(companyIndex).get();
+		return company;
+	}
+
 }

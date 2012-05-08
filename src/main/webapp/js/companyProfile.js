@@ -1,8 +1,8 @@
-function generateGoogleMap(companyName){
+function generateGoogleMap(companyIndex){
 	$.ajax({
       		type: "GET",
-			url: '/SecondMarket/getOfficesByCompanyName.htm',
-			data: "companyName=" + companyName,
+			url: '/SecondMarket/getOfficesByCompanyIndex.htm',
+			data: "companyIndex=" + companyIndex,
       		dataType: "json",
       		success: function(data) {
                 var jsonData = eval("("+data+")");

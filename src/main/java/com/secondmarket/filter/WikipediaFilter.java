@@ -22,7 +22,6 @@ import opennlp.tools.util.InvalidFormatException;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.secondmarket.model.Company;
 import com.secondmarket.properties.SMProperties;
@@ -36,11 +35,9 @@ import com.secondmarket.utility.WikipediaUtils;
  */
 public class WikipediaFilter {
 
-	private Gson gson;
 	private SMProperties p;
 
 	public WikipediaFilter(SMProperties wikiProperty) {
-		this.gson = new Gson();
 		this.p = wikiProperty;
 	}
 
@@ -98,7 +95,14 @@ public class WikipediaFilter {
 		do {
 			beginIndex = oneWhiteSpaceBody.indexOf("'''", secondIndex);
 			secondIndex = oneWhiteSpaceBody.indexOf("'''", beginIndex + 1);
-			name = oneWhiteSpaceBody.substring(beginIndex + 3, secondIndex);
+			try {
+				name = oneWhiteSpaceBody.substring(beginIndex + 3, secondIndex);
+			} catch (StringIndexOutOfBoundsException e) {
+				System.out
+						.println(companyName
+								+ " didn't use the wiki warkup to reference the company name. Leaving wikipedia content as null");
+				return null;
+			}
 			secondIndex = secondIndex + 1;
 		} while (!Utils.compareTwoStrings(companyName, name));
 		// Minus 2 to get rid of the ending quote
@@ -431,6 +435,9 @@ public class WikipediaFilter {
 	public Map<String, String> getFilteredWikipediaDoc(
 			BasicDBObject basicDBObject, Company company) {
 		Map<String, String> map = extractText(basicDBObject, company);
+		if (map == null) {
+			return null;
+		}
 
 		List<Pattern> patternList = p.getValues("CLEAN", "OPTIONS");
 		Iterator<String> iter = map.keySet().iterator();

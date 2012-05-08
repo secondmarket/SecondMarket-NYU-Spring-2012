@@ -73,7 +73,7 @@ public final class ImporterImpl implements Importer {
 		List<Object> masterList = companyDao.getMasterList();
 		System.out.println(masterList.size() + "*********");
 
-//		List<Object> list = masterList.subList(0, 111);
+//		List<Object> list = masterList.subList(0, 300);
 		List<Object> list = masterList;
 
 		Map<String, String> nameAndPermalinkMap = null;
@@ -225,6 +225,9 @@ public final class ImporterImpl implements Importer {
 
 			// Jsonize company founded date
 			companyJson.put("foundedDate", company.getFoundedDate());
+			
+			// Jsonize company index
+			companyJson.put("companyIndex", company.getCompanyIndex());
 
 			jsonMap.put(company.getCompanyName(), companyJson);
 		}
@@ -324,5 +327,10 @@ public final class ImporterImpl implements Importer {
 		}
 		// Using GSON to format the data
 		return gson.toJson(jsonMapString);
+	}
+
+	public Company retrieveCompanyByIndex(int companyIndex) {
+		Company company = companyDao.findCompanyByIndex(companyIndex);
+		return company;
 	}
 }

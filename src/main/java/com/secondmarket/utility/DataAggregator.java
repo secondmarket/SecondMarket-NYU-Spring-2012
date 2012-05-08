@@ -13,6 +13,7 @@ import com.secondmarket.model.FundingRound;
 import com.secondmarket.model.Office;
 import com.secondmarket.model.Relationship;
 import com.secondmarket.properties.SMProperties;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * 
@@ -49,9 +50,8 @@ public class DataAggregator {
 		List<Relationship> relationships;
 		List<String> embedsVideoUrlList;
 
-		companyName = cbFilter.getCompanyName(cbBasicDBObject);
-		/*System.out.print(companyIndex + "\t");
-		System.out.println(companyName);*/
+		String unescapedCompanyName = cbFilter.getCompanyName(cbBasicDBObject);
+		companyName = StringEscapeUtils.escapeHtml(unescapedCompanyName);
 
 		homepageurl = cbFilter.getHomepageUrl(cbBasicDBObject);
 		funding = cbFilter.getFunding(cbBasicDBObject);
@@ -71,6 +71,7 @@ public class DataAggregator {
 		byte[] iconLogo = logos.get(0);
 		byte[] profileLogo = logos.get(1);
 
+		company.setCompanyIndex(companyIndex);
 		company.setCompanyName(companyName);
 		company.setHomepageurl(homepageurl);
 		company.setFunding(funding);
@@ -83,14 +84,20 @@ public class DataAggregator {
 		if (wikiBasicDBObject != null) {
 			wikiContentMap = wikiFilter.getFilteredWikipediaDoc(
 					wikiBasicDBObject, company);
-			Iterator<String> it = wikiContentMap.keySet().iterator();
-			wikiContentTopics = new ArrayList<String>();
-			wikiContentValues = new ArrayList<String>();
-			while (it.hasNext()) {
-				String key = it.next();
-				String value = wikiContentMap.get(key);
-				wikiContentTopics.add(key);
-				wikiContentValues.add(value);
+
+			if (wikiContentMap != null) {
+				Iterator<String> it = wikiContentMap.keySet().iterator();
+				wikiContentTopics = new ArrayList<String>();
+				wikiContentValues = new ArrayList<String>();
+				while (it.hasNext()) {
+					String key = it.next();
+					String value = wikiContentMap.get(key);
+					wikiContentTopics.add(key);
+					wikiContentValues.add(value);
+				}
+			} else {
+				wikiContentTopics = new ArrayList<String>();
+				wikiContentValues = new ArrayList<String>();
 			}
 		} else {
 			wikiContentTopics = new ArrayList<String>();

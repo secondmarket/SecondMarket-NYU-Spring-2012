@@ -19,6 +19,8 @@ public class Company {
 	@Id
 	private ObjectId id;
 
+	private int companyIndex;
+
 	private String companyName;
 
 	private String homepageurl;
@@ -253,6 +255,14 @@ public class Company {
 
 	public void setProfileLogo(byte[] profileLogo) {
 		this.profileLogo = profileLogo;
+	}
+
+	public int getCompanyIndex() {
+		return companyIndex;
+	}
+
+	public void setCompanyIndex(int companyIndex) {
+		this.companyIndex = companyIndex;
 	}
 
 }
