@@ -247,9 +247,15 @@ public final class CrunchBaseFilter {
 						&& round.get("raised_currency_code") != null) {
 					String raisedCurrencyCode = round
 							.get("raised_currency_code").toString().trim();
-					Currency currency = Currency
-							.getInstance(raisedCurrencyCode);
-					fundingRound.setRaisedCurrencyCode(currency.getSymbol());
+					try {
+						Currency currency = Currency
+								.getInstance(raisedCurrencyCode);
+						// Currency "NIS" cannot be recognized, should be "ILS"
+						fundingRound
+								.setRaisedCurrencyCode(currency.getSymbol());
+					} catch (IllegalArgumentException e) {
+						fundingRound.setRaisedCurrencyCode("unrecognized");
+					}
 					// System.out.println(currency.getSymbol());
 				} else {
 					fundingRound.setRaisedCurrencyCode("undefined");

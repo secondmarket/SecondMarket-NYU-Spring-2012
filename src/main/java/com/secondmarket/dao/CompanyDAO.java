@@ -43,4 +43,6 @@ public interface CompanyDAO {
 	void saveMasterlist(List<Object> masterList);
 
 	List<Object> getMasterList();
+	
+	void ensureIndex();
 }

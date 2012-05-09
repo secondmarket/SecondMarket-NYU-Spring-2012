@@ -87,6 +87,15 @@ public final class CompanyDAOImpl implements CompanyDAO {
 	}
 
 	/**
+	 * Applies the index operation for fundingAmount field in MongoDB, necessary
+	 * for sorting
+	 */
+	public void ensureIndex() {
+		ds.ensureIndex(Company.class, "fundingAmount");
+		ds.ensureCaps();
+	}
+
+	/**
 	 * Persists the master list in database
 	 */
 	public void saveMasterlist(List<Object> masterList) {

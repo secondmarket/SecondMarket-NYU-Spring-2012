@@ -64,8 +64,8 @@ public final class ImporterImpl implements Importer {
 	 * Loops through the company master list and imports the company data from
 	 * CrunchBase, WIKIPEDIA and EDGAR respectively
 	 * 
-	 * Only using sublist with 111 companies for testing, use the commented out
-	 * line to import all
+	 * CrunchBase might not be responding occasionally, skipping "null" response
+	 * when importing
 	 */
 	public void storeAllCompanies() {
 		companyDao.deleteCompanyCollection();
@@ -73,7 +73,7 @@ public final class ImporterImpl implements Importer {
 		List<Object> masterList = companyDao.getMasterList();
 		System.out.println(masterList.size() + "*********");
 
-//		List<Object> list = masterList.subList(0, 300);
+		// List<Object> list = masterList.subList(0, 300);
 		List<Object> list = masterList;
 
 		Map<String, String> nameAndPermalinkMap = null;
@@ -96,42 +96,48 @@ public final class ImporterImpl implements Importer {
 			url_CrunchBase = "http://api.crunchbase.com/v/1/company/"
 					+ companyName + ".js";
 			crunchbaseDoc = DataMapper.getDataInMapFromAPI(url_CrunchBase);
+			if (crunchbaseDoc != null) {
+				state = crunchbaseUtils.getCompanyState(crunchbaseDoc);
+				name = crunchbaseUtils.getCompanyName(crunchbaseDoc);
 
-			state = crunchbaseUtils.getCompanyState(crunchbaseDoc);
-			name = crunchbaseUtils.getCompanyName(crunchbaseDoc);
+				if (name == null || name.length() == 0) {
 
-			if (name == null || name.length() == 0) {
+					title = wikiUtils.findCompanyUrl(companyName);
+					edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
+					// System.out.println("OLD::" + companyName +
+					// "****************"+state);
+				} else {
+					title = wikiUtils.findCompanyUrl(name);
+					edgarDoc = edgarUtils.getEdgarDoc(name, state);
+					// System.out.println("NEW::" + name + "+****************+"+
+					// companyName+ "***"+state);
+				}
 
-				title = wikiUtils.findCompanyUrl(companyName);
-				edgarDoc = edgarUtils.getEdgarDoc(companyName, state);
-				// System.out.println("OLD::" + companyName +
-				// "****************"+state);
+				if (title == null) {
+					url_Wikipedia = null;
+					wikiUrl = null;
+					// count++;
+				} else {
+					url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
+							+ title
+							+ "&prop=revisions&rvprop=content&format=json";
+
+					wikiUrl = "http://en.wikipedia.org/wiki/" + title;
+
+					wikipediaDoc = DataMapper
+							.getDataInMapFromAPI(url_Wikipedia);
+				}
+
+				// TODO pass one more map for wikipedia doc
+				companyDao.saveCompany(nameAndPermalinkMap.get("name"),
+						crunchbaseDoc, wikipediaDoc, edgarDoc, wikiUrl, i);
+				wikipediaDoc = null;
+				edgarDoc = null;
 			} else {
-				title = wikiUtils.findCompanyUrl(name);
-				edgarDoc = edgarUtils.getEdgarDoc(name, state);
-				// System.out.println("NEW::" + name + "+****************+"+
-				// companyName+ "***"+state);
+				continue;
 			}
-
-			if (title == null) {
-				url_Wikipedia = null;
-				wikiUrl = null;
-				// count++;
-			} else {
-				url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
-						+ title + "&prop=revisions&rvprop=content&format=json";
-
-				wikiUrl = "http://en.wikipedia.org/wiki/" + title;
-
-				wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
-			}
-
-			// TODO pass one more map for wikipedia doc
-			companyDao.saveCompany(nameAndPermalinkMap.get("name"),
-					crunchbaseDoc, wikipediaDoc, edgarDoc, wikiUrl, i);
-			wikipediaDoc = null;
-			edgarDoc = null;
 		}
+		companyDao.ensureIndex();
 		// System.out.println(count);
 	}
 
