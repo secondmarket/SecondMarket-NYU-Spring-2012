@@ -80,20 +80,22 @@ public final class CrunchBaseFilter {
 			String funding = basicDBObject.get("total_money_raised").toString()
 					.trim();
 
-			if (funding.endsWith("k") || funding.endsWith("K")) {
-				fundingAmount = Double.parseDouble(funding.substring(1,
-						funding.length() - 1));
-			} else if (funding.endsWith("M") || funding.endsWith("m")) {
-				fundingAmount = Double.parseDouble(funding.substring(1,
-						funding.length() - 1)) * 1000.0;
-			} else if (funding.endsWith("B") || funding.endsWith("b")) {
-				fundingAmount = Double.parseDouble(funding.substring(1,
-						funding.length() - 1)) * 1000000.0;
-			} else if (funding.endsWith("T") || funding.endsWith("t")) {
-				fundingAmount = Double.parseDouble(funding.substring(1,
-						funding.length() - 1)) * 1000000000.0;
+			Pattern pattern = Pattern.compile("-?\\d+");
+			Matcher matcher = pattern.matcher(funding);
+			if (matcher.find()) {
+				if (funding.endsWith("k") || funding.endsWith("K")) {
+					fundingAmount = Double.parseDouble(matcher.group());
+				} else if (funding.endsWith("M") || funding.endsWith("m")) {
+					fundingAmount = Double.parseDouble(matcher.group()) * 1000.0;
+				} else if (funding.endsWith("B") || funding.endsWith("b")) {
+					fundingAmount = Double.parseDouble(matcher.group()) * 1000000.0;
+				} else if (funding.endsWith("T") || funding.endsWith("t")) {
+					fundingAmount = Double.parseDouble(matcher.group()) * 1000000000.0;
+				} else {
+					fundingAmount = Double.MAX_VALUE;
+				}
 			} else {
-				fundingAmount = Double.MAX_VALUE;
+				fundingAmount = Double.NaN;
 			}
 
 		} else {
@@ -640,7 +642,7 @@ public final class CrunchBaseFilter {
 								} else {
 									continue;
 								}
-								
+
 							}
 
 						} else {

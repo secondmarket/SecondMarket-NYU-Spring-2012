@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Indexed;
+import com.google.code.morphia.utils.IndexDirection;
 
 /**
  * 
@@ -31,6 +33,7 @@ public class Company {
 
 	private String funding;
 
+	@Indexed(value=IndexDirection.DESC, name="fundingAmount", unique=false, dropDups=false) 
 	private double fundingAmount;
 
 	private String industry;

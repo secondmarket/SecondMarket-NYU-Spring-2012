@@ -188,28 +188,32 @@ public final class ImporterImpl implements Importer {
 			companyJson.put("name", company.getCompanyName());
 
 			// Jsonize company address
-			Office office = company.getOffices().get(0);
-			if (office != null) {
-				String address = "";
-				if (!"undefined".equals(office.getCity())) {
-					address = address + office.getCity();
-				}
-				if (!"undefined".equals(office.getStatecode())) {
-					if ("".equals(address)) {
-						address = office.getStatecode();
-					} else {
-						address = address + ", " + office.getStatecode();
+			if (company.getOffices() != null) {
+				Office office = company.getOffices().get(0);
+				if (office != null) {
+					String address = "";
+					if (!"undefined".equals(office.getCity())) {
+						address = address + office.getCity();
 					}
+					if (!"undefined".equals(office.getStatecode())) {
+						if ("".equals(address)) {
+							address = office.getStatecode();
+						} else {
+							address = address + ", " + office.getStatecode();
+						}
 
-				}
-				if (!"undefined".equals(office.getCountrycode())) {
-					if ("".equals(address)) {
-						address = office.getCountrycode();
-					} else {
-						address = address + ", " + office.getCountrycode();
 					}
+					if (!"undefined".equals(office.getCountrycode())) {
+						if ("".equals(address)) {
+							address = office.getCountrycode();
+						} else {
+							address = address + ", " + office.getCountrycode();
+						}
+					}
+					companyJson.put("address", address);
+				} else {
+					companyJson.put("address", "Unknown");
 				}
-				companyJson.put("address", address);
 			} else {
 				companyJson.put("address", "Unknown");
 			}
@@ -225,7 +229,7 @@ public final class ImporterImpl implements Importer {
 
 			// Jsonize company founded date
 			companyJson.put("foundedDate", company.getFoundedDate());
-			
+
 			// Jsonize company index
 			companyJson.put("companyIndex", company.getCompanyIndex());
 

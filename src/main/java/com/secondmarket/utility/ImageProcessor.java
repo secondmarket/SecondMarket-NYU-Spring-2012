@@ -102,8 +102,13 @@ public class ImageProcessor {
 			images.add(unResizedLogo);
 			return images;
 		} catch (Exception error) {
-			System.out.println("failed to resize");
-			error.printStackTrace();
+			System.out.println("[failed to resize company logos, using default image instead]");
+			// error.printStackTrace();
+			String defaultImageURL = "https://dbr2dggbe4ycd.cloudfront.net/company/default_150.png";
+			byte[] unResizedLogo = getCompanyLogo(defaultImageURL);
+			images.add(unResizedLogo);
+			images.add(unResizedLogo);
+			return images;
 		} finally {
 			if (inputStream != null) {
 				try {
@@ -113,7 +118,6 @@ public class ImageProcessor {
 				}
 			}
 		}
-		return images;
 	}
 
 	// Returns an array of 2 colors. One to extend on top/left, and 1 to extent
