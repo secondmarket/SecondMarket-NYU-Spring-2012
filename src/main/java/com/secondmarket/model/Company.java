@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Indexed;
+import com.google.code.morphia.utils.IndexDirection;
 
 /**
  * 
@@ -19,6 +21,8 @@ public class Company {
 	@Id
 	private ObjectId id;
 
+	private int companyIndex;
+
 	private String companyName;
 
 	private String homepageurl;
@@ -29,6 +33,7 @@ public class Company {
 
 	private String funding;
 
+	@Indexed(value=IndexDirection.DESC, name="fundingAmount", unique=false, dropDups=false) 
 	private double fundingAmount;
 
 	private String industry;
@@ -253,6 +258,14 @@ public class Company {
 
 	public void setProfileLogo(byte[] profileLogo) {
 		this.profileLogo = profileLogo;
+	}
+
+	public int getCompanyIndex() {
+		return companyIndex;
+	}
+
+	public void setCompanyIndex(int companyIndex) {
+		this.companyIndex = companyIndex;
 	}
 
 }

@@ -1,6 +1,16 @@
+Getting Started
+1. Pull project from GitHub
+2. Start a local mongoDb instance
+3. Start the application using 'mvn jetty:run'
+4. To import company data, open up a browser, type in "http://localhost:8080/SecondMarket/importall.htm", this will need about 2 hours to generate Company Master List, and then about 6 hours to bring in all the data
+5. Once the importing process is finished, browse 14000+ private companies by searching and clicking. Enjoy!
 
 
 
+CrunchBase
+CrunchBase private company data has priority during the entire aggregation process. By applying the "private company eligibility filter" to the company data universe (80000+ companies), we only bring in the companies that have not gone public, bankrupt or deadpooled.
+The program will aggregate most of the information for each company from CrunchBase, including: company basic information, funding history, current affiliated people, offices and some other interesting resources like media files and videos. The filter can handle corrupted
+data from CrunchBase by assigning human readable help instructions.
 
 Wikipeida
 (1) Get the actual URL

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,24 +80,21 @@ public final class CrunchBaseFilter {
 			String funding = basicDBObject.get("total_money_raised").toString()
 					.trim();
 
-			try{
-			if (funding.endsWith("k") || funding.endsWith("K")) {
-				fundingAmount = Double.parseDouble(funding.substring(1,
-						funding.length() - 1));
-			} else if (funding.endsWith("M") || funding.endsWith("m")) {
-				fundingAmount = Double.parseDouble(funding.substring(1,
-						funding.length() - 1)) * 1000.0;
-			} else if (funding.endsWith("B") || funding.endsWith("b")) {
-				fundingAmount = Double.parseDouble(funding.substring(1,
-						funding.length() - 1)) * 1000000.0;
-			} else if (funding.endsWith("T") || funding.endsWith("t")) {
-				fundingAmount = Double.parseDouble(funding.substring(1,
-						funding.length() - 1)) * 1000000000.0;
+			Pattern pattern = Pattern.compile("-?\\d+");
+			Matcher matcher = pattern.matcher(funding);
+			if (matcher.find()) {
+				if (funding.endsWith("k") || funding.endsWith("K")) {
+					fundingAmount = Double.parseDouble(matcher.group());
+				} else if (funding.endsWith("M") || funding.endsWith("m")) {
+					fundingAmount = Double.parseDouble(matcher.group()) * 1000.0;
+				} else if (funding.endsWith("B") || funding.endsWith("b")) {
+					fundingAmount = Double.parseDouble(matcher.group()) * 1000000.0;
+				} else if (funding.endsWith("T") || funding.endsWith("t")) {
+					fundingAmount = Double.parseDouble(matcher.group()) * 1000000000.0;
+				} else {
+					fundingAmount = Double.MAX_VALUE;
+				}
 			} else {
-				fundingAmount = Double.MAX_VALUE;
-			}
-			}catch(Exception e){
-				e.printStackTrace();
 				fundingAmount = Double.NaN;
 			}
 
@@ -249,9 +247,15 @@ public final class CrunchBaseFilter {
 						&& round.get("raised_currency_code") != null) {
 					String raisedCurrencyCode = round
 							.get("raised_currency_code").toString().trim();
-					Currency currency = Currency
-							.getInstance(raisedCurrencyCode);
-					fundingRound.setRaisedCurrencyCode(currency.getSymbol());
+					try {
+						Currency currency = Currency
+								.getInstance(raisedCurrencyCode);
+						// Currency "NIS" cannot be recognized, should be "ILS"
+						fundingRound
+								.setRaisedCurrencyCode(currency.getSymbol());
+					} catch (IllegalArgumentException e) {
+						fundingRound.setRaisedCurrencyCode("unrecognized");
+					}
 					// System.out.println(currency.getSymbol());
 				} else {
 					fundingRound.setRaisedCurrencyCode("undefined");
@@ -518,7 +522,7 @@ public final class CrunchBaseFilter {
 
 		return relationships;
 	}
-	
+
 	public List<byte[]> getResizedLogos(BasicDBObject basicDBObject) {
 		String imageURL = this.getCompanyImageUrl(basicDBObject);
 		if (imageURL.length() == 0) {
@@ -623,24 +627,28 @@ public final class CrunchBaseFilter {
 							}
 
 							// if the video src ends with "swf" (flash video),
-							// need "FashVars" for the src url parameters
+							// need "FlashVars" for the src url parameters
 							if (embedVideoUrl.endsWith(".swf")) {
-								try{
-								String flashVarsStr = embedVideoSrc
-										.substring(embedVideoSrc
-												.indexOf("FlashVars"));
-								Matcher varMatcher = pattern
-										.matcher(flashVarsStr);
-								if (varMatcher.find()) {
-									embedVideoUrl = embedVideoUrl
-											+ "?"
-											+ varMatcher.group(0).replace("\"",
-													"");
-									// System.out.println(embedVideoUrl);
+								String lowerCaseEmbedVideoSrc = embedVideoSrc
+										.toLowerCase(Locale.US);
+								int startIndex = lowerCaseEmbedVideoSrc
+										.indexOf("flashvars");
+								if (startIndex != -1) {
+									String flashVarsStr = embedVideoSrc
+											.substring(startIndex);
+									Matcher varMatcher = pattern
+											.matcher(flashVarsStr);
+									if (varMatcher.find()) {
+										embedVideoUrl = embedVideoUrl
+												+ "?"
+												+ varMatcher.group(0).replace(
+														"\"", "");
+										// System.out.println(embedVideoUrl);
+									}
+								} else {
+									continue;
 								}
-								}catch(Exception e){
-									e.printStackTrace();
-								}
+
 							}
 
 						} else {

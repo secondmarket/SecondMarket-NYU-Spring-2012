@@ -15,6 +15,8 @@ public interface Importer {
 	void storeAllCompanies();
 
 	Company retrieveCompanyByName(String companyName);
+	
+	Company retrieveCompanyByIndex(int companyIndex);
 
 	List<Company> retrieveCompaniesByImpreciseName(String companyName);
 

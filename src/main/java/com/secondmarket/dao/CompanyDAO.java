@@ -22,6 +22,8 @@ public interface CompanyDAO {
 	void deleteCompanyCollection();
 
 	Company findCompanyByName(String companyName);
+	
+	Company findCompanyByIndex(int companyIndex);
 
 	List<Company> findCompaniesByImpreciseName(String companyName);
 
@@ -41,4 +43,6 @@ public interface CompanyDAO {
 	void saveMasterlist(List<Object> masterList);
 
 	List<Object> getMasterList();
+	
+	void ensureIndex();
 }

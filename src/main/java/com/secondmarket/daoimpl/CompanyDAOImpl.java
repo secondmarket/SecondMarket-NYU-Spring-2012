@@ -46,8 +46,6 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
-			// dbCollection = db.getCollection("company");
-			// dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -57,6 +55,8 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		morphia = new Morphia();
 		morphia.map(Company.class);
 		ds = morphia.createDatastore(mongo, "secondmarket");
+		ds.ensureIndex(Company.class, "fundingAmount");
+		ds.ensureCaps();
 	}
 
 	/**
@@ -72,8 +72,6 @@ public final class CompanyDAOImpl implements CompanyDAO {
 
 			mongo = new Mongo("localhost", 27017);
 			db = mongo.getDB("secondmarket");
-			// dbCollection = db.getCollection("company");
-			// dbCollection.drop();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
@@ -83,7 +81,18 @@ public final class CompanyDAOImpl implements CompanyDAO {
 		morphia = new Morphia();
 		morphia.map(Company.class);
 		ds = morphia.createDatastore(mongo, "secondmarket");
+		ds.ensureIndex(Company.class, "fundingAmount");
+		ds.ensureCaps();
 		aggregator = new DataAggregator(wikiProperty);
+	}
+
+	/**
+	 * Applies the index operation for fundingAmount field in MongoDB, necessary
+	 * for sorting
+	 */
+	public void ensureIndex() {
+		ds.ensureIndex(Company.class, "fundingAmount");
+		ds.ensureCaps();
 	}
 
 	/**
@@ -184,6 +193,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 			int employees) {
 		List<Company> companyList = null;
 		String orderStr = (isDescending) ? ("-" + sortByField) : sortByField;
+
 		if (pageIndex != 0) {
 			if ("all".equals(selectedCountry)) {
 				if (maxFunding == -1) {
@@ -198,6 +208,7 @@ public final class CompanyDAOImpl implements CompanyDAO {
 							.order(orderStr)
 							.offset(pageIndex * numberOfElementsPerPage)
 							.limit(numberOfElementsPerPage).asList();
+
 				} else {
 					companyList = ds
 							.createQuery(Company.class)
@@ -366,6 +377,12 @@ public final class CompanyDAOImpl implements CompanyDAO {
 				/ numberOfElementsPerPage);
 
 		return numberOfPages;
+	}
+
+	public Company findCompanyByIndex(int companyIndex) {
+		Company company = ds.find(Company.class).field("companyIndex")
+				.equal(companyIndex).get();
+		return company;
 	}
 
 }

@@ -22,7 +22,6 @@ import opennlp.tools.util.InvalidFormatException;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.secondmarket.model.Company;
 import com.secondmarket.properties.SMProperties;
@@ -36,11 +35,9 @@ import com.secondmarket.utility.WikipediaUtils;
  */
 public class WikipediaFilter {
 
-	private Gson gson;
 	private SMProperties p;
 
 	public WikipediaFilter(SMProperties wikiProperty) {
-		this.gson = new Gson();
 		this.p = wikiProperty;
 	}
 
@@ -121,6 +118,7 @@ public class WikipediaFilter {
 			while(oneWhiteSpaceBody.charAt(secondIndex)=='\''){
 				secondIndex++;
 			}
+
 		} while (!Utils.compareTwoStrings(companyName, name));
 		
 		//Second Method to find the beginnig of the paragraph
@@ -404,80 +402,6 @@ public class WikipediaFilter {
 		return sentenceDetector.sentDetect(cleanedString);
 	}
 
-	/**
-	 * This function is probably unnecessary as most of the information exits in
-	 * CrunchBase
-	 */
-	public Map<String, String> getInfoboxData(BasicDBObject basicDBObject) {
-		String jsonBody = basicDBObject.toString().trim();
-		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
-		String infoBoxStr = this.getStringFromNestedJson(oneWhiteSpaceBody,
-				"Infobox", 7, "\\\\n'''", 5);
-
-		// To get "Infobox dot-com company\@|company_name = [[Facebook
-		// Inc.]]\@|company_logo...."
-		infoBoxStr = infoBoxStr.replaceAll("(.?)\\\\n", "$1" + "@");
-		// To get
-		// "Infobox dot-com company@|company_name = [[Facebook Inc.]]@|company_logo...."
-		infoBoxStr = infoBoxStr.replace("\\", "");
-		// To get
-		// "Infobox dot-com company@company_name = [[Facebook Inc.]]@company_logo...."
-		infoBoxStr = infoBoxStr.replace("@|", "@");
-
-		// Split the string by "@"
-		String[] infoBoxEntry = infoBoxStr.split("@");
-		WikiModel wikiModel = new WikiModel(
-				"http://www.mywiki.com/wiki/${image}",
-				"http://www.mywiki.com/wiki/${title}");
-
-		// Filter out the following entry sets: info-box, founder, key_people
-		for (String item : infoBoxEntry) {
-			// System.out.println(item);
-			if (Pattern
-					.compile(Pattern.quote("infobox"), Pattern.CASE_INSENSITIVE)
-					.matcher(item).find()) {
-				continue;
-			} else if (Pattern
-					.compile(Pattern.quote("founder"), Pattern.CASE_INSENSITIVE)
-					.matcher(item).find()) {
-				continue;
-			} else if (Pattern
-					.compile(Pattern.quote("key_people"),
-							Pattern.CASE_INSENSITIVE).matcher(item).find()) {
-				continue;
-			} else if (Pattern
-					.compile(Pattern.quote("alexa"), Pattern.CASE_INSENSITIVE)
-					.matcher(item).find()) {
-				String htmlStr = wikiModel.render(item);
-				Whitelist whiteList = Whitelist.none();
-				// whiteList.addTags(new String[]{"a", "p", });
-				String cleanedStr = Jsoup.clean(htmlStr, whiteList);
-				cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
-				cleanedStr = cleanedStr.replace("{{", "").replace("}}", "");
-				cleanedStr = cleanedStr.replaceAll("\\(.*\\)", "");
-				StringTokenizer st = new StringTokenizer(cleanedStr, "=;");
-				String key = st.nextToken();
-				String value = st.nextToken();
-				// System.out.println(key + "-->" + value);
-			} else {
-				String htmlStr = wikiModel.render(item);
-				Whitelist whiteList = Whitelist.none();
-				// whiteList.addTags(new String[]{"a", "p", });
-				String cleanedStr = Jsoup.clean(htmlStr, whiteList);
-				cleanedStr = cleanedStr.replaceAll("\\[\\d*\\]", "");
-				cleanedStr = cleanedStr.replace("{{", "").replace("}}", "");
-				// System.out.println(cleanedStr);
-				StringTokenizer st = new StringTokenizer(cleanedStr, "=;");
-				String key = st.nextToken();
-				String value = st.nextToken();
-				// System.out.println(key + "-->" + value);
-			}
-			// System.out.println();
-		}
-
-		return null;
-	}
-
 	/***
 	 * Add by danjuan March 31, 2012
 	 * 
@@ -487,7 +411,15 @@ public class WikipediaFilter {
 	 */
 	public Map<String, String> getFilteredWikipediaDoc(
 			BasicDBObject basicDBObject, Company company) {
-		Map<String, String> map = extractText(basicDBObject, company);
+		Map<String, String> map;
+		try {
+			map = extractText(basicDBObject, company);
+		} catch (StringIndexOutOfBoundsException e) {
+			System.out.println("Unable to extract the plain text for "
+					+ company.getCompanyName()
+					+ ". Leaving wikipedia content as null");
+			return null;
+		}
 
 		List<Pattern> patternList = p.getValues("CLEAN", "OPTIONS");
 		Iterator<String> iter = map.keySet().iterator();

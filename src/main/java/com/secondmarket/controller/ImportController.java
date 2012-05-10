@@ -90,8 +90,8 @@ public class ImportController {
 	 */
 	@RequestMapping(value = "/SecondMarket/getLogo.htm", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getCompanyLogo(
-			@RequestParam("companyName") String companyName) {
-		Company company = dataImporter.searchCompanyByName(companyName);
+			@RequestParam("companyIndex") int companyIndex) {
+		Company company = dataImporter.retrieveCompanyByIndex(companyIndex);
 		byte[] companyLogo = company.getLogo();
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaType.IMAGE_PNG);
@@ -109,8 +109,8 @@ public class ImportController {
 	 */
 	@RequestMapping(value = "/SecondMarket/getProfileLogo.htm", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getProfileLogo(
-			@RequestParam("companyName") String companyName) {
-		Company company = dataImporter.searchCompanyByName(companyName);
+			@RequestParam("companyIndex") int companyIndex) {
+		Company company = dataImporter.retrieveCompanyByIndex(companyIndex);
 		byte[] profileLogo = company.getProfileLogo();
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaType.IMAGE_PNG);
@@ -214,8 +214,8 @@ public class ImportController {
 	 */
 	@RequestMapping(value = "/SecondMarket/viewcompanyprofile.htm", method = RequestMethod.GET)
 	public ModelAndView companyProfilePage(
-			@RequestParam("companyName") String companyName) {
-		Company company = dataImporter.retrieveCompanyByName(companyName);
+			@RequestParam("companyIndex") int companyIndex) {
+		Company company = dataImporter.retrieveCompanyByIndex(companyIndex);
 
 		ModelAndView modelAndView = new ModelAndView("CompanyProfile",
 				"company", company);
@@ -229,10 +229,10 @@ public class ImportController {
 	 * @param companyName
 	 * @return
 	 */
-	@RequestMapping(value = "/SecondMarket/getOfficesByCompanyName.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/SecondMarket/getOfficesByCompanyIndex.htm", method = RequestMethod.GET)
 	public @ResponseBody
-	String retrieveOfficesData(@RequestParam("companyName") String companyName) {
-		Company company = dataImporter.retrieveCompanyByName(companyName);
+	String retrieveOfficesData(@RequestParam("companyIndex") int companyIndex) {
+		Company company = dataImporter.retrieveCompanyByIndex(companyIndex);
 		String result = dataImporter.jsonizeOffices(company);
 		return result;
 	}
