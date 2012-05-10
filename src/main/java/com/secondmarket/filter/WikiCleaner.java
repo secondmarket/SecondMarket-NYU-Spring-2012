@@ -29,14 +29,14 @@ public class WikiCleaner {
 	}
 
 	public static void main(String[] args) {
-		String title = "Prosper%20Marketplace";
+		String title = "Lotame";
 		String url_Wikipedia = "http://en.wikipedia.org/w/api.php?action=query&titles="
 				+ title + "&prop=revisions&rvprop=content&format=json";
 
 		Map<String,String> wikipediaDoc = DataMapper.getDataInMapFromAPI(url_Wikipedia);
 
 		WikiCleaner test = new WikiCleaner();
-	    test.companyDao.saveCompany("Prosper%20Marketplace",
+	    test.companyDao.saveCompany("Lotame",
 			null, wikipediaDoc, null, url_Wikipedia, 1);
 	}
 

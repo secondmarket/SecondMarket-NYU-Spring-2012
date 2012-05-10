@@ -68,7 +68,10 @@ public class DataAggregator {
 		relationships = cbFilter.getRelationships(cbBasicDBObject);
 		embedsVideoUrlList = cbFilter.getEmbedVideoSrcs(cbBasicDBObject);
 		List<byte[]> logos = cbFilter.getResizedLogos(cbBasicDBObject);
-		byte[] iconLogo = logos.get(0);
+		byte[] iconLogo = null;
+		if(logos.size()>0){
+			iconLogo = logos.get(0);
+		}
 		byte[] profileLogo = logos.get(1);
 
 		company.setCompanyName(companyName);

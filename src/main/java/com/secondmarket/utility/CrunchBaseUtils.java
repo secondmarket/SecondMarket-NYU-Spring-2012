@@ -98,6 +98,8 @@ public final class CrunchBaseUtils {
 		String state = "";
 		BasicDBObject cbBasicDBObject = (BasicDBObject) JSON.parse(gson
 				.toJson(crunchbaseDoc));
+		if(cbBasicDBObject == null)
+			return state;
 		if (cbBasicDBObject.containsField("offices")
 				&& cbBasicDBObject.get("offices") != null) {
 			BasicDBList officeList = (BasicDBList) JSON.parse(cbBasicDBObject

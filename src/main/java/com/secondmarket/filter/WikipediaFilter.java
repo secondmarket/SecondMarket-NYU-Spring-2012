@@ -91,30 +91,87 @@ public class WikipediaFilter {
 		String oneWhiteSpaceBody = jsonBody.replaceAll("\\s+", " ");
 
 		String companyName = company.getCompanyName();
-		// String companyName = "Prosper";
+	//    String companyName = "Lotame";
 		String name = "";
 		int beginIndex = 0;
 		int secondIndex = 0;
+		boolean flag = false;
+		int backCount = 0;
+		//First Method to find the beginning of the paragraph
 		do {
+			backCount = 0;
 			beginIndex = oneWhiteSpaceBody.indexOf("'''", secondIndex);
-			secondIndex = oneWhiteSpaceBody.indexOf("'''", beginIndex + 1);
-			name = oneWhiteSpaceBody.substring(beginIndex + 3, secondIndex);
-			secondIndex = secondIndex + 1;
+			if(beginIndex == -1){
+				flag = true;
+				break;
+			}
+			beginIndex +=3;
+			backCount +=3;
+			while(oneWhiteSpaceBody.charAt(beginIndex)=='\''){
+				beginIndex++;
+				backCount++;
+			}
+			secondIndex = oneWhiteSpaceBody.indexOf("'''", beginIndex);
+			if(secondIndex == -1){
+				flag = true;
+				break;
+			}
+			name = oneWhiteSpaceBody.substring(beginIndex, secondIndex);
+			secondIndex += 3;
+			while(oneWhiteSpaceBody.charAt(secondIndex)=='\''){
+				secondIndex++;
+			}
 		} while (!Utils.compareTwoStrings(companyName, name));
+		
+		//Second Method to find the beginnig of the paragraph
+		int infoboxIndex = 0;
+		int endInfoboxIndex = 0;
+		if(flag){
+			if(oneWhiteSpaceBody.toLowerCase().contains("infobox")){
+				infoboxIndex = oneWhiteSpaceBody.toLowerCase().indexOf("infobox");
+				endInfoboxIndex = oneWhiteSpaceBody.indexOf("}}", infoboxIndex);
+				oneWhiteSpaceBody = oneWhiteSpaceBody.substring(endInfoboxIndex+2);
+				oneWhiteSpaceBody = oneWhiteSpaceBody.replaceFirst("(\\\\n)+", "");
+			}
+		}else{
+			oneWhiteSpaceBody = oneWhiteSpaceBody.substring(beginIndex-backCount);
+		}
+//		System.out.println("0000000"+oneWhiteSpaceBody);
 		// Minus 2 to get rid of the ending quote
-		int endIndex = oneWhiteSpaceBody.indexOf("}]") - 2;
+		int endIndex = oneWhiteSpaceBody.indexOf("}]") /*- 2*/;
+		
+		Map<String, String> contentMap = new LinkedHashMap<String, String>();
+		if(endIndex < 0)
+			return contentMap;
+	
 		String allTopicsBody = oneWhiteSpaceBody
-				.substring(beginIndex, endIndex);
+				.substring(0, endIndex);
 
 		// Map<String, List<String>> contentMap = new LinkedHashMap<String,
 		// List<String>>();
-		Map<String, String> contentMap = new LinkedHashMap<String, String>();
+		
 		int indexMarker = 0;
 		int nextEndIndex = allTopicsBody.indexOf("\\n==");
 		String topicBody = "";
 		String tempBody = "";
 		// int i = 0;
-		while (nextEndIndex != 0) {
+		if(nextEndIndex == -1){
+			topicBody = allTopicsBody;
+//			System.out.println("11111111"+topicBody);
+			String topicName = this.getTopicName(topicBody);
+
+			String cleanedString = cleanTextBody(topicBody);
+//			System.out.println("22222222"+cleanedString);
+			if (cleanedString.length() != 0) {
+				if (topicName.contains(".")) {
+					topicName = topicName.replaceAll("\\.", "&#46;");
+				}
+				contentMap.put(topicName, cleanedString);
+			}
+			return contentMap;
+		}
+		while (nextEndIndex > 0) {
+			
 			topicBody = allTopicsBody.substring(indexMarker, indexMarker
 					+ nextEndIndex);
 			String topicName = this.getTopicName(topicBody);
@@ -149,7 +206,7 @@ public class WikipediaFilter {
 
 	public String getTopicName(String topicBody) {
 		String topicName = "";
-		if (topicBody.startsWith("'''")) {
+		if (topicBody.startsWith("'''")||topicBody.startsWith("[")) {
 			topicName = "Summary";
 		} else {
 			Pattern pattern = Pattern.compile("={2,}.+={2,}");

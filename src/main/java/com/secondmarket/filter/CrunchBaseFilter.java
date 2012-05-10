@@ -79,6 +79,7 @@ public final class CrunchBaseFilter {
 			String funding = basicDBObject.get("total_money_raised").toString()
 					.trim();
 
+			try{
 			if (funding.endsWith("k") || funding.endsWith("K")) {
 				fundingAmount = Double.parseDouble(funding.substring(1,
 						funding.length() - 1));
@@ -93,6 +94,10 @@ public final class CrunchBaseFilter {
 						funding.length() - 1)) * 1000000000.0;
 			} else {
 				fundingAmount = Double.MAX_VALUE;
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+				fundingAmount = Double.NaN;
 			}
 
 		} else {
@@ -620,6 +625,7 @@ public final class CrunchBaseFilter {
 							// if the video src ends with "swf" (flash video),
 							// need "FashVars" for the src url parameters
 							if (embedVideoUrl.endsWith(".swf")) {
+								try{
 								String flashVarsStr = embedVideoSrc
 										.substring(embedVideoSrc
 												.indexOf("FlashVars"));
@@ -631,6 +637,9 @@ public final class CrunchBaseFilter {
 											+ varMatcher.group(0).replace("\"",
 													"");
 									// System.out.println(embedVideoUrl);
+								}
+								}catch(Exception e){
+									e.printStackTrace();
 								}
 							}
 
